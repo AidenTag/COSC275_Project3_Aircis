@@ -1,0 +1,2516 @@
+_PI_0:
+__start:
+@(0x00000000 + 0x00000000):	AUIPC	x5 [t0],	%hi(%pcrel(0x00001d0c [device_table_base]) = 0x00001d0c) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000004):	LW	x5 [t0],	%lo(%larel(0x00001d0c [device_table_base], 0x00000000 [_PI_0]) = 0x00001d0c) = 0x00000d0c(x5 [t0])[ LW <part B> ]
+_PI_1:
+@(0x00000000 + 0x00000008):	AUIPC	x8 [s0],	%hi(%pcrel(0x00001d10 [none_device_code]) = 0x00001d08) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x0000000c):	LW	x8 [s0],	%lo(%larel(0x00001d10 [none_device_code], 0x00000008 [_PI_1]) = 0x00001d08) = 0x00000d08(x8 [s0])[ LW <part B> ]
+_PI_2:
+@(0x00000000 + 0x00000010):	AUIPC	x9 [s1],	%hi(%pcrel(0x00001d1c [RAM_device_code]) = 0x00001d0c) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000014):	LW	x9 [s1],	%lo(%larel(0x00001d1c [RAM_device_code], 0x00000010 [_PI_2]) = 0x00001d0c) = 0x00000d0c(x9 [s1])[ LW <part B> ]
+RAM_search_loop_top:
+@(0x00000000 + 0x00000018):	LW	x6 [t1],	0x00000000 [0](x5 [t0])
+@(0x00000000 + 0x0000001c):	BEQ	x6 [t1],	x8 [s0],	%pcrel(0x0000002c [RAM_search_failure]) = 0x00000010
+@(0x00000000 + 0x00000020):	BEQ	x6 [t1],	x9 [s1],	%pcrel(0x0000003c [RAM_found]) = 0x0000001c
+@(0x00000000 + 0x00000024):	ADDI	x5 [t0],	x5 [t0],	0x0000000c [12]
+@(0x00000000 + 0x00000028):	JAL	x0 [zero],	%pcrel(0x00000018 [RAM_search_loop_top]) = 0xfffffff0[ J ]
+_PI_3:
+RAM_search_failure:
+@(0x00000000 + 0x0000002c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d34 [kernel_error_RAM_not_found]) = 0x00001d08) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000030):	LW	x10 [a0],	%lo(%larel(0x00001d34 [kernel_error_RAM_not_found], 0x0000002c [_PI_3]) = 0x00001d08) = 0x00000d08(x10 [a0])[ LW <part B> ]
+@(0x00000000 + 0x00000034):	ADDI	x31 [t6],	x0 [zero],	0x00000001 [1][ HALT <part A> ]
+@(0x00000000 + 0x00000038):	CSRRS	x0 [zero],	md,	x31 [t6][ HALT <part B> ]
+RAM_found:
+@(0x00000000 + 0x0000003c):	LW	x6 [t1],	0x00000004 [4](x5 [t0])
+@(0x00000000 + 0x00000040):	LW	x7 [t2],	0x00000008 [8](x5 [t0])
+@(0x00000000 + 0x00000044):	SUB	x5 [t0],	x7 [t2],	x6 [t1]
+_PI_4:
+@(0x00000000 + 0x00000048):	AUIPC	x28 [t3],	%hi(%pcrel(0x00001d4c [min_RAM]) = 0x00001d04) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x0000004c):	LW	x28 [t3],	%lo(%larel(0x00001d4c [min_RAM], 0x00000048 [_PI_4]) = 0x00001d04) = 0x00000d04(x28 [t3])[ LW <part B> ]
+@(0x00000000 + 0x00000050):	BLT	x5 [t0],	x28 [t3],	%pcrel(0x000000ac [RAM_too_small]) = 0x0000005c
+_PI_5:
+@(0x00000000 + 0x00000054):	AUIPC	x28 [t3],	%hi(%pcrel(0x00001d50 [kernel_size]) = 0x00001cfc) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000058):	LW	x28 [t3],	%lo(%larel(0x00001d50 [kernel_size], 0x00000054 [_PI_5]) = 0x00001cfc) = 0x00000cfc(x28 [t3])[ LW <part B> ]
+@(0x00000000 + 0x0000005c):	ADD	x2 [sp],	x6 [t1],	x28 [t3]
+@(0x00000000 + 0x00000060):	ADDI	x8 [fp],	x2 [sp],	0x00000000 [0][ MV ]
+_PI_6:
+@(0x00000000 + 0x00000064):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d58 [RAM_base]) = 0x00001cf4) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x00000068):	SW	x6 [t1],	%lo(%larel(0x00001d58 [RAM_base], 0x00000064 [_PI_6]) = 0x00001cf4) = 0x00000cf4(x31 [t6])[ SW <part B> ]
+_PI_7:
+@(0x00000000 + 0x0000006c):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d5c [RAM_limit]) = 0x00001cf0) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x00000070):	SW	x7 [t2],	%lo(%larel(0x00001d5c [RAM_limit], 0x0000006c [_PI_7]) = 0x00001cf0) = 0x00000cf0(x31 [t6])[ SW <part B> ]
+_PI_8:
+@(0x00000000 + 0x00000074):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d68 [kernel_base]) = 0x00001cf4) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x00000078):	SW	x6 [t1],	%lo(%larel(0x00001d68 [kernel_base], 0x00000074 [_PI_8]) = 0x00001cf4) = 0x00000cf4(x31 [t6])[ SW <part B> ]
+_PI_9:
+@(0x00000000 + 0x0000007c):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d6c [kernel_limit]) = 0x00001cf0) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x00000080):	SW	x2 [sp],	%lo(%larel(0x00001d6c [kernel_limit], 0x0000007c [_PI_9]) = 0x00001cf0) = 0x00000cf0(x31 [t6])[ SW <part B> ]
+_PI_10:
+@(0x00000000 + 0x00000084):	AUIPC	x5 [t0],	%hi(%pcrel(0x00001d0c [device_table_base]) = 0x00001c88) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000088):	LW	x5 [t0],	%lo(%larel(0x00001d0c [device_table_base], 0x00000084 [_PI_10]) = 0x00001c88) = 0x00000c88(x5 [t0])[ LW <part B> ]
+@(0x00000000 + 0x0000008c):	LW	x5 [t0],	0x00000008 [8](x5 [t0])
+@(0x00000000 + 0x00000090):	ADDI	x5 [t0],	x5 [t0],	0xfffffff4 [-12]
+_PI_11:
+@(0x00000000 + 0x00000094):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d70 [DMA_portal_ptr]) = 0x00001cdc) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x00000098):	SW	x5 [t0],	%lo(%larel(0x00001d70 [DMA_portal_ptr], 0x00000094 [_PI_11]) = 0x00001cdc) = 0x00000cdc(x31 [t6])[ SW <part B> ]
+_PI_12:
+@(0x00000000 + 0x0000009c):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000390 [main]) = 0x000002f4) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000000a0):	JALR	x1 [ra],	%lo(%larel(0x00000390 [main], 0x0000009c [_PI_12]) = 0x000002f4) = 0x000002f4(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000000a4):	ADDI	x31 [t6],	x0 [zero],	0x00000001 [1][ HALT <part A> ]
+@(0x00000000 + 0x000000a8):	CSRRS	x0 [zero],	md,	x31 [t6][ HALT <part B> ]
+RAM_too_small:
+_PI_13:
+@(0x00000000 + 0x000000ac):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d38 [kernel_error_small_RAM]) = 0x00001c8c) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000000b0):	LW	x10 [a0],	%lo(%larel(0x00001d38 [kernel_error_small_RAM], 0x000000ac [_PI_13]) = 0x00001c8c) = 0x00000c8c(x10 [a0])[ LW <part B> ]
+@(0x00000000 + 0x000000b4):	ADDI	x31 [t6],	x0 [zero],	0x00000001 [1][ HALT <part A> ]
+@(0x00000000 + 0x000000b8):	CSRRS	x0 [zero],	md,	x31 [t6][ HALT <part B> ]
+_PI_14:
+find_device:
+@(0x00000000 + 0x000000bc):	AUIPC	x5 [t0],	%hi(%pcrel(0x00001d0c [device_table_base]) = 0x00001c50) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000000c0):	LW	x5 [t0],	%lo(%larel(0x00001d0c [device_table_base], 0x000000bc [_PI_14]) = 0x00001c50) = 0x00000c50(x5 [t0])[ LW <part B> ]
+_PI_15:
+@(0x00000000 + 0x000000c4):	AUIPC	x7 [t2],	%hi(%pcrel(0x00001d10 [none_device_code]) = 0x00001c4c) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000000c8):	LW	x7 [t2],	%lo(%larel(0x00001d10 [none_device_code], 0x000000c4 [_PI_15]) = 0x00001c4c) = 0x00000c4c(x7 [t2])[ LW <part B> ]
+find_device_loop_top:
+@(0x00000000 + 0x000000cc):	LW	x6 [t1],	0x00000000 [0](x5 [t0])
+@(0x00000000 + 0x000000d0):	BEQ	x6 [t1],	x7 [t2],	%pcrel(0x000000e8 [find_device_loop_failure]) = 0x00000018
+@(0x00000000 + 0x000000d4):	BNE	x6 [t1],	x10 [a0],	%pcrel(0x000000e0 [find_device_continue_loop]) = 0x0000000c
+@(0x00000000 + 0x000000d8):	ADDI	x11 [a1],	x11 [a1],	0xffffffff [-1]
+@(0x00000000 + 0x000000dc):	BEQ	x11 [a1],	x0 [zero],	%pcrel(0x000000f0 [find_device_loop_success]) = 0x00000014[ BEQZ ]
+find_device_continue_loop:
+@(0x00000000 + 0x000000e0):	ADDI	x5 [t0],	x5 [t0],	0x0000000c [12]
+@(0x00000000 + 0x000000e4):	JAL	x0 [zero],	%pcrel(0x000000cc [find_device_loop_top]) = 0xffffffe8[ J ]
+find_device_loop_failure:
+@(0x00000000 + 0x000000e8):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x000000ec):	JAL	x0 [zero],	%pcrel(0x000000f4 [find_device_return]) = 0x00000008[ J ]
+find_device_loop_success:
+@(0x00000000 + 0x000000f0):	ADDI	x10 [a0],	x5 [t0],	0x00000000 [0][ MV ]
+find_device_return:
+@(0x00000000 + 0x000000f4):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+print:
+@(0x00000000 + 0x000000f8):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x000000fc):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000100):	SW	x8 [fp],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000104):	SW	x9 [s1],	0x00000014 [20](x2 [sp])
+@(0x00000000 + 0x00000108):	SW	x18 [s2],	0x00000010 [16](x2 [sp])
+@(0x00000000 + 0x0000010c):	SW	x19 [s3],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00000110):	SW	x20 [s4],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00000114):	SW	x21 [s5],	0x00000004 [4](x2 [sp])
+@(0x00000000 + 0x00000118):	SW	x22 [s6],	0x00000000 [0](x2 [sp])
+@(0x00000000 + 0x0000011c):	ADDI	x8 [fp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000120):	ADDI	x9 [s1],	x10 [a0],	0x00000000 [0][ MV ]
+_PI_16:
+@(0x00000000 + 0x00000124):	AUIPC	x18 [s2],	%hi(%pcrel(0x00001d64 [console_limit]) = 0x00001c40) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000128):	LW	x18 [s2],	%lo(%larel(0x00001d64 [console_limit], 0x00000124 [_PI_16]) = 0x00001c40) = 0x00000c40(x18 [s2])[ LW <part B> ]
+@(0x00000000 + 0x0000012c):	ADDI	x18 [s2],	x18 [s2],	0xfffffffc [-4]
+_PI_17:
+@(0x00000000 + 0x00000130):	AUIPC	x19 [s3],	%hi(%pcrel(0x00001d54 [cursor_column]) = 0x00001c24) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000134):	LW	x19 [s3],	%lo(%larel(0x00001d54 [cursor_column], 0x00000130 [_PI_17]) = 0x00001c24) = 0x00000c24(x19 [s3])[ LW <part B> ]
+_PI_18:
+@(0x00000000 + 0x00000138):	AUIPC	x20 [s4],	%hi(%pcrel(0x00001dc0 [newline_char]) = 0x00001c88) + 1 = 0x00000002[ LB <part A> ]
+@(0x00000000 + 0x0000013c):	LB	x20 [s4],	%lo(%larel(0x00001dc0 [newline_char], 0x00000138 [_PI_18]) = 0x00001c88) = 0x00000c88(x20 [s4])[ LB <part B> ]
+_PI_19:
+@(0x00000000 + 0x00000140):	AUIPC	x21 [s5],	%hi(%pcrel(0x00001dbc [cursor_char]) = 0x00001c7c) + 1 = 0x00000002[ LB <part A> ]
+@(0x00000000 + 0x00000144):	LB	x21 [s5],	%lo(%larel(0x00001dbc [cursor_char], 0x00000140 [_PI_19]) = 0x00001c7c) = 0x00000c7c(x21 [s5])[ LB <part B> ]
+_PI_20:
+@(0x00000000 + 0x00000148):	AUIPC	x22 [s6],	%hi(%pcrel(0x00001d44 [console_width]) = 0x00001bfc) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x0000014c):	LW	x22 [s6],	%lo(%larel(0x00001d44 [console_width], 0x00000148 [_PI_20]) = 0x00001bfc) = 0x00000bfc(x22 [s6])[ LW <part B> ]
+_string_loop_top:
+@(0x00000000 + 0x00000150):	LB	x5 [t0],	0x00000000 [0](x9 [s1])
+@(0x00000000 + 0x00000154):	BEQ	x5 [t0],	x0 [zero],	%pcrel(0x0000019c [_string_loop_end]) = 0x00000048[ BEQZ ]
+@(0x00000000 + 0x00000158):	BEQ	x5 [t0],	x20 [s4],	%pcrel(0x00000170 [_print_scroll_call]) = 0x00000018
+@(0x00000000 + 0x0000015c):	SUB	x6 [t1],	x18 [s2],	x22 [s6]
+@(0x00000000 + 0x00000160):	ADD	x6 [t1],	x6 [t1],	x19 [s3]
+@(0x00000000 + 0x00000164):	SB	x5 [t0],	0x00000000 [0](x6 [t1])
+@(0x00000000 + 0x00000168):	ADDI	x19 [s3],	x19 [s3],	0x00000001 [1]
+@(0x00000000 + 0x0000016c):	BLT	x19 [s3],	x22 [s6],	%pcrel(0x00000188 [_print_scroll_end]) = 0x0000001c
+_print_scroll_call:
+_PI_21:
+@(0x00000000 + 0x00000170):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d54 [cursor_column]) = 0x00001be4) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x00000174):	SW	x19 [s3],	%lo(%larel(0x00001d54 [cursor_column], 0x00000170 [_PI_21]) = 0x00001be4) = 0x00000be4(x31 [t6])[ SW <part B> ]
+_PI_22:
+@(0x00000000 + 0x00000178):	AUIPC	x6 [t1],	%hi(%pcrel(0x000001cc [scroll_console]) = 0x00000054) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x0000017c):	JALR	x1 [ra],	%lo(%larel(0x000001cc [scroll_console], 0x00000178 [_PI_22]) = 0x00000054) = 0x00000054(x6 [t1])[ CALL <part B> ]
+_PI_23:
+@(0x00000000 + 0x00000180):	AUIPC	x19 [s3],	%hi(%pcrel(0x00001d54 [cursor_column]) = 0x00001bd4) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000184):	LW	x19 [s3],	%lo(%larel(0x00001d54 [cursor_column], 0x00000180 [_PI_23]) = 0x00001bd4) = 0x00000bd4(x19 [s3])[ LW <part B> ]
+_print_scroll_end:
+@(0x00000000 + 0x00000188):	SUB	x6 [t1],	x18 [s2],	x22 [s6]
+@(0x00000000 + 0x0000018c):	ADD	x6 [t1],	x6 [t1],	x19 [s3]
+@(0x00000000 + 0x00000190):	SB	x21 [s5],	0x00000000 [0](x6 [t1])
+@(0x00000000 + 0x00000194):	ADDI	x9 [s1],	x9 [s1],	0x00000001 [1]
+@(0x00000000 + 0x00000198):	JAL	x0 [zero],	%pcrel(0x00000150 [_string_loop_top]) = 0xffffffb8[ J ]
+_string_loop_end:
+_PI_24:
+@(0x00000000 + 0x0000019c):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d54 [cursor_column]) = 0x00001bb8) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x000001a0):	SW	x19 [s3],	%lo(%larel(0x00001d54 [cursor_column], 0x0000019c [_PI_24]) = 0x00001bb8) = 0x00000bb8(x31 [t6])[ SW <part B> ]
+@(0x00000000 + 0x000001a4):	LW	x22 [s6],	0x00000000 [0](x2 [sp])
+@(0x00000000 + 0x000001a8):	LW	x21 [s5],	0x00000004 [4](x2 [sp])
+@(0x00000000 + 0x000001ac):	LW	x20 [s4],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x000001b0):	LW	x19 [s3],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x000001b4):	LW	x18 [s2],	0x00000010 [16](x2 [sp])
+@(0x00000000 + 0x000001b8):	LW	x9 [s1],	0x00000014 [20](x2 [sp])
+@(0x00000000 + 0x000001bc):	LW	x8 [fp],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x000001c0):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x000001c4):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x000001c8):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+scroll_console:
+_PI_25:
+@(0x00000000 + 0x000001cc):	AUIPC	x7 [t2],	%hi(%pcrel(0x00001d60 [console_base]) = 0x00001b94) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000001d0):	LW	x7 [t2],	%lo(%larel(0x00001d60 [console_base], 0x000001cc [_PI_25]) = 0x00001b94) = 0x00000b94(x7 [t2])[ LW <part B> ]
+_PI_26:
+@(0x00000000 + 0x000001d4):	AUIPC	x5 [t0],	%hi(%pcrel(0x00001d64 [console_limit]) = 0x00001b90) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000001d8):	LW	x5 [t0],	%lo(%larel(0x00001d64 [console_limit], 0x000001d4 [_PI_26]) = 0x00001b90) = 0x00000b90(x5 [t0])[ LW <part B> ]
+@(0x00000000 + 0x000001dc):	ADDI	x5 [t0],	x5 [t0],	0xfffffffc [-4]
+_PI_27:
+@(0x00000000 + 0x000001e0):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001d44 [console_width]) = 0x00001b64) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000001e4):	LW	x6 [t1],	%lo(%larel(0x00001d44 [console_width], 0x000001e0 [_PI_27]) = 0x00001b64) = 0x00000b64(x6 [t1])[ LW <part B> ]
+_PI_28:
+@(0x00000000 + 0x000001e8):	AUIPC	x28 [t3],	%hi(%pcrel(0x00001d54 [cursor_column]) = 0x00001b6c) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000001ec):	LW	x28 [t3],	%lo(%larel(0x00001d54 [cursor_column], 0x000001e8 [_PI_28]) = 0x00001b6c) = 0x00000b6c(x28 [t3])[ LW <part B> ]
+_PI_29:
+@(0x00000000 + 0x000001f0):	AUIPC	x29 [t4],	%hi(%pcrel(0x00001d48 [console_height]) = 0x00001b58) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000001f4):	LW	x29 [t4],	%lo(%larel(0x00001d48 [console_height], 0x000001f0 [_PI_29]) = 0x00001b58) = 0x00000b58(x29 [t4])[ LW <part B> ]
+@(0x00000000 + 0x000001f8):	MUL	x29 [t4],	x6 [t1],	x29 [t4]
+_PI_30:
+@(0x00000000 + 0x000001fc):	AUIPC	x30 [t5],	%hi(%pcrel(0x00001d0c [device_table_base]) = 0x00001b10) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000200):	LW	x30 [t5],	%lo(%larel(0x00001d0c [device_table_base], 0x000001fc [_PI_30]) = 0x00001b10) = 0x00000b10(x30 [t5])[ LW <part B> ]
+@(0x00000000 + 0x00000204):	LW	x30 [t5],	0x00000008 [8](x30 [t5])
+@(0x00000000 + 0x00000208):	ADDI	x30 [t5],	x30 [t5],	0xfffffff4 [-12]
+_PI_31:
+@(0x00000000 + 0x0000020c):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001e70 [blank_line]) = 0x00001c64) + 1 = 0x00000002[ LA <part A> ]
+@(0x00000000 + 0x00000210):	ADDI	x31 [t6],	x31 [t6],	%lo(%larel(0x00001e70 [blank_line], 0x0000020c [_PI_31]) = 0x00001c64) = 0x00000c64[ LA <part B> ]
+@(0x00000000 + 0x00000214):	SW	x31 [t6],	0x00000000 [0](x30 [t5])
+@(0x00000000 + 0x00000218):	SW	x7 [t2],	0x00000004 [4](x30 [t5])
+@(0x00000000 + 0x0000021c):	SW	x6 [t1],	0x00000008 [8](x30 [t5])
+@(0x00000000 + 0x00000220):	BEQ	x6 [t1],	x28 [t3],	%pcrel(0x00000238 [_scroll_console_update_offset]) = 0x00000018
+@(0x00000000 + 0x00000224):	SUB	x30 [t5],	x5 [t0],	x6 [t1]
+@(0x00000000 + 0x00000228):	ADD	x30 [t5],	x30 [t5],	x28 [t3]
+_PI_32:
+@(0x00000000 + 0x0000022c):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001db8 [space_char]) = 0x00001b8c) + 1 = 0x00000002[ LB <part A> ]
+@(0x00000000 + 0x00000230):	LB	x31 [t6],	%lo(%larel(0x00001db8 [space_char], 0x0000022c [_PI_32]) = 0x00001b8c) = 0x00000b8c(x31 [t6])[ LB <part B> ]
+@(0x00000000 + 0x00000234):	SB	x31 [t6],	0x00000000 [0](x30 [t5])
+_scroll_console_update_offset:
+@(0x00000000 + 0x00000238):	LW	x31 [t6],	0x00000000 [0](x5 [t0])
+@(0x00000000 + 0x0000023c):	ADD	x31 [t6],	x31 [t6],	x6 [t1]
+@(0x00000000 + 0x00000240):	REM	x31 [t6],	x31 [t6],	x29 [t4]
+@(0x00000000 + 0x00000244):	SW	x31 [t6],	0x00000000 [0](x5 [t0])
+@(0x00000000 + 0x00000248):	ADDI	x28 [t3],	x0 [zero],	0x00000000 [0][ LI ]
+_PI_33:
+@(0x00000000 + 0x0000024c):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d54 [cursor_column]) = 0x00001b08) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x00000250):	SW	x28 [t3],	%lo(%larel(0x00001d54 [cursor_column], 0x0000024c [_PI_33]) = 0x00001b08) = 0x00000b08(x31 [t6])[ SW <part B> ]
+_PI_34:
+@(0x00000000 + 0x00000254):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001dbc [cursor_char]) = 0x00001b68) + 1 = 0x00000002[ LB <part A> ]
+@(0x00000000 + 0x00000258):	LB	x31 [t6],	%lo(%larel(0x00001dbc [cursor_char], 0x00000254 [_PI_34]) = 0x00001b68) = 0x00000b68(x31 [t6])[ LB <part B> ]
+@(0x00000000 + 0x0000025c):	SUB	x30 [t5],	x5 [t0],	x6 [t1]
+@(0x00000000 + 0x00000260):	SB	x31 [t6],	0x00000000 [0](x30 [t5])
+@(0x00000000 + 0x00000264):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+halt_kernel:
+_PI_35:
+@(0x00000000 + 0x00000268):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001df8 [halting_msg]) = 0x00001b90) + 1 = 0x00000002[ LA <part A> ]
+@(0x00000000 + 0x0000026c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001df8 [halting_msg], 0x00000268 [_PI_35]) = 0x00001b90) = 0x00000b90[ LA <part B> ]
+_PI_36:
+@(0x00000000 + 0x00000270):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffffe88) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000274):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00000270 [_PI_36]) = 0xfffffe88) = 0x00000e88(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000278):	ADDI	x31 [t6],	x0 [zero],	0x00000001 [1][ HALT <part A> ]
+@(0x00000000 + 0x0000027c):	CSRRS	x0 [zero],	md,	x31 [t6][ HALT <part B> ]
+userspace_jump:
+@(0x00000000 + 0x00000280):	CSRRW	x0 [zero],	epc,	x10 [a0][ CSRW ]
+@(0x00000000 + 0x00000284):	ADDI	x2 [sp],	x11 [a1],	0x00000000 [0][ MV ]
+@(0x00000000 + 0x00000288):	CSRRW	x0 [zero],	bs,	x12 [a2][ CSRW ]
+@(0x00000000 + 0x0000028c):	CSRRW	x0 [zero],	lm,	x13 [a3][ CSRW ]
+@(0x00000000 + 0x00000290):	ADDI	x5 [t0],	x0 [zero],	0x00000010 [0x10][ LI ]
+@(0x00000000 + 0x00000294):	CSRRS	x0 [zero],	md,	x5 [t0][ CSRS ]
+@(0x00000000 + 0x00000298):	BEQ	x14 [a4],	x0 [zero],	%pcrel(0x000002a0 [userspace_jump_end]) = 0x00000008[ BEQZ ]
+@(0x00000000 + 0x0000029c):	CSRRW	x0 [zero],	al,	x14 [a4][ CSRW ]
+userspace_jump_end:
+@(0x00000000 + 0x000002a0):	ERET
+quantum_expired:
+@(0x00000000 + 0x000002a4):	CSRRS	x5 [t0],	ck,	x0 [zero][ CSRR ]
+@(0x00000000 + 0x000002a8):	CSRRS	x6 [t1],	al,	x0 [zero][ CSRR ]
+@(0x00000000 + 0x000002ac):	SLTU	x10 [a0],	x6 [t1],	x5 [t0]
+@(0x00000000 + 0x000002b0):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+_PI_37:
+syscall_handler:
+@(0x00000000 + 0x000002b4):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d78 [preserved_sp]) = 0x00001ac4) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x000002b8):	SW	x2 [sp],	%lo(%larel(0x00001d78 [preserved_sp], 0x000002b4 [_PI_37]) = 0x00001ac4) = 0x00000ac4(x31 [t6])[ SW <part B> ]
+@(0x00000000 + 0x000002bc):	CSRRS	x2 [sp],	epc,	x0 [zero][ CSRR ]
+_PI_38:
+@(0x00000000 + 0x000002c0):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d74 [preserved_epc]) = 0x00001ab4) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x000002c4):	SW	x2 [sp],	%lo(%larel(0x00001d74 [preserved_epc], 0x000002c0 [_PI_38]) = 0x00001ab4) = 0x00000ab4(x31 [t6])[ SW <part B> ]
+_PI_39:
+@(0x00000000 + 0x000002c8):	AUIPC	x2 [sp],	%hi(%pcrel(0x00001d6c [kernel_limit]) = 0x00001aa4) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000002cc):	LW	x2 [sp],	%lo(%larel(0x00001d6c [kernel_limit], 0x000002c8 [_PI_39]) = 0x00001aa4) = 0x00000aa4(x2 [sp])[ LW <part B> ]
+_PI_40:
+@(0x00000000 + 0x000002d0):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001734 [do_syscall]) = 0x00001464) = 0x00000001[ CALL <part A> ]
+@(0x00000000 + 0x000002d4):	JALR	x1 [ra],	%lo(%larel(0x00001734 [do_syscall], 0x000002d0 [_PI_40]) = 0x00001464) = 0x00000464(x6 [t1])[ CALL <part B> ]
+_PI_41:
+alarm_handler:
+@(0x00000000 + 0x000002d8):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d78 [preserved_sp]) = 0x00001aa0) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x000002dc):	SW	x2 [sp],	%lo(%larel(0x00001d78 [preserved_sp], 0x000002d8 [_PI_41]) = 0x00001aa0) = 0x00000aa0(x31 [t6])[ SW <part B> ]
+@(0x00000000 + 0x000002e0):	CSRRS	x2 [sp],	epc,	x0 [zero][ CSRR ]
+_PI_42:
+@(0x00000000 + 0x000002e4):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d74 [preserved_epc]) = 0x00001a90) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x000002e8):	SW	x2 [sp],	%lo(%larel(0x00001d74 [preserved_epc], 0x000002e4 [_PI_42]) = 0x00001a90) = 0x00000a90(x31 [t6])[ SW <part B> ]
+_PI_43:
+@(0x00000000 + 0x000002ec):	AUIPC	x2 [sp],	%hi(%pcrel(0x00001d6c [kernel_limit]) = 0x00001a80) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000002f0):	LW	x2 [sp],	%lo(%larel(0x00001d6c [kernel_limit], 0x000002ec [_PI_43]) = 0x00001a80) = 0x00000a80(x2 [sp])[ LW <part B> ]
+_PI_44:
+@(0x00000000 + 0x000002f4):	AUIPC	x6 [t1],	%hi(%pcrel(0x000018c8 [do_alarm]) = 0x000015d4) = 0x00000001[ CALL <part A> ]
+@(0x00000000 + 0x000002f8):	JALR	x1 [ra],	%lo(%larel(0x000018c8 [do_alarm], 0x000002f4 [_PI_44]) = 0x000015d4) = 0x000005d4(x6 [t1])[ CALL <part B> ]
+default_handler:
+_PI_45:
+@(0x00000000 + 0x000002fc):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d78 [preserved_sp]) = 0x00001a7c) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x00000300):	SW	x2 [sp],	%lo(%larel(0x00001d78 [preserved_sp], 0x000002fc [_PI_45]) = 0x00001a7c) = 0x00000a7c(x31 [t6])[ SW <part B> ]
+@(0x00000000 + 0x00000304):	CSRRS	x2 [sp],	epc,	x0 [zero][ CSRR ]
+_PI_46:
+@(0x00000000 + 0x00000308):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d74 [preserved_epc]) = 0x00001a6c) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x0000030c):	SW	x2 [sp],	%lo(%larel(0x00001d74 [preserved_epc], 0x00000308 [_PI_46]) = 0x00001a6c) = 0x00000a6c(x31 [t6])[ SW <part B> ]
+_PI_47:
+@(0x00000000 + 0x00000310):	AUIPC	x2 [sp],	%hi(%pcrel(0x00001d6c [kernel_limit]) = 0x00001a5c) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000314):	LW	x2 [sp],	%lo(%larel(0x00001d6c [kernel_limit], 0x00000310 [_PI_47]) = 0x00001a5c) = 0x00000a5c(x2 [sp])[ LW <part B> ]
+_PI_48:
+@(0x00000000 + 0x00000318):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001e38 [default_handler_msg]) = 0x00001b20) + 1 = 0x00000002[ LA <part A> ]
+@(0x00000000 + 0x0000031c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001e38 [default_handler_msg], 0x00000318 [_PI_48]) = 0x00001b20) = 0x00000b20[ LA <part B> ]
+_PI_49:
+@(0x00000000 + 0x00000320):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffffdd8) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000324):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00000320 [_PI_49]) = 0xfffffdd8) = 0x00000dd8(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000328):	EBREAK
+_PI_50:
+@(0x00000000 + 0x0000032c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d40 [kernel_error_unmanaged_interrupt]) = 0x00001a14) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x00000330):	LW	x10 [a0],	%lo(%larel(0x00001d40 [kernel_error_unmanaged_interrupt], 0x0000032c [_PI_50]) = 0x00001a14) = 0x00000a14(x10 [a0])[ LW <part B> ]
+_PI_51:
+@(0x00000000 + 0x00000334):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000268 [halt_kernel]) = 0xffffff34) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000338):	JALR	x1 [ra],	%lo(%larel(0x00000268 [halt_kernel], 0x00000334 [_PI_51]) = 0xffffff34) = 0x00000f34(x6 [t1])[ CALL <part B> ]
+init_trap_table:
+_PI_52:
+@(0x00000000 + 0x0000033c):	AUIPC	x5 [t0],	%hi(%pcrel(0x000002fc [default_handler]) = 0xffffffc0) + 1 = 0x00000000[ LA <part A> ]
+@(0x00000000 + 0x00000340):	ADDI	x5 [t0],	x5 [t0],	%lo(%larel(0x000002fc [default_handler], 0x0000033c [_PI_52]) = 0xffffffc0) = 0x00000fc0[ LA <part B> ]
+_PI_53:
+@(0x00000000 + 0x00000344):	AUIPC	x6 [t1],	%hi(%pcrel(0x000002b4 [syscall_handler]) = 0xffffff70) + 1 = 0x00000000[ LA <part A> ]
+@(0x00000000 + 0x00000348):	ADDI	x6 [t1],	x6 [t1],	%lo(%larel(0x000002b4 [syscall_handler], 0x00000344 [_PI_53]) = 0xffffff70) = 0x00000f70[ LA <part B> ]
+_PI_54:
+@(0x00000000 + 0x0000034c):	AUIPC	x7 [t2],	%hi(%pcrel(0x000002d8 [alarm_handler]) = 0xffffff8c) + 1 = 0x00000000[ LA <part A> ]
+@(0x00000000 + 0x00000350):	ADDI	x7 [t2],	x7 [t2],	%lo(%larel(0x000002d8 [alarm_handler], 0x0000034c [_PI_54]) = 0xffffff8c) = 0x00000f8c[ LA <part B> ]
+@(0x00000000 + 0x00000354):	SW	x5 [t0],	0x00000000 [0x00](x10 [a0])
+@(0x00000000 + 0x00000358):	SW	x5 [t0],	0x00000004 [0x04](x10 [a0])
+@(0x00000000 + 0x0000035c):	SW	x5 [t0],	0x00000008 [0x08](x10 [a0])
+@(0x00000000 + 0x00000360):	SW	x7 [t2],	0x0000000c [0x0c](x10 [a0])
+@(0x00000000 + 0x00000364):	SW	x5 [t0],	0x00000010 [0x10](x10 [a0])
+@(0x00000000 + 0x00000368):	SW	x5 [t0],	0x00000014 [0x14](x10 [a0])
+@(0x00000000 + 0x0000036c):	SW	x5 [t0],	0x00000018 [0x18](x10 [a0])
+@(0x00000000 + 0x00000370):	SW	x5 [t0],	0x0000001c [0x1c](x10 [a0])
+@(0x00000000 + 0x00000374):	SW	x5 [t0],	0x00000020 [0x20](x10 [a0])
+@(0x00000000 + 0x00000378):	SW	x6 [t1],	0x00000024 [0x24](x10 [a0])
+@(0x00000000 + 0x0000037c):	SW	x5 [t0],	0x00000028 [0x28](x10 [a0])
+@(0x00000000 + 0x00000380):	SW	x5 [t0],	0x0000002c [0x2c](x10 [a0])
+@(0x00000000 + 0x00000384):	SW	x5 [t0],	0x00000030 [0x30](x10 [a0])
+@(0x00000000 + 0x00000388):	CSRRW	x0 [zero],	tb,	x10 [a0][ CSRW ]
+@(0x00000000 + 0x0000038c):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+main:
+@(0x00000000 + 0x00000390):	ADDI	x2 [sp],	x2 [sp],	0xfffffff8 [-8]
+@(0x00000000 + 0x00000394):	SW	x1 [ra],	0x00000004 [4](x2 [sp])
+@(0x00000000 + 0x00000398):	SW	x8 [fp],	0x00000000 [0](x2 [sp])
+@(0x00000000 + 0x0000039c):	ADDI	x8 [fp],	x2 [sp],	0x00000008 [8]
+_PI_55:
+@(0x00000000 + 0x000003a0):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d20 [console_device_code]) = 0x00001980) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000003a4):	LW	x10 [a0],	%lo(%larel(0x00001d20 [console_device_code], 0x000003a0 [_PI_55]) = 0x00001980) = 0x00000980(x10 [a0])[ LW <part B> ]
+@(0x00000000 + 0x000003a8):	ADDI	x11 [a1],	x0 [zero],	0x00000001 [1][ LI ]
+_PI_56:
+@(0x00000000 + 0x000003ac):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000bc [find_device]) = 0xfffffd10) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000003b0):	JALR	x1 [ra],	%lo(%larel(0x000000bc [find_device], 0x000003ac [_PI_56]) = 0xfffffd10) = 0x00000d10(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000003b4):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x000003c8 [main_with_console]) = 0x00000014[ BNEZ ]
+_PI_57:
+@(0x00000000 + 0x000003b8):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d3c [kernel_error_console_not_found]) = 0x00001984) + 1 = 0x00000002[ LW <part A> ]
+@(0x00000000 + 0x000003bc):	LW	x10 [a0],	%lo(%larel(0x00001d3c [kernel_error_console_not_found], 0x000003b8 [_PI_57]) = 0x00001984) = 0x00000984(x10 [a0])[ LW <part B> ]
+@(0x00000000 + 0x000003c0):	ADDI	x31 [t6],	x0 [zero],	0x00000001 [1][ HALT <part A> ]
+@(0x00000000 + 0x000003c4):	CSRRS	x0 [zero],	md,	x31 [t6][ HALT <part B> ]
+main_with_console:
+@(0x00000000 + 0x000003c8):	LW	x5 [t0],	0x00000004 [4](x10 [a0])
+_PI_58:
+@(0x00000000 + 0x000003cc):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d60 [console_base]) = 0x00001994) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x000003d0):	SW	x5 [t0],	%lo(%larel(0x00001d60 [console_base], 0x000003cc [_PI_58]) = 0x00001994) = 0x00000994(x31 [t6])[ SW <part B> ]
+@(0x00000000 + 0x000003d4):	LW	x5 [t0],	0x00000008 [8](x10 [a0])
+_PI_59:
+@(0x00000000 + 0x000003d8):	AUIPC	x31 [t6],	%hi(%pcrel(0x00001d64 [console_limit]) = 0x0000198c) + 1 = 0x00000002[ SW <part A> ]
+@(0x00000000 + 0x000003dc):	SW	x5 [t0],	%lo(%larel(0x00001d64 [console_limit], 0x000003d8 [_PI_59]) = 0x0000198c) = 0x0000098c(x31 [t6])[ SW <part B> ]
+_PI_60:
+@(0x00000000 + 0x000003e0):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001dc4 [banner_msg]) = 0x000019e4) + 1 = 0x00000002[ LA <part A> ]
+@(0x00000000 + 0x000003e4):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001dc4 [banner_msg], 0x000003e0 [_PI_60]) = 0x000019e4) = 0x000009e4[ LA <part B> ]
+_PI_61:
+@(0x00000000 + 0x000003e8):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffffd10) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000003ec):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x000003e8 [_PI_61]) = 0xfffffd10) = 0x00000d10(x6 [t1])[ CALL <part B> ]
+_PI_62:
+@(0x00000000 + 0x000003f0):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001de0 [attribution_msg]) = 0x000019f0) + 1 = 0x00000002[ LA <part A> ]
+@(0x00000000 + 0x000003f4):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001de0 [attribution_msg], 0x000003f0 [_PI_62]) = 0x000019f0) = 0x000009f0[ LA <part B> ]
+_PI_63:
+@(0x00000000 + 0x000003f8):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffffd00) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000003fc):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x000003f8 [_PI_63]) = 0xfffffd00) = 0x00000d00(x6 [t1])[ CALL <part B> ]
+_PI_64:
+@(0x00000000 + 0x00000400):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001e10 [initializing_tt_msg]) = 0x00001a10) + 1 = 0x00000002[ LA <part A> ]
+@(0x00000000 + 0x00000404):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001e10 [initializing_tt_msg], 0x00000400 [_PI_64]) = 0x00001a10) = 0x00000a10[ LA <part B> ]
+_PI_65:
+@(0x00000000 + 0x00000408):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffffcf0) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x0000040c):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00000408 [_PI_65]) = 0xfffffcf0) = 0x00000cf0(x6 [t1])[ CALL <part B> ]
+_PI_66:
+@(0x00000000 + 0x00000410):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001cd8 [trap_table]) = 0x000018c8) + 1 = 0x00000002[ LA <part A> ]
+@(0x00000000 + 0x00000414):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001cd8 [trap_table], 0x00000410 [_PI_66]) = 0x000018c8) = 0x000008c8[ LA <part B> ]
+_PI_67:
+@(0x00000000 + 0x00000418):	AUIPC	x6 [t1],	%hi(%pcrel(0x0000033c [init_trap_table]) = 0xffffff24) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x0000041c):	JALR	x1 [ra],	%lo(%larel(0x0000033c [init_trap_table], 0x00000418 [_PI_67]) = 0xffffff24) = 0x00000f24(x6 [t1])[ CALL <part B> ]
+_PI_68:
+@(0x00000000 + 0x00000420):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001e5c [done_msg]) = 0x00001a3c) + 1 = 0x00000002[ LA <part A> ]
+@(0x00000000 + 0x00000424):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001e5c [done_msg], 0x00000420 [_PI_68]) = 0x00001a3c) = 0x00000a3c[ LA <part B> ]
+_PI_69:
+@(0x00000000 + 0x00000428):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffffcd0) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x0000042c):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00000428 [_PI_69]) = 0xfffffcd0) = 0x00000cd0(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000430):	ADDI	x5 [t0],	x0 [zero],	0x00000004 [0x4][ LI ]
+@(0x00000000 + 0x00000434):	CSRRS	x0 [zero],	md,	x5 [t0][ CSRS ]
+_PI_70:
+@(0x00000000 + 0x00000438):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001ac4 [run_init]) = 0x0000168c) = 0x00000001[ CALL <part A> ]
+@(0x00000000 + 0x0000043c):	JALR	x1 [ra],	%lo(%larel(0x00001ac4 [run_init], 0x00000438 [_PI_70]) = 0x0000168c) = 0x0000068c(x6 [t1])[ CALL <part B> ]
+get_bd_portal:
+@(0x00000000 + 0x00000440):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x00000444):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00000448):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x0000044c):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+bd_driver_Lpcrel_hi0:
+@(0x00000000 + 0x00000450):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d7c [get_bd_portal.bd_portal]) = 0x0000192c) + 1 = 0x00000002
+@(0x00000000 + 0x00000454):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d7c [get_bd_portal.bd_portal], 0x00000450 [bd_driver_Lpcrel_hi0]) = 0x0000192c) = 0x0000092c
+@(0x00000000 + 0x00000458):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x0000045c):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x000004a8 [bd_driver_LBB0_4]) = 0x0000004c[ BNEZ ]
+@(0x00000000 + 0x00000460):	JAL	x0 [zero],	%pcrel(0x00000464 [bd_driver_LBB0_1]) = 0x00000004[ J ]
+bd_driver_LBB0_1:
+bd_driver_Lpcrel_hi1:
+@(0x00000000 + 0x00000464):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d24 [block_device_code]) = 0x000018c0) + 1 = 0x00000002
+@(0x00000000 + 0x00000468):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d24 [block_device_code], 0x00000464 [bd_driver_Lpcrel_hi1]) = 0x000018c0) = 0x000008c0
+@(0x00000000 + 0x0000046c):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000470):	ADDI	x11 [a1],	x0 [zero],	0x00000001 [1][ LI ]
+_PI_71:
+@(0x00000000 + 0x00000474):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000bc [find_device]) = 0xfffffc48) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000478):	JALR	x1 [ra],	%lo(%larel(0x000000bc [find_device], 0x00000474 [_PI_71]) = 0xfffffc48) = 0x00000c48(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x0000047c):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000480):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000484):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x000004a4 [bd_driver_LBB0_3]) = 0x00000020[ BEQZ ]
+@(0x00000000 + 0x00000488):	JAL	x0 [zero],	%pcrel(0x0000048c [bd_driver_LBB0_2]) = 0x00000004[ J ]
+bd_driver_LBB0_2:
+@(0x00000000 + 0x0000048c):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000490):	LW	x10 [a0],	0x00000004 [4](x10 [a0])
+bd_driver_Lpcrel_hi2:
+@(0x00000000 + 0x00000494):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001d7c [get_bd_portal.bd_portal]) = 0x000018e8) + 1 = 0x00000002
+@(0x00000000 + 0x00000498):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001d7c [get_bd_portal.bd_portal], 0x00000494 [bd_driver_Lpcrel_hi2]) = 0x000018e8) = 0x000008e8
+@(0x00000000 + 0x0000049c):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x000004a0):	JAL	x0 [zero],	%pcrel(0x000004a4 [bd_driver_LBB0_3]) = 0x00000004[ J ]
+bd_driver_LBB0_3:
+@(0x00000000 + 0x000004a4):	JAL	x0 [zero],	%pcrel(0x000004a8 [bd_driver_LBB0_4]) = 0x00000004[ J ]
+bd_driver_LBB0_4:
+bd_driver_Lpcrel_hi3:
+@(0x00000000 + 0x000004a8):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d7c [get_bd_portal.bd_portal]) = 0x000018d4) + 1 = 0x00000002
+@(0x00000000 + 0x000004ac):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d7c [get_bd_portal.bd_portal], 0x000004a8 [bd_driver_Lpcrel_hi3]) = 0x000018d4) = 0x000008d4
+@(0x00000000 + 0x000004b0):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000004b4):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x000004b8):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x000004bc):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x000004c0):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+bd_read_block:
+bd_driver_Lfunc_end0:
+@(0x00000000 + 0x000004c4):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x000004c8):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x000004cc):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x000004d0):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x000004d4):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000004d8):	SW	x11 [a1],	0xffffffec [-20](x8 [s0])
+_PI_72:
+@(0x00000000 + 0x000004dc):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000440 [get_bd_portal]) = 0xffffff64) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000004e0):	JALR	x1 [ra],	%lo(%larel(0x00000440 [get_bd_portal], 0x000004dc [_PI_72]) = 0xffffff64) = 0x00000f64(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000004e4):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000004e8):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000004ec):	LW	x12 [a2],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000004f0):	LUI	x11 [a1],	0x00000001 [1]
+@(0x00000000 + 0x000004f4):	ADD	x12 [a2],	x12 [a2],	x11 [a1]
+@(0x00000000 + 0x000004f8):	SW	x10 [a0],	0x00000000 [0](x12 [a2])
+@(0x00000000 + 0x000004fc):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000500):	ADD	x11 [a1],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000504):	ADDI	x10 [a0],	x0 [zero],	0xffffffff [-1][ LI ]
+@(0x00000000 + 0x00000508):	SW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x0000050c):	ADDI	x10 [a0],	x0 [zero],	0x00000001 [1][ LI ]
+@(0x00000000 + 0x00000510):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000530 [bd_driver_LBB1_2]) = 0x00000020[ BNEZ ]
+@(0x00000000 + 0x00000514):	JAL	x0 [zero],	%pcrel(0x00000518 [bd_driver_LBB1_1]) = 0x00000004[ J ]
+bd_driver_LBB1_1:
+@(0x00000000 + 0x00000518):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x0000051c):	LUI	x11 [a1],	0x00000001 [1]
+@(0x00000000 + 0x00000520):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000524):	LW	x10 [a0],	0x00000004 [4](x10 [a0])
+@(0x00000000 + 0x00000528):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000052c):	JAL	x0 [zero],	%pcrel(0x00000568 [bd_driver_LBB1_3]) = 0x0000003c[ J ]
+bd_driver_LBB1_2:
+@(0x00000000 + 0x00000530):	LW	x11 [a1],	0xffffffe8 [-24](x8 [s0])
+bd_driver_Lpcrel_hi4:
+@(0x00000000 + 0x00000534):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d70 [DMA_portal_ptr]) = 0x0000183c) + 1 = 0x00000002
+@(0x00000000 + 0x00000538):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d70 [DMA_portal_ptr], 0x00000534 [bd_driver_Lpcrel_hi4]) = 0x0000183c) = 0x0000083c
+@(0x00000000 + 0x0000053c):	LW	x12 [a2],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000540):	SW	x11 [a1],	0x00000000 [0](x12 [a2])
+@(0x00000000 + 0x00000544):	LW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000548):	LW	x12 [a2],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x0000054c):	SW	x11 [a1],	0x00000004 [4](x12 [a2])
+@(0x00000000 + 0x00000550):	LW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000554):	LUI	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x00000558):	SW	x10 [a0],	0x00000008 [8](x11 [a1])
+@(0x00000000 + 0x0000055c):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000560):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000564):	JAL	x0 [zero],	%pcrel(0x00000568 [bd_driver_LBB1_3]) = 0x00000004[ J ]
+bd_driver_LBB1_3:
+@(0x00000000 + 0x00000568):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000056c):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000570):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000574):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000578):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+bd_write_block:
+bd_driver_Lfunc_end1:
+@(0x00000000 + 0x0000057c):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00000580):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000584):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000588):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x0000058c):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000590):	SW	x11 [a1],	0xffffffec [-20](x8 [s0])
+_PI_73:
+@(0x00000000 + 0x00000594):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000440 [get_bd_portal]) = 0xfffffeac) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000598):	JALR	x1 [ra],	%lo(%larel(0x00000440 [get_bd_portal], 0x00000594 [_PI_73]) = 0xfffffeac) = 0x00000eac(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x0000059c):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000005a0):	LW	x11 [a1],	0xffffffec [-20](x8 [s0])
+bd_driver_Lpcrel_hi5:
+@(0x00000000 + 0x000005a4):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d70 [DMA_portal_ptr]) = 0x000017cc) = 0x00000001
+@(0x00000000 + 0x000005a8):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d70 [DMA_portal_ptr], 0x000005a4 [bd_driver_Lpcrel_hi5]) = 0x000017cc) = 0x000007cc
+@(0x00000000 + 0x000005ac):	LW	x12 [a2],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000005b0):	SW	x11 [a1],	0x00000000 [0](x12 [a2])
+@(0x00000000 + 0x000005b4):	LW	x11 [a1],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000005b8):	LW	x12 [a2],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000005bc):	SW	x11 [a1],	0x00000004 [4](x12 [a2])
+@(0x00000000 + 0x000005c0):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000005c4):	LUI	x11 [a1],	0x00000001 [1]
+@(0x00000000 + 0x000005c8):	SW	x11 [a1],	0x00000008 [8](x10 [a0])
+@(0x00000000 + 0x000005cc):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000005d0):	LW	x12 [a2],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000005d4):	ADD	x12 [a2],	x12 [a2],	x11 [a1]
+@(0x00000000 + 0x000005d8):	SW	x10 [a0],	0x00000000 [0](x12 [a2])
+@(0x00000000 + 0x000005dc):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000005e0):	ADD	x11 [a1],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x000005e4):	ADDI	x10 [a0],	x0 [zero],	0x00000001 [1][ LI ]
+@(0x00000000 + 0x000005e8):	SW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x000005ec):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x0000060c [bd_driver_LBB2_2]) = 0x00000020[ BNEZ ]
+@(0x00000000 + 0x000005f0):	JAL	x0 [zero],	%pcrel(0x000005f4 [bd_driver_LBB2_1]) = 0x00000004[ J ]
+bd_driver_LBB2_1:
+@(0x00000000 + 0x000005f4):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000005f8):	LUI	x11 [a1],	0x00000001 [1]
+@(0x00000000 + 0x000005fc):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000600):	LW	x10 [a0],	0x00000004 [4](x10 [a0])
+@(0x00000000 + 0x00000604):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000608):	JAL	x0 [zero],	%pcrel(0x00000618 [bd_driver_LBB2_3]) = 0x00000010[ J ]
+bd_driver_LBB2_2:
+@(0x00000000 + 0x0000060c):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000610):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000614):	JAL	x0 [zero],	%pcrel(0x00000618 [bd_driver_LBB2_3]) = 0x00000004[ J ]
+bd_driver_LBB2_3:
+@(0x00000000 + 0x00000618):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000061c):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000620):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000624):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000628):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+bd_get_length:
+bd_driver_Lfunc_end2:
+@(0x00000000 + 0x0000062c):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x00000630):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00000634):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00000638):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+_PI_74:
+@(0x00000000 + 0x0000063c):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000440 [get_bd_portal]) = 0xfffffe04) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000640):	JALR	x1 [ra],	%lo(%larel(0x00000440 [get_bd_portal], 0x0000063c [_PI_74]) = 0xfffffe04) = 0x00000e04(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000644):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000648):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000064c):	LUI	x11 [a1],	0x00000001 [1]
+@(0x00000000 + 0x00000650):	ADD	x12 [a2],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000654):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000658):	SW	x10 [a0],	0x00000004 [4](x12 [a2])
+@(0x00000000 + 0x0000065c):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000660):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000664):	LW	x10 [a0],	0x00000004 [4](x10 [a0])
+@(0x00000000 + 0x00000668):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x0000066c):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00000670):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00000674):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+find_entry:
+@(0x00000000 + 0x00000678):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x0000067c):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000680):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000684):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000688):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x0000068c):	SW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000690):	SW	x12 [a2],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000694):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000698):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x0000069c):	JAL	x0 [zero],	%pcrel(0x000006a0 [directory_LBB0_1]) = 0x00000004[ J ]
+directory_LBB0_1:
+@(0x00000000 + 0x000006a0):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x000006a4):	LW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x000006a8):	BGE	x10 [a0],	x11 [a1],	%pcrel(0x00000714 [directory_LBB0_7]) = 0x0000006c
+@(0x00000000 + 0x000006ac):	JAL	x0 [zero],	%pcrel(0x000006b0 [directory_LBB0_2]) = 0x00000004[ J ]
+directory_LBB0_2:
+@(0x00000000 + 0x000006b0):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000006b4):	LW	x11 [a1],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x000006b8):	SLLI	x11 [a1],	x11 [a1],	0x00000006 [6]
+@(0x00000000 + 0x000006bc):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x000006c0):	SW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x000006c4):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x000006c8):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000006cc):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00000700 [directory_LBB0_5]) = 0x00000034[ BEQZ ]
+@(0x00000000 + 0x000006d0):	JAL	x0 [zero],	%pcrel(0x000006d4 [directory_LBB0_3]) = 0x00000004[ J ]
+directory_LBB0_3:
+@(0x00000000 + 0x000006d4):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x000006d8):	ADDI	x10 [a0],	x10 [a0],	0x00000004 [4]
+@(0x00000000 + 0x000006dc):	LW	x11 [a1],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000006e0):	ADDI	x12 [a2],	x0 [zero],	0x0000003c [60][ LI ]
+_PI_75:
+@(0x00000000 + 0x000006e4):	AUIPC	x6 [t1],	%hi(%pcrel(0x000010c0 [string_compare]) = 0x000009dc) + 1 = 0x00000001[ CALL <part A> ]
+@(0x00000000 + 0x000006e8):	JALR	x1 [ra],	%lo(%larel(0x000010c0 [string_compare], 0x000006e4 [_PI_75]) = 0x000009dc) = 0x000009dc(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000006ec):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000700 [directory_LBB0_5]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x000006f0):	JAL	x0 [zero],	%pcrel(0x000006f4 [directory_LBB0_4]) = 0x00000004[ J ]
+directory_LBB0_4:
+@(0x00000000 + 0x000006f4):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x000006f8):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000006fc):	JAL	x0 [zero],	%pcrel(0x00000720 [directory_LBB0_8]) = 0x00000024[ J ]
+directory_LBB0_5:
+@(0x00000000 + 0x00000700):	JAL	x0 [zero],	%pcrel(0x00000704 [directory_LBB0_6]) = 0x00000004[ J ]
+directory_LBB0_6:
+@(0x00000000 + 0x00000704):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000708):	ADDI	x10 [a0],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x0000070c):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000710):	JAL	x0 [zero],	%pcrel(0x000006a0 [directory_LBB0_1]) = 0xffffff90[ J ]
+directory_LBB0_7:
+@(0x00000000 + 0x00000714):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000718):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000071c):	JAL	x0 [zero],	%pcrel(0x00000720 [directory_LBB0_8]) = 0x00000004[ J ]
+directory_LBB0_8:
+@(0x00000000 + 0x00000720):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000724):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000728):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x0000072c):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000730):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+directory_Lfunc_end0:
+search_directory:
+@(0x00000000 + 0x00000734):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00000738):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x0000073c):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000740):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000744):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000748):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x0000074c):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000760 [directory_LBB1_2]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x00000750):	JAL	x0 [zero],	%pcrel(0x00000754 [directory_LBB1_1]) = 0x00000004[ J ]
+directory_LBB1_1:
+@(0x00000000 + 0x00000754):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000758):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000075c):	JAL	x0 [zero],	%pcrel(0x000007d4 [directory_LBB1_6]) = 0x00000078[ J ]
+directory_Lpcrel_hi0:
+directory_LBB1_2:
+@(0x00000000 + 0x00000760):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001da8 [directory_inode]) = 0x00001648) = 0x00000001
+@(0x00000000 + 0x00000764):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001da8 [directory_inode], 0x00000760 [directory_Lpcrel_hi0]) = 0x00001648) = 0x00000648
+@(0x00000000 + 0x00000768):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x0000076c):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000770):	SRLI	x10 [a0],	x10 [a0],	0x00000006 [6]
+@(0x00000000 + 0x00000774):	SW	x10 [a0],	0xffffffec [-20](x8 [s0])
+directory_Lpcrel_hi1:
+@(0x00000000 + 0x00000778):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001dac [directory_entries]) = 0x00001634) = 0x00000001
+@(0x00000000 + 0x0000077c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001dac [directory_entries], 0x00000778 [directory_Lpcrel_hi1]) = 0x00001634) = 0x00000634
+@(0x00000000 + 0x00000780):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000784):	LW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000788):	LW	x12 [a2],	0xfffffff0 [-16](x8 [s0])
+_PI_76:
+@(0x00000000 + 0x0000078c):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000678 [find_entry]) = 0xfffffeec) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000790):	JALR	x1 [ra],	%lo(%larel(0x00000678 [find_entry], 0x0000078c [_PI_76]) = 0xfffffeec) = 0x00000eec(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000794):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000798):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x0000079c):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x000007b0 [directory_LBB1_4]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x000007a0):	JAL	x0 [zero],	%pcrel(0x000007a4 [directory_LBB1_3]) = 0x00000004[ J ]
+directory_LBB1_3:
+@(0x00000000 + 0x000007a4):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x000007a8):	SW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x000007ac):	JAL	x0 [zero],	%pcrel(0x000007c0 [directory_LBB1_5]) = 0x00000014[ J ]
+directory_LBB1_4:
+@(0x00000000 + 0x000007b0):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000007b4):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000007b8):	SW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x000007bc):	JAL	x0 [zero],	%pcrel(0x000007c0 [directory_LBB1_5]) = 0x00000004[ J ]
+directory_LBB1_5:
+@(0x00000000 + 0x000007c0):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x000007c4):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x000007c8):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x000007cc):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000007d0):	JAL	x0 [zero],	%pcrel(0x000007d4 [directory_LBB1_6]) = 0x00000004[ J ]
+directory_LBB1_6:
+@(0x00000000 + 0x000007d4):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000007d8):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x000007dc):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x000007e0):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x000007e4):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+heap_init:
+directory_Lfunc_end1:
+@(0x00000000 + 0x000007e8):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x000007ec):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x000007f0):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x000007f4):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+heap_alloc_Lpcrel_hi0:
+@(0x00000000 + 0x000007f8):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d98 [heap_limit]) = 0x000015a0) = 0x00000001
+@(0x00000000 + 0x000007fc):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d98 [heap_limit], 0x000007f8 [heap_alloc_Lpcrel_hi0]) = 0x000015a0) = 0x000005a0
+@(0x00000000 + 0x00000800):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000804):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00000810 [heap_alloc_LBB0_2]) = 0x0000000c[ BEQZ ]
+@(0x00000000 + 0x00000808):	JAL	x0 [zero],	%pcrel(0x0000080c [heap_alloc_LBB0_1]) = 0x00000004[ J ]
+heap_alloc_LBB0_1:
+@(0x00000000 + 0x0000080c):	JAL	x0 [zero],	%pcrel(0x00000840 [heap_alloc_LBB0_3]) = 0x00000034[ J ]
+heap_alloc_Lpcrel_hi1:
+heap_alloc_LBB0_2:
+@(0x00000000 + 0x00000810):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d98 [heap_limit]) = 0x00001588) = 0x00000001
+@(0x00000000 + 0x00000814):	ADDI	x11 [a1],	x10 [a0],	%lo(%larel(0x00001d98 [heap_limit], 0x00000810 [heap_alloc_Lpcrel_hi1]) = 0x00001588) = 0x00000588
+heap_alloc_Lpcrel_hi2:
+@(0x00000000 + 0x00000818):	AUIPC	x10 [a0],	%hi(%pcrel(0x000020d4 [statics_limit]) = 0x000018bc) + 1 = 0x00000002
+@(0x00000000 + 0x0000081c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x000020d4 [statics_limit], 0x00000818 [heap_alloc_Lpcrel_hi2]) = 0x000018bc) = 0x000008bc
+@(0x00000000 + 0x00000820):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+heap_alloc_Lpcrel_hi3:
+@(0x00000000 + 0x00000824):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d80 [free_head]) = 0x0000155c) = 0x00000001
+@(0x00000000 + 0x00000828):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d80 [free_head], 0x00000824 [heap_alloc_Lpcrel_hi3]) = 0x0000155c) = 0x0000055c
+heap_alloc_Lpcrel_hi4:
+@(0x00000000 + 0x0000082c):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001d8c [free_tail]) = 0x00001560) = 0x00000001
+@(0x00000000 + 0x00000830):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001d8c [free_tail], 0x0000082c [heap_alloc_Lpcrel_hi4]) = 0x00001560) = 0x00000560
+@(0x00000000 + 0x00000834):	SW	x11 [a1],	0x00000004 [4](x10 [a0])
+@(0x00000000 + 0x00000838):	SW	x10 [a0],	0x00000008 [8](x11 [a1])
+@(0x00000000 + 0x0000083c):	JAL	x0 [zero],	%pcrel(0x00000840 [heap_alloc_LBB0_3]) = 0x00000004[ J ]
+heap_alloc_LBB0_3:
+@(0x00000000 + 0x00000840):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00000844):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00000848):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x0000084c):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+heap_alloc_Lfunc_end0:
+allocate:
+@(0x00000000 + 0x00000850):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00000854):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000858):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x0000085c):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000860):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+heap_alloc_Lpcrel_hi5:
+@(0x00000000 + 0x00000864):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001ec4 [heap_alloc_L.str]) = 0x00001660) = 0x00000001
+@(0x00000000 + 0x00000868):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001ec4 [heap_alloc_L.str], 0x00000864 [heap_alloc_Lpcrel_hi5]) = 0x00001660) = 0x00000660
+_PI_77:
+@(0x00000000 + 0x0000086c):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffff88c) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000870):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x0000086c [_PI_77]) = 0xfffff88c) = 0x0000088c(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000874):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+_PI_78:
+@(0x00000000 + 0x00000878):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000ec4 [print_dec]) = 0x0000064c) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x0000087c):	JALR	x1 [ra],	%lo(%larel(0x00000ec4 [print_dec], 0x00000878 [_PI_78]) = 0x0000064c) = 0x0000064c(x6 [t1])[ CALL <part B> ]
+heap_alloc_Lpcrel_hi6:
+@(0x00000000 + 0x00000880):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001ed8 [heap_alloc_L.str.1]) = 0x00001658) = 0x00000001
+@(0x00000000 + 0x00000884):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001ed8 [heap_alloc_L.str.1], 0x00000880 [heap_alloc_Lpcrel_hi6]) = 0x00001658) = 0x00000658
+_PI_79:
+@(0x00000000 + 0x00000888):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffff870) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x0000088c):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00000888 [_PI_79]) = 0xfffff870) = 0x00000870(x6 [t1])[ CALL <part B> ]
+_PI_80:
+@(0x00000000 + 0x00000890):	AUIPC	x6 [t1],	%hi(%pcrel(0x000007e8 [heap_init]) = 0xffffff58) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000894):	JALR	x1 [ra],	%lo(%larel(0x000007e8 [heap_init], 0x00000890 [_PI_80]) = 0xffffff58) = 0x00000f58(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000898):	LBU	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000089c):	ANDI	x10 [a0],	x10 [a0],	0x00000003 [3]
+@(0x00000000 + 0x000008a0):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x000008b4 [heap_alloc_LBB1_2]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x000008a4):	JAL	x0 [zero],	%pcrel(0x000008a8 [heap_alloc_LBB1_1]) = 0x00000004[ J ]
+heap_alloc_LBB1_1:
+@(0x00000000 + 0x000008a8):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000008ac):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x000008b0):	JAL	x0 [zero],	%pcrel(0x000008c8 [heap_alloc_LBB1_3]) = 0x00000018[ J ]
+heap_alloc_LBB1_2:
+@(0x00000000 + 0x000008b4):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000008b8):	ADDI	x10 [a0],	x10 [a0],	0x00000004 [4]
+@(0x00000000 + 0x000008bc):	ANDI	x10 [a0],	x10 [a0],	0xfffffffc [-4]
+@(0x00000000 + 0x000008c0):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x000008c4):	JAL	x0 [zero],	%pcrel(0x000008c8 [heap_alloc_LBB1_3]) = 0x00000004[ J ]
+heap_alloc_LBB1_3:
+@(0x00000000 + 0x000008c8):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x000008cc):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+heap_alloc_Lpcrel_hi7:
+@(0x00000000 + 0x000008d0):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d80 [free_head]) = 0x000014b0) = 0x00000001
+@(0x00000000 + 0x000008d4):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d80 [free_head], 0x000008d0 [heap_alloc_Lpcrel_hi7]) = 0x000014b0) = 0x000004b0
+@(0x00000000 + 0x000008d8):	LW	x10 [a0],	0x00000004 [4](x10 [a0])
+@(0x00000000 + 0x000008dc):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000008e0):	JAL	x0 [zero],	%pcrel(0x000008e4 [heap_alloc_LBB1_4]) = 0x00000004[ J ]
+heap_alloc_LBB1_4:
+@(0x00000000 + 0x000008e4):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+heap_alloc_Lpcrel_hi8:
+@(0x00000000 + 0x000008e8):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001d8c [free_tail]) = 0x000014a4) = 0x00000001
+@(0x00000000 + 0x000008ec):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001d8c [free_tail], 0x000008e8 [heap_alloc_Lpcrel_hi8]) = 0x000014a4) = 0x000004a4
+@(0x00000000 + 0x000008f0):	BEQ	x10 [a0],	x11 [a1],	%pcrel(0x00000958 [heap_alloc_LBB1_9]) = 0x00000068
+@(0x00000000 + 0x000008f4):	JAL	x0 [zero],	%pcrel(0x000008f8 [heap_alloc_LBB1_5]) = 0x00000004[ J ]
+heap_alloc_LBB1_5:
+@(0x00000000 + 0x000008f8):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000008fc):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000900):	LW	x11 [a1],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000904):	BLTU	x10 [a0],	x11 [a1],	%pcrel(0x00000944 [heap_alloc_LBB1_7]) = 0x00000040
+@(0x00000000 + 0x00000908):	JAL	x0 [zero],	%pcrel(0x0000090c [heap_alloc_LBB1_6]) = 0x00000004[ J ]
+heap_alloc_LBB1_6:
+@(0x00000000 + 0x0000090c):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000910):	LW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x00000914):	LW	x11 [a1],	0x00000008 [8](x11 [a1])
+@(0x00000000 + 0x00000918):	SW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x0000091c):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000920):	LW	x10 [a0],	0x00000008 [8](x11 [a1])
+@(0x00000000 + 0x00000924):	LW	x11 [a1],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x00000928):	SW	x10 [a0],	0x00000008 [8](x11 [a1])
+@(0x00000000 + 0x0000092c):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000930):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000934):	SW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x00000938):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x0000093c):	SW	x10 [a0],	0x00000008 [8](x11 [a1])
+@(0x00000000 + 0x00000940):	JAL	x0 [zero],	%pcrel(0x00000958 [heap_alloc_LBB1_9]) = 0x00000018[ J ]
+heap_alloc_LBB1_7:
+@(0x00000000 + 0x00000944):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000948):	LW	x10 [a0],	0x00000004 [4](x10 [a0])
+@(0x00000000 + 0x0000094c):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000950):	JAL	x0 [zero],	%pcrel(0x00000954 [heap_alloc_LBB1_8]) = 0x00000004[ J ]
+heap_alloc_LBB1_8:
+@(0x00000000 + 0x00000954):	JAL	x0 [zero],	%pcrel(0x000008e4 [heap_alloc_LBB1_4]) = 0xffffff90[ J ]
+heap_alloc_LBB1_9:
+@(0x00000000 + 0x00000958):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+heap_alloc_Lpcrel_hi9:
+@(0x00000000 + 0x0000095c):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001d8c [free_tail]) = 0x00001430) = 0x00000001
+@(0x00000000 + 0x00000960):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001d8c [free_tail], 0x0000095c [heap_alloc_Lpcrel_hi9]) = 0x00001430) = 0x00000430
+@(0x00000000 + 0x00000964):	BNE	x10 [a0],	x11 [a1],	%pcrel(0x000009a8 [heap_alloc_LBB1_11]) = 0x00000044
+@(0x00000000 + 0x00000968):	JAL	x0 [zero],	%pcrel(0x0000096c [heap_alloc_LBB1_10]) = 0x00000004[ J ]
+heap_alloc_LBB1_10:
+@(0x00000000 + 0x0000096c):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000970):	ADDI	x10 [a0],	x10 [a0],	0x0000000c [12]
+@(0x00000000 + 0x00000974):	SW	x10 [a0],	0xffffffec [-20](x8 [s0])
+heap_alloc_Lpcrel_hi10:
+@(0x00000000 + 0x00000978):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d98 [heap_limit]) = 0x00001420) = 0x00000001
+@(0x00000000 + 0x0000097c):	ADDI	x11 [a1],	x10 [a0],	%lo(%larel(0x00001d98 [heap_limit], 0x00000978 [heap_alloc_Lpcrel_hi10]) = 0x00001420) = 0x00000420
+@(0x00000000 + 0x00000980):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00000984):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000988):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000098c):	LW	x12 [a2],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000990):	SW	x10 [a0],	0x00000000 [0](x12 [a2])
+@(0x00000000 + 0x00000994):	LW	x12 [a2],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000998):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x0000099c):	ADD	x10 [a0],	x10 [a0],	x12 [a2]
+@(0x00000000 + 0x000009a0):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x000009a4):	JAL	x0 [zero],	%pcrel(0x000009a8 [heap_alloc_LBB1_11]) = 0x00000004[ J ]
+heap_alloc_LBB1_11:
+@(0x00000000 + 0x000009a8):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000009ac):	ADDI	x10 [a0],	x10 [a0],	0x0000000c [12]
+@(0x00000000 + 0x000009b0):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000009b4):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+_PI_81:
+@(0x00000000 + 0x000009b8):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000f08 [print_hex]) = 0x00000550) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000009bc):	JALR	x1 [ra],	%lo(%larel(0x00000f08 [print_hex], 0x000009b8 [_PI_81]) = 0x00000550) = 0x00000550(x6 [t1])[ CALL <part B> ]
+heap_alloc_Lpcrel_hi11:
+@(0x00000000 + 0x000009c0):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001ee0 [heap_alloc_L.str.2]) = 0x00001520) = 0x00000001
+@(0x00000000 + 0x000009c4):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001ee0 [heap_alloc_L.str.2], 0x000009c0 [heap_alloc_Lpcrel_hi11]) = 0x00001520) = 0x00000520
+_PI_82:
+@(0x00000000 + 0x000009c8):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffff730) = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000009cc):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x000009c8 [_PI_82]) = 0xfffff730) = 0x00000730(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000009d0):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000009d4):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x000009d8):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x000009dc):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x000009e0):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+heap_alloc_Lfunc_end1:
+deallocate:
+@(0x00000000 + 0x000009e4):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x000009e8):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x000009ec):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x000009f0):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x000009f4):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000009f8):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000009fc):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000a08 [heap_alloc_LBB2_2]) = 0x0000000c[ BNEZ ]
+@(0x00000000 + 0x00000a00):	JAL	x0 [zero],	%pcrel(0x00000a04 [heap_alloc_LBB2_1]) = 0x00000004[ J ]
+heap_alloc_LBB2_1:
+@(0x00000000 + 0x00000a04):	JAL	x0 [zero],	%pcrel(0x00000a94 [heap_alloc_LBB2_3]) = 0x00000090[ J ]
+heap_alloc_Lpcrel_hi12:
+heap_alloc_LBB2_2:
+@(0x00000000 + 0x00000a08):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001ee4 [heap_alloc_L.str.3]) = 0x000014dc) = 0x00000001
+@(0x00000000 + 0x00000a0c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001ee4 [heap_alloc_L.str.3], 0x00000a08 [heap_alloc_Lpcrel_hi12]) = 0x000014dc) = 0x000004dc
+_PI_83:
+@(0x00000000 + 0x00000a10):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffff6e8) = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00000a14):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00000a10 [_PI_83]) = 0xfffff6e8) = 0x000006e8(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000a18):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+_PI_84:
+@(0x00000000 + 0x00000a1c):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000f08 [print_hex]) = 0x000004ec) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000a20):	JALR	x1 [ra],	%lo(%larel(0x00000f08 [print_hex], 0x00000a1c [_PI_84]) = 0x000004ec) = 0x000004ec(x6 [t1])[ CALL <part B> ]
+heap_alloc_Lpcrel_hi13:
+@(0x00000000 + 0x00000a24):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001efc [heap_alloc_L.str.4]) = 0x000014d8) = 0x00000001
+@(0x00000000 + 0x00000a28):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001efc [heap_alloc_L.str.4], 0x00000a24 [heap_alloc_Lpcrel_hi13]) = 0x000014d8) = 0x000004d8
+_PI_85:
+@(0x00000000 + 0x00000a2c):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffff6cc) = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00000a30):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00000a2c [_PI_85]) = 0xfffff6cc) = 0x000006cc(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000a34):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000a38):	ADDI	x10 [a0],	x10 [a0],	0xfffffff4 [-12]
+@(0x00000000 + 0x00000a3c):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+heap_alloc_Lpcrel_hi14:
+@(0x00000000 + 0x00000a40):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d80 [free_head]) = 0x00001340) = 0x00000001
+@(0x00000000 + 0x00000a44):	ADDI	x11 [a1],	x10 [a0],	%lo(%larel(0x00001d80 [free_head], 0x00000a40 [heap_alloc_Lpcrel_hi14]) = 0x00001340) = 0x00000340
+@(0x00000000 + 0x00000a48):	LW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x00000a4c):	LW	x12 [a2],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000a50):	SW	x10 [a0],	0x00000004 [4](x12 [a2])
+@(0x00000000 + 0x00000a54):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000a58):	SW	x11 [a1],	0x00000008 [8](x10 [a0])
+@(0x00000000 + 0x00000a5c):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000a60):	LW	x12 [a2],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x00000a64):	SW	x10 [a0],	0x00000008 [8](x12 [a2])
+@(0x00000000 + 0x00000a68):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000a6c):	SW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x00000a70):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000a74):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+_PI_86:
+@(0x00000000 + 0x00000a78):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000ec4 [print_dec]) = 0x0000044c) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000a7c):	JALR	x1 [ra],	%lo(%larel(0x00000ec4 [print_dec], 0x00000a78 [_PI_86]) = 0x0000044c) = 0x0000044c(x6 [t1])[ CALL <part B> ]
+heap_alloc_Lpcrel_hi15:
+@(0x00000000 + 0x00000a80):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f08 [heap_alloc_L.str.5]) = 0x00001488) = 0x00000001
+@(0x00000000 + 0x00000a84):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f08 [heap_alloc_L.str.5], 0x00000a80 [heap_alloc_Lpcrel_hi15]) = 0x00001488) = 0x00000488
+_PI_87:
+@(0x00000000 + 0x00000a88):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffff670) = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00000a8c):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00000a88 [_PI_87]) = 0xfffff670) = 0x00000670(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000a90):	JAL	x0 [zero],	%pcrel(0x00000a94 [heap_alloc_LBB2_3]) = 0x00000004[ J ]
+heap_alloc_LBB2_3:
+@(0x00000000 + 0x00000a94):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00000a98):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00000a9c):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00000aa0):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+read_filename_to_buffer:
+@(0x00000000 + 0x00000aa4):	ADDI	x2 [sp],	x2 [sp],	0xffffffd0 [-48]
+@(0x00000000 + 0x00000aa8):	SW	x1 [ra],	0x0000002c [44](x2 [sp])
+@(0x00000000 + 0x00000aac):	SW	x8 [s0],	0x00000028 [40](x2 [sp])
+@(0x00000000 + 0x00000ab0):	ADDI	x8 [s0],	x2 [sp],	0x00000030 [48]
+@(0x00000000 + 0x00000ab4):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000ab8):	SW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000abc):	SW	x12 [a2],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000ac0):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000ac4):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000ad8 [inode_LBB0_2]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x00000ac8):	JAL	x0 [zero],	%pcrel(0x00000acc [inode_LBB0_1]) = 0x00000004[ J ]
+inode_LBB0_1:
+@(0x00000000 + 0x00000acc):	ADDI	x10 [a0],	x0 [zero],	0xfffffffc [-4][ LI ]
+@(0x00000000 + 0x00000ad0):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000ad4):	JAL	x0 [zero],	%pcrel(0x00000bc8 [inode_LBB0_12]) = 0x000000f4[ J ]
+inode_LBB0_2:
+@(0x00000000 + 0x00000ad8):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000adc):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00000b04 [inode_LBB0_4]) = 0x00000028[ BEQZ ]
+@(0x00000000 + 0x00000ae0):	JAL	x0 [zero],	%pcrel(0x00000ae4 [inode_LBB0_3]) = 0x00000004[ J ]
+inode_LBB0_3:
+@(0x00000000 + 0x00000ae4):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000ae8):	ADDI	x11 [a1],	x0 [zero],	0x0000003d [61][ LI ]
+@(0x00000000 + 0x00000aec):	SW	x11 [a1],	0xffffffd8 [-40](x8 [s0])
+_PI_88:
+@(0x00000000 + 0x00000af0):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000f4c [string_length]) = 0x0000045c) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000af4):	JALR	x1 [ra],	%lo(%larel(0x00000f4c [string_length], 0x00000af0 [_PI_88]) = 0x0000045c) = 0x0000045c(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000af8):	LW	x11 [a1],	0xffffffd8 [-40](x8 [s0])
+@(0x00000000 + 0x00000afc):	BLT	x10 [a0],	x11 [a1],	%pcrel(0x00000b10 [inode_LBB0_5]) = 0x00000014
+@(0x00000000 + 0x00000b00):	JAL	x0 [zero],	%pcrel(0x00000b04 [inode_LBB0_4]) = 0x00000004[ J ]
+inode_LBB0_4:
+@(0x00000000 + 0x00000b04):	ADDI	x10 [a0],	x0 [zero],	0xffffffff [-1][ LI ]
+@(0x00000000 + 0x00000b08):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000b0c):	JAL	x0 [zero],	%pcrel(0x00000bc8 [inode_LBB0_12]) = 0x000000bc[ J ]
+inode_LBB0_5:
+@(0x00000000 + 0x00000b10):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+_PI_89:
+@(0x00000000 + 0x00000b14):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000734 [search_directory]) = 0xfffffc20) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000b18):	JALR	x1 [ra],	%lo(%larel(0x00000734 [search_directory], 0x00000b14 [_PI_89]) = 0xfffffc20) = 0x00000c20(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000b1c):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000b20):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000b24):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000b38 [inode_LBB0_7]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x00000b28):	JAL	x0 [zero],	%pcrel(0x00000b2c [inode_LBB0_6]) = 0x00000004[ J ]
+inode_LBB0_6:
+@(0x00000000 + 0x00000b2c):	ADDI	x10 [a0],	x0 [zero],	0xfffffffe [-2][ LI ]
+@(0x00000000 + 0x00000b30):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000b34):	JAL	x0 [zero],	%pcrel(0x00000bc8 [inode_LBB0_12]) = 0x00000094[ J ]
+inode_LBB0_7:
+@(0x00000000 + 0x00000b38):	LUI	x10 [a0],	0x00000001 [1]
+_PI_90:
+@(0x00000000 + 0x00000b3c):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000850 [allocate]) = 0xfffffd14) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000b40):	JALR	x1 [ra],	%lo(%larel(0x00000850 [allocate], 0x00000b3c [_PI_90]) = 0xfffffd14) = 0x00000d14(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000b44):	SW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000b48):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000b4c):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000b60 [inode_LBB0_9]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x00000b50):	JAL	x0 [zero],	%pcrel(0x00000b54 [inode_LBB0_8]) = 0x00000004[ J ]
+inode_LBB0_8:
+@(0x00000000 + 0x00000b54):	ADDI	x10 [a0],	x0 [zero],	0xfffffffb [-5][ LI ]
+@(0x00000000 + 0x00000b58):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000b5c):	JAL	x0 [zero],	%pcrel(0x00000bc8 [inode_LBB0_12]) = 0x0000006c[ J ]
+inode_LBB0_9:
+@(0x00000000 + 0x00000b60):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000b64):	LW	x11 [a1],	0xffffffe0 [-32](x8 [s0])
+_PI_91:
+@(0x00000000 + 0x00000b68):	AUIPC	x6 [t1],	%hi(%pcrel(0x000004c4 [bd_read_block]) = 0xfffff95c) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000b6c):	JALR	x1 [ra],	%lo(%larel(0x000004c4 [bd_read_block], 0x00000b68 [_PI_91]) = 0xfffff95c) = 0x0000095c(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000b70):	BGE	x10 [a0],	x0 [zero],	%pcrel(0x00000b90 [inode_LBB0_11]) = 0x00000020[ BGEZ ]
+@(0x00000000 + 0x00000b74):	JAL	x0 [zero],	%pcrel(0x00000b78 [inode_LBB0_10]) = 0x00000004[ J ]
+inode_LBB0_10:
+@(0x00000000 + 0x00000b78):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+_PI_92:
+@(0x00000000 + 0x00000b7c):	AUIPC	x6 [t1],	%hi(%pcrel(0x000009e4 [deallocate]) = 0xfffffe68) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000b80):	JALR	x1 [ra],	%lo(%larel(0x000009e4 [deallocate], 0x00000b7c [_PI_92]) = 0xfffffe68) = 0x00000e68(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000b84):	ADDI	x10 [a0],	x0 [zero],	0xfffffffb [-5][ LI ]
+@(0x00000000 + 0x00000b88):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000b8c):	JAL	x0 [zero],	%pcrel(0x00000bc8 [inode_LBB0_12]) = 0x0000003c[ J ]
+inode_LBB0_11:
+@(0x00000000 + 0x00000b90):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000b94):	LW	x11 [a1],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000b98):	LW	x12 [a2],	0xffffffe8 [-24](x8 [s0])
+_PI_93:
+@(0x00000000 + 0x00000b9c):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000bdc [read_inode_to_buffer]) = 0x00000040) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000ba0):	JALR	x1 [ra],	%lo(%larel(0x00000bdc [read_inode_to_buffer], 0x00000b9c [_PI_93]) = 0x00000040) = 0x00000040(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000ba4):	SW	x10 [a0],	0xffffffdc [-36](x8 [s0])
+@(0x00000000 + 0x00000ba8):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+_PI_94:
+@(0x00000000 + 0x00000bac):	AUIPC	x6 [t1],	%hi(%pcrel(0x000009e4 [deallocate]) = 0xfffffe38) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000bb0):	JALR	x1 [ra],	%lo(%larel(0x000009e4 [deallocate], 0x00000bac [_PI_94]) = 0xfffffe38) = 0x00000e38(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000bb4):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000bb8):	SW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000bbc):	LW	x10 [a0],	0xffffffdc [-36](x8 [s0])
+@(0x00000000 + 0x00000bc0):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000bc4):	JAL	x0 [zero],	%pcrel(0x00000bc8 [inode_LBB0_12]) = 0x00000004[ J ]
+inode_LBB0_12:
+@(0x00000000 + 0x00000bc8):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000bcc):	LW	x1 [ra],	0x0000002c [44](x2 [sp])
+@(0x00000000 + 0x00000bd0):	LW	x8 [s0],	0x00000028 [40](x2 [sp])
+@(0x00000000 + 0x00000bd4):	ADDI	x2 [sp],	x2 [sp],	0x00000030 [48]
+@(0x00000000 + 0x00000bd8):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+inode_Lfunc_end0:
+read_inode_to_buffer:
+@(0x00000000 + 0x00000bdc):	ADDI	x2 [sp],	x2 [sp],	0xffffffd0 [-48]
+@(0x00000000 + 0x00000be0):	SW	x1 [ra],	0x0000002c [44](x2 [sp])
+@(0x00000000 + 0x00000be4):	SW	x8 [s0],	0x00000028 [40](x2 [sp])
+@(0x00000000 + 0x00000be8):	ADDI	x8 [s0],	x2 [sp],	0x00000030 [48]
+@(0x00000000 + 0x00000bec):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000bf0):	SW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000bf4):	SW	x12 [a2],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000bf8):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000bfc):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000c10 [inode_LBB1_2]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x00000c00):	JAL	x0 [zero],	%pcrel(0x00000c04 [inode_LBB1_1]) = 0x00000004[ J ]
+inode_LBB1_1:
+@(0x00000000 + 0x00000c04):	ADDI	x10 [a0],	x0 [zero],	0xfffffffc [-4][ LI ]
+@(0x00000000 + 0x00000c08):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000c0c):	JAL	x0 [zero],	%pcrel(0x00000d00 [inode_LBB1_13]) = 0x000000f4[ J ]
+inode_LBB1_2:
+@(0x00000000 + 0x00000c10):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000c14):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000c28 [inode_LBB1_4]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x00000c18):	JAL	x0 [zero],	%pcrel(0x00000c1c [inode_LBB1_3]) = 0x00000004[ J ]
+inode_LBB1_3:
+@(0x00000000 + 0x00000c1c):	ADDI	x10 [a0],	x0 [zero],	0xfffffffb [-5][ LI ]
+@(0x00000000 + 0x00000c20):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000c24):	JAL	x0 [zero],	%pcrel(0x00000d00 [inode_LBB1_13]) = 0x000000dc[ J ]
+inode_LBB1_4:
+@(0x00000000 + 0x00000c28):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000c2c):	LW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000c30):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000c34):	BGEU	x10 [a0],	x11 [a1],	%pcrel(0x00000c48 [inode_LBB1_6]) = 0x00000014
+@(0x00000000 + 0x00000c38):	JAL	x0 [zero],	%pcrel(0x00000c3c [inode_LBB1_5]) = 0x00000004[ J ]
+inode_LBB1_5:
+@(0x00000000 + 0x00000c3c):	ADDI	x10 [a0],	x0 [zero],	0xfffffffc [-4][ LI ]
+@(0x00000000 + 0x00000c40):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000c44):	JAL	x0 [zero],	%pcrel(0x00000d00 [inode_LBB1_13]) = 0x000000bc[ J ]
+inode_LBB1_6:
+@(0x00000000 + 0x00000c48):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000c4c):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000c50):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000c54):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000c58):	SW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000c5c):	JAL	x0 [zero],	%pcrel(0x00000c60 [inode_LBB1_7]) = 0x00000004[ J ]
+inode_LBB1_7:
+@(0x00000000 + 0x00000c60):	LW	x11 [a1],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000c64):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000c68):	BGE	x10 [a0],	x11 [a1],	%pcrel(0x00000cf4 [inode_LBB1_12]) = 0x0000008c
+@(0x00000000 + 0x00000c6c):	JAL	x0 [zero],	%pcrel(0x00000c70 [inode_LBB1_8]) = 0x00000004[ J ]
+inode_LBB1_8:
+@(0x00000000 + 0x00000c70):	LW	x11 [a1],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000c74):	LUI	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x00000c78):	ADDI	x10 [a0],	x10 [a0],	0xffffffff [-1]
+@(0x00000000 + 0x00000c7c):	BLT	x10 [a0],	x11 [a1],	%pcrel(0x00000c90 [inode_LBB1_10]) = 0x00000014
+@(0x00000000 + 0x00000c80):	JAL	x0 [zero],	%pcrel(0x00000c84 [inode_LBB1_9]) = 0x00000004[ J ]
+inode_LBB1_9:
+@(0x00000000 + 0x00000c84):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000c88):	SW	x10 [a0],	0xffffffd8 [-40](x8 [s0])
+@(0x00000000 + 0x00000c8c):	JAL	x0 [zero],	%pcrel(0x00000c9c [inode_LBB1_11]) = 0x00000010[ J ]
+inode_LBB1_10:
+@(0x00000000 + 0x00000c90):	LUI	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x00000c94):	SW	x10 [a0],	0xffffffd8 [-40](x8 [s0])
+@(0x00000000 + 0x00000c98):	JAL	x0 [zero],	%pcrel(0x00000c9c [inode_LBB1_11]) = 0x00000004[ J ]
+inode_LBB1_11:
+@(0x00000000 + 0x00000c9c):	LW	x10 [a0],	0xffffffd8 [-40](x8 [s0])
+@(0x00000000 + 0x00000ca0):	SW	x10 [a0],	0xffffffdc [-36](x8 [s0])
+@(0x00000000 + 0x00000ca4):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000ca8):	LW	x11 [a1],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000cac):	SLLI	x11 [a1],	x11 [a1],	0x00000002 [2]
+@(0x00000000 + 0x00000cb0):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000cb4):	LW	x10 [a0],	0x00000020 [32](x10 [a0])
+@(0x00000000 + 0x00000cb8):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+_PI_95:
+@(0x00000000 + 0x00000cbc):	AUIPC	x6 [t1],	%hi(%pcrel(0x000004c4 [bd_read_block]) = 0xfffff808) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000cc0):	JALR	x1 [ra],	%lo(%larel(0x000004c4 [bd_read_block], 0x00000cbc [_PI_95]) = 0xfffff808) = 0x00000808(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000cc4):	LW	x11 [a1],	0xffffffdc [-36](x8 [s0])
+@(0x00000000 + 0x00000cc8):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000ccc):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000cd0):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000cd4):	LW	x11 [a1],	0xffffffdc [-36](x8 [s0])
+@(0x00000000 + 0x00000cd8):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000cdc):	SUB	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000ce0):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000ce4):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000ce8):	ADDI	x10 [a0],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x00000cec):	SW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000cf0):	JAL	x0 [zero],	%pcrel(0x00000c60 [inode_LBB1_7]) = 0xffffff70[ J ]
+inode_LBB1_12:
+@(0x00000000 + 0x00000cf4):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000cf8):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000cfc):	JAL	x0 [zero],	%pcrel(0x00000d00 [inode_LBB1_13]) = 0x00000004[ J ]
+inode_LBB1_13:
+@(0x00000000 + 0x00000d00):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000d04):	LW	x1 [ra],	0x0000002c [44](x2 [sp])
+@(0x00000000 + 0x00000d08):	LW	x8 [s0],	0x00000028 [40](x2 [sp])
+@(0x00000000 + 0x00000d0c):	ADDI	x2 [sp],	x2 [sp],	0x00000030 [48]
+@(0x00000000 + 0x00000d10):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+int_to_hex:
+inode_Lfunc_end1:
+@(0x00000000 + 0x00000d14):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00000d18):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000d1c):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000d20):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000d24):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000d28):	SW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000d2c):	ADDI	x10 [a0],	x0 [zero],	0x0000001c [28][ LI ]
+@(0x00000000 + 0x00000d30):	SW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000d34):	JAL	x0 [zero],	%pcrel(0x00000d38 [utility_LBB0_1]) = 0x00000004[ J ]
+utility_LBB0_1:
+@(0x00000000 + 0x00000d38):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000d3c):	BLT	x10 [a0],	x0 [zero],	%pcrel(0x00000d90 [utility_LBB0_4]) = 0x00000054[ BLTZ ]
+@(0x00000000 + 0x00000d40):	JAL	x0 [zero],	%pcrel(0x00000d44 [utility_LBB0_2]) = 0x00000004[ J ]
+utility_LBB0_2:
+@(0x00000000 + 0x00000d44):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000d48):	LW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000d4c):	SRL	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000d50):	ANDI	x10 [a0],	x10 [a0],	0x0000000f [15]
+@(0x00000000 + 0x00000d54):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000d58):	LW	x11 [a1],	0xffffffe8 [-24](x8 [s0])
+utility_Lpcrel_hi0:
+@(0x00000000 + 0x00000d5c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f0c [int_to_hex.hex_digits]) = 0x000011b0) = 0x00000001
+@(0x00000000 + 0x00000d60):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f0c [int_to_hex.hex_digits], 0x00000d5c [utility_Lpcrel_hi0]) = 0x000011b0) = 0x000001b0
+@(0x00000000 + 0x00000d64):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000d68):	LBU	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000d6c):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000d70):	ADDI	x12 [a2],	x11 [a1],	0x00000001 [1]
+@(0x00000000 + 0x00000d74):	SW	x12 [a2],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000d78):	SB	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00000d7c):	JAL	x0 [zero],	%pcrel(0x00000d80 [utility_LBB0_3]) = 0x00000004[ J ]
+utility_LBB0_3:
+@(0x00000000 + 0x00000d80):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000d84):	ADDI	x10 [a0],	x10 [a0],	0xfffffffc [-4]
+@(0x00000000 + 0x00000d88):	SW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000d8c):	JAL	x0 [zero],	%pcrel(0x00000d38 [utility_LBB0_1]) = 0xffffffac[ J ]
+utility_LBB0_4:
+@(0x00000000 + 0x00000d90):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000d94):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000d98):	SB	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00000d9c):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000da0):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000da4):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000da8):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+utility_Lfunc_end0:
+int_to_dec:
+@(0x00000000 + 0x00000dac):	ADDI	x2 [sp],	x2 [sp],	0xffffffd0 [-48]
+@(0x00000000 + 0x00000db0):	SW	x1 [ra],	0x0000002c [44](x2 [sp])
+@(0x00000000 + 0x00000db4):	SW	x8 [s0],	0x00000028 [40](x2 [sp])
+@(0x00000000 + 0x00000db8):	ADDI	x8 [s0],	x2 [sp],	0x00000030 [48]
+@(0x00000000 + 0x00000dbc):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000dc0):	SW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000dc4):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000dc8):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000dec [utility_LBB1_2]) = 0x00000024[ BNEZ ]
+@(0x00000000 + 0x00000dcc):	JAL	x0 [zero],	%pcrel(0x00000dd0 [utility_LBB1_1]) = 0x00000004[ J ]
+utility_LBB1_1:
+@(0x00000000 + 0x00000dd0):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000dd4):	ADDI	x10 [a0],	x0 [zero],	0x00000030 [48][ LI ]
+@(0x00000000 + 0x00000dd8):	SB	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00000ddc):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000de0):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000de4):	SB	x10 [a0],	0x00000001 [1](x11 [a1])
+@(0x00000000 + 0x00000de8):	JAL	x0 [zero],	%pcrel(0x00000eb4 [utility_LBB1_9]) = 0x000000cc[ J ]
+utility_LBB1_2:
+@(0x00000000 + 0x00000dec):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000df0):	SW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000df4):	JAL	x0 [zero],	%pcrel(0x00000df8 [utility_LBB1_3]) = 0x00000004[ J ]
+utility_LBB1_3:
+@(0x00000000 + 0x00000df8):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000dfc):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00000e5c [utility_LBB1_5]) = 0x00000060[ BEQZ ]
+@(0x00000000 + 0x00000e00):	JAL	x0 [zero],	%pcrel(0x00000e04 [utility_LBB1_4]) = 0x00000004[ J ]
+utility_LBB1_4:
+@(0x00000000 + 0x00000e04):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000e08):	LUI	x11 [a1],	0x000ccccd [838861]
+@(0x00000000 + 0x00000e0c):	ADDI	x11 [a1],	x11 [a1],	0xfffffccd [-819]
+@(0x00000000 + 0x00000e10):	MULHU	x12 [a2],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000e14):	SRLI	x12 [a2],	x12 [a2],	0x00000003 [3]
+@(0x00000000 + 0x00000e18):	ADDI	x13 [a3],	x0 [zero],	0x0000000a [10][ LI ]
+@(0x00000000 + 0x00000e1c):	MUL	x12 [a2],	x12 [a2],	x13 [a3]
+@(0x00000000 + 0x00000e20):	SUB	x10 [a0],	x10 [a0],	x12 [a2]
+@(0x00000000 + 0x00000e24):	SW	x10 [a0],	0xffffffdc [-36](x8 [s0])
+@(0x00000000 + 0x00000e28):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000e2c):	MULHU	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000e30):	SRLI	x10 [a0],	x10 [a0],	0x00000003 [3]
+@(0x00000000 + 0x00000e34):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000e38):	LW	x10 [a0],	0xffffffdc [-36](x8 [s0])
+@(0x00000000 + 0x00000e3c):	ADDI	x10 [a0],	x10 [a0],	0x00000030 [48]
+@(0x00000000 + 0x00000e40):	LW	x12 [a2],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000e44):	ADDI	x11 [a1],	x12 [a2],	0x00000001 [1]
+@(0x00000000 + 0x00000e48):	SW	x11 [a1],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000e4c):	ADDI	x11 [a1],	x8 [s0],	0xffffffe4 [-28]
+@(0x00000000 + 0x00000e50):	ADD	x11 [a1],	x11 [a1],	x12 [a2]
+@(0x00000000 + 0x00000e54):	SB	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00000e58):	JAL	x0 [zero],	%pcrel(0x00000df8 [utility_LBB1_3]) = 0xffffffa0[ J ]
+utility_LBB1_5:
+@(0x00000000 + 0x00000e5c):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000e60):	ADDI	x10 [a0],	x10 [a0],	0xffffffff [-1]
+@(0x00000000 + 0x00000e64):	SW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000e68):	JAL	x0 [zero],	%pcrel(0x00000e6c [utility_LBB1_6]) = 0x00000004[ J ]
+utility_LBB1_6:
+@(0x00000000 + 0x00000e6c):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000e70):	BLT	x10 [a0],	x0 [zero],	%pcrel(0x00000ea4 [utility_LBB1_8]) = 0x00000034[ BLTZ ]
+@(0x00000000 + 0x00000e74):	JAL	x0 [zero],	%pcrel(0x00000e78 [utility_LBB1_7]) = 0x00000004[ J ]
+utility_LBB1_7:
+@(0x00000000 + 0x00000e78):	LW	x11 [a1],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000e7c):	ADDI	x10 [a0],	x11 [a1],	0xffffffff [-1]
+@(0x00000000 + 0x00000e80):	SW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+@(0x00000000 + 0x00000e84):	ADDI	x10 [a0],	x8 [s0],	0xffffffe4 [-28]
+@(0x00000000 + 0x00000e88):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00000e8c):	LBU	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000e90):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000e94):	ADDI	x12 [a2],	x11 [a1],	0x00000001 [1]
+@(0x00000000 + 0x00000e98):	SW	x12 [a2],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000e9c):	SB	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00000ea0):	JAL	x0 [zero],	%pcrel(0x00000e6c [utility_LBB1_6]) = 0xffffffcc[ J ]
+utility_LBB1_8:
+@(0x00000000 + 0x00000ea4):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000ea8):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000eac):	SB	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00000eb0):	JAL	x0 [zero],	%pcrel(0x00000eb4 [utility_LBB1_9]) = 0x00000004[ J ]
+utility_LBB1_9:
+@(0x00000000 + 0x00000eb4):	LW	x1 [ra],	0x0000002c [44](x2 [sp])
+@(0x00000000 + 0x00000eb8):	LW	x8 [s0],	0x00000028 [40](x2 [sp])
+@(0x00000000 + 0x00000ebc):	ADDI	x2 [sp],	x2 [sp],	0x00000030 [48]
+@(0x00000000 + 0x00000ec0):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+utility_Lfunc_end1:
+print_dec:
+@(0x00000000 + 0x00000ec4):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00000ec8):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000ecc):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000ed0):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000ed4):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000ed8):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000edc):	ADDI	x11 [a1],	x8 [s0],	0xffffffe4 [-28]
+@(0x00000000 + 0x00000ee0):	SW	x11 [a1],	0xffffffe0 [-32](x8 [s0])
+_PI_96:
+@(0x00000000 + 0x00000ee4):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000dac [int_to_dec]) = 0xfffffec8) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000ee8):	JALR	x1 [ra],	%lo(%larel(0x00000dac [int_to_dec], 0x00000ee4 [_PI_96]) = 0xfffffec8) = 0x00000ec8(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000eec):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+_PI_97:
+@(0x00000000 + 0x00000ef0):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffff208) = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00000ef4):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00000ef0 [_PI_97]) = 0xfffff208) = 0x00000208(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000ef8):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000efc):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000f00):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000f04):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+utility_Lfunc_end2:
+print_hex:
+@(0x00000000 + 0x00000f08):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00000f0c):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000f10):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000f14):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000f18):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000f1c):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000f20):	ADDI	x11 [a1],	x8 [s0],	0xffffffe4 [-28]
+@(0x00000000 + 0x00000f24):	SW	x11 [a1],	0xffffffe0 [-32](x8 [s0])
+_PI_98:
+@(0x00000000 + 0x00000f28):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000d14 [int_to_hex]) = 0xfffffdec) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00000f2c):	JALR	x1 [ra],	%lo(%larel(0x00000d14 [int_to_hex], 0x00000f28 [_PI_98]) = 0xfffffdec) = 0x00000dec(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000f30):	LW	x10 [a0],	0xffffffe0 [-32](x8 [s0])
+_PI_99:
+@(0x00000000 + 0x00000f34):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xfffff1c4) = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00000f38):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00000f34 [_PI_99]) = 0xfffff1c4) = 0x000001c4(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00000f3c):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000f40):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000f44):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000f48):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+utility_Lfunc_end3:
+string_length:
+@(0x00000000 + 0x00000f4c):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00000f50):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000f54):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000f58):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000f5c):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000f60):	SW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000f64):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000f68):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00000f7c [utility_LBB4_2]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x00000f6c):	JAL	x0 [zero],	%pcrel(0x00000f70 [utility_LBB4_1]) = 0x00000004[ J ]
+utility_LBB4_1:
+@(0x00000000 + 0x00000f70):	ADDI	x10 [a0],	x0 [zero],	0xffffffff [-1][ LI ]
+@(0x00000000 + 0x00000f74):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000f78):	JAL	x0 [zero],	%pcrel(0x00000fe8 [utility_LBB4_8]) = 0x00000070[ J ]
+utility_LBB4_2:
+@(0x00000000 + 0x00000f7c):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000f80):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000f84):	JAL	x0 [zero],	%pcrel(0x00000f88 [utility_LBB4_3]) = 0x00000004[ J ]
+utility_LBB4_3:
+@(0x00000000 + 0x00000f88):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000f8c):	LW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00000f90):	ADDI	x12 [a2],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00000f94):	SW	x12 [a2],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000f98):	BGE	x10 [a0],	x11 [a1],	%pcrel(0x00000fbc [utility_LBB4_5]) = 0x00000024
+@(0x00000000 + 0x00000f9c):	JAL	x0 [zero],	%pcrel(0x00000fa0 [utility_LBB4_4]) = 0x00000004[ J ]
+utility_LBB4_4:
+@(0x00000000 + 0x00000fa0):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000fa4):	ADDI	x11 [a1],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x00000fa8):	SW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00000fac):	LBU	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00000fb0):	SLTU	x10 [a0],	x0 [zero],	x10 [a0][ SNEZ ]
+@(0x00000000 + 0x00000fb4):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000fb8):	JAL	x0 [zero],	%pcrel(0x00000fbc [utility_LBB4_5]) = 0x00000004[ J ]
+utility_LBB4_5:
+@(0x00000000 + 0x00000fbc):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00000fc0):	ANDI	x10 [a0],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x00000fc4):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00000fdc [utility_LBB4_7]) = 0x00000018[ BEQZ ]
+@(0x00000000 + 0x00000fc8):	JAL	x0 [zero],	%pcrel(0x00000fcc [utility_LBB4_6]) = 0x00000004[ J ]
+utility_LBB4_6:
+@(0x00000000 + 0x00000fcc):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000fd0):	ADDI	x10 [a0],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x00000fd4):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000fd8):	JAL	x0 [zero],	%pcrel(0x00000f88 [utility_LBB4_3]) = 0xffffffb0[ J ]
+utility_LBB4_7:
+@(0x00000000 + 0x00000fdc):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00000fe0):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000fe4):	JAL	x0 [zero],	%pcrel(0x00000fe8 [utility_LBB4_8]) = 0x00000004[ J ]
+utility_LBB4_8:
+@(0x00000000 + 0x00000fe8):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00000fec):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00000ff0):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00000ff4):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00000ff8):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+utility_Lfunc_end4:
+string_copy:
+@(0x00000000 + 0x00000ffc):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00001000):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00001004):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00001008):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x0000100c):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001010):	SW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00001014):	SW	x12 [a2],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00001018):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x0000101c):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00001030 [utility_LBB5_2]) = 0x00000014[ BEQZ ]
+@(0x00000000 + 0x00001020):	JAL	x0 [zero],	%pcrel(0x00001024 [utility_LBB5_1]) = 0x00000004[ J ]
+utility_LBB5_1:
+@(0x00000000 + 0x00001024):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00001028):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x0000103c [utility_LBB5_3]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x0000102c):	JAL	x0 [zero],	%pcrel(0x00001030 [utility_LBB5_2]) = 0x00000004[ J ]
+utility_LBB5_2:
+@(0x00000000 + 0x00001030):	ADDI	x10 [a0],	x0 [zero],	0xffffffff [-1][ LI ]
+@(0x00000000 + 0x00001034):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001038):	JAL	x0 [zero],	%pcrel(0x000010ac [utility_LBB5_9]) = 0x00000074[ J ]
+utility_LBB5_3:
+@(0x00000000 + 0x0000103c):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00001040):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00001044):	JAL	x0 [zero],	%pcrel(0x00001048 [utility_LBB5_4]) = 0x00000004[ J ]
+utility_LBB5_4:
+@(0x00000000 + 0x00001048):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x0000104c):	LW	x11 [a1],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00001050):	BGE	x10 [a0],	x11 [a1],	%pcrel(0x000010a0 [utility_LBB5_8]) = 0x00000050
+@(0x00000000 + 0x00001054):	JAL	x0 [zero],	%pcrel(0x00001058 [utility_LBB5_5]) = 0x00000004[ J ]
+utility_LBB5_5:
+@(0x00000000 + 0x00001058):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x0000105c):	ADDI	x11 [a1],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x00001060):	SW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00001064):	LBU	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001068):	SB	x10 [a0],	0xffffffe3 [-29](x8 [s0])
+@(0x00000000 + 0x0000106c):	LBU	x10 [a0],	0xffffffe3 [-29](x8 [s0])
+@(0x00000000 + 0x00001070):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001074):	ADDI	x12 [a2],	x11 [a1],	0x00000001 [1]
+@(0x00000000 + 0x00001078):	SW	x12 [a2],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x0000107c):	SB	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001080):	LBU	x10 [a0],	0xffffffe3 [-29](x8 [s0])
+@(0x00000000 + 0x00001084):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00001090 [utility_LBB5_7]) = 0x0000000c[ BNEZ ]
+@(0x00000000 + 0x00001088):	JAL	x0 [zero],	%pcrel(0x0000108c [utility_LBB5_6]) = 0x00000004[ J ]
+utility_LBB5_6:
+@(0x00000000 + 0x0000108c):	JAL	x0 [zero],	%pcrel(0x000010a0 [utility_LBB5_8]) = 0x00000014[ J ]
+utility_LBB5_7:
+@(0x00000000 + 0x00001090):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00001094):	ADDI	x10 [a0],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x00001098):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x0000109c):	JAL	x0 [zero],	%pcrel(0x00001048 [utility_LBB5_4]) = 0xffffffac[ J ]
+utility_LBB5_8:
+@(0x00000000 + 0x000010a0):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x000010a4):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000010a8):	JAL	x0 [zero],	%pcrel(0x000010ac [utility_LBB5_9]) = 0x00000004[ J ]
+utility_LBB5_9:
+@(0x00000000 + 0x000010ac):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000010b0):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x000010b4):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x000010b8):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x000010bc):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+utility_Lfunc_end5:
+string_compare:
+@(0x00000000 + 0x000010c0):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x000010c4):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x000010c8):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x000010cc):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x000010d0):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000010d4):	SW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x000010d8):	SW	x12 [a2],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000010dc):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000010e0):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00001100 [utility_LBB6_3]) = 0x00000020[ BNEZ ]
+@(0x00000000 + 0x000010e4):	JAL	x0 [zero],	%pcrel(0x000010e8 [utility_LBB6_1]) = 0x00000004[ J ]
+utility_LBB6_1:
+@(0x00000000 + 0x000010e8):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x000010ec):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00001100 [utility_LBB6_3]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x000010f0):	JAL	x0 [zero],	%pcrel(0x000010f4 [utility_LBB6_2]) = 0x00000004[ J ]
+utility_LBB6_2:
+@(0x00000000 + 0x000010f4):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x000010f8):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000010fc):	JAL	x0 [zero],	%pcrel(0x000011f0 [utility_LBB6_19]) = 0x000000f4[ J ]
+utility_LBB6_3:
+@(0x00000000 + 0x00001100):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001104):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00001124 [utility_LBB6_6]) = 0x00000020[ BNEZ ]
+@(0x00000000 + 0x00001108):	JAL	x0 [zero],	%pcrel(0x0000110c [utility_LBB6_4]) = 0x00000004[ J ]
+utility_LBB6_4:
+@(0x00000000 + 0x0000110c):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00001110):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00001124 [utility_LBB6_6]) = 0x00000014[ BEQZ ]
+@(0x00000000 + 0x00001114):	JAL	x0 [zero],	%pcrel(0x00001118 [utility_LBB6_5]) = 0x00000004[ J ]
+utility_LBB6_5:
+@(0x00000000 + 0x00001118):	ADDI	x10 [a0],	x0 [zero],	0xffffffff [-1][ LI ]
+@(0x00000000 + 0x0000111c):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001120):	JAL	x0 [zero],	%pcrel(0x000011f0 [utility_LBB6_19]) = 0x000000d0[ J ]
+utility_LBB6_6:
+@(0x00000000 + 0x00001124):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001128):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00001148 [utility_LBB6_9]) = 0x00000020[ BEQZ ]
+@(0x00000000 + 0x0000112c):	JAL	x0 [zero],	%pcrel(0x00001130 [utility_LBB6_7]) = 0x00000004[ J ]
+utility_LBB6_7:
+@(0x00000000 + 0x00001130):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00001134):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00001148 [utility_LBB6_9]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x00001138):	JAL	x0 [zero],	%pcrel(0x0000113c [utility_LBB6_8]) = 0x00000004[ J ]
+utility_LBB6_8:
+@(0x00000000 + 0x0000113c):	ADDI	x10 [a0],	x0 [zero],	0x00000001 [1][ LI ]
+@(0x00000000 + 0x00001140):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001144):	JAL	x0 [zero],	%pcrel(0x000011f0 [utility_LBB6_19]) = 0x000000ac[ J ]
+utility_LBB6_9:
+@(0x00000000 + 0x00001148):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x0000114c):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00001150):	JAL	x0 [zero],	%pcrel(0x00001154 [utility_LBB6_10]) = 0x00000004[ J ]
+utility_LBB6_10:
+@(0x00000000 + 0x00001154):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00001158):	LW	x11 [a1],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x0000115c):	BGE	x10 [a0],	x11 [a1],	%pcrel(0x000011e4 [utility_LBB6_18]) = 0x00000088
+@(0x00000000 + 0x00001160):	JAL	x0 [zero],	%pcrel(0x00001164 [utility_LBB6_11]) = 0x00000004[ J ]
+utility_LBB6_11:
+@(0x00000000 + 0x00001164):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001168):	LBU	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x0000116c):	LW	x11 [a1],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00001170):	LBU	x11 [a1],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001174):	BGE	x10 [a0],	x11 [a1],	%pcrel(0x00001188 [utility_LBB6_13]) = 0x00000014
+@(0x00000000 + 0x00001178):	JAL	x0 [zero],	%pcrel(0x0000117c [utility_LBB6_12]) = 0x00000004[ J ]
+utility_LBB6_12:
+@(0x00000000 + 0x0000117c):	ADDI	x10 [a0],	x0 [zero],	0xffffffff [-1][ LI ]
+@(0x00000000 + 0x00001180):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001184):	JAL	x0 [zero],	%pcrel(0x000011f0 [utility_LBB6_19]) = 0x0000006c[ J ]
+utility_LBB6_13:
+@(0x00000000 + 0x00001188):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x0000118c):	LBU	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001190):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00001194):	LBU	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001198):	BGE	x10 [a0],	x11 [a1],	%pcrel(0x000011ac [utility_LBB6_15]) = 0x00000014
+@(0x00000000 + 0x0000119c):	JAL	x0 [zero],	%pcrel(0x000011a0 [utility_LBB6_14]) = 0x00000004[ J ]
+utility_LBB6_14:
+@(0x00000000 + 0x000011a0):	ADDI	x10 [a0],	x0 [zero],	0x00000001 [1][ LI ]
+@(0x00000000 + 0x000011a4):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000011a8):	JAL	x0 [zero],	%pcrel(0x000011f0 [utility_LBB6_19]) = 0x00000048[ J ]
+utility_LBB6_15:
+@(0x00000000 + 0x000011ac):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000011b0):	LBU	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000011b4):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x000011c8 [utility_LBB6_17]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x000011b8):	JAL	x0 [zero],	%pcrel(0x000011bc [utility_LBB6_16]) = 0x00000004[ J ]
+utility_LBB6_16:
+@(0x00000000 + 0x000011bc):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x000011c0):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000011c4):	JAL	x0 [zero],	%pcrel(0x000011f0 [utility_LBB6_19]) = 0x0000002c[ J ]
+utility_LBB6_17:
+@(0x00000000 + 0x000011c8):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000011cc):	ADDI	x10 [a0],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x000011d0):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000011d4):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x000011d8):	ADDI	x10 [a0],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x000011dc):	SW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x000011e0):	JAL	x0 [zero],	%pcrel(0x00001154 [utility_LBB6_10]) = 0xffffff74[ J ]
+utility_LBB6_18:
+@(0x00000000 + 0x000011e4):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x000011e8):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000011ec):	JAL	x0 [zero],	%pcrel(0x000011f0 [utility_LBB6_19]) = 0x00000004[ J ]
+utility_LBB6_19:
+@(0x00000000 + 0x000011f0):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000011f4):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x000011f8):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x000011fc):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00001200):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+insert_process:
+@(0x00000000 + 0x00001204):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x00001208):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x0000120c):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001210):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00001214):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+kernel_Lpcrel_hi0:
+@(0x00000000 + 0x00001218):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000b84) + 1 = 0x00000001
+@(0x00000000 + 0x0000121c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x00001218 [kernel_Lpcrel_hi0]) = 0x00000b84) = 0x00000b84
+@(0x00000000 + 0x00001220):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001224):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00001250 [kernel_LBB0_2]) = 0x0000002c[ BNEZ ]
+@(0x00000000 + 0x00001228):	JAL	x0 [zero],	%pcrel(0x0000122c [kernel_LBB0_1]) = 0x00000004[ J ]
+kernel_LBB0_1:
+@(0x00000000 + 0x0000122c):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+kernel_Lpcrel_hi1:
+@(0x00000000 + 0x00001230):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000b6c) + 1 = 0x00000001
+@(0x00000000 + 0x00001234):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001d9c [current_process], 0x00001230 [kernel_Lpcrel_hi1]) = 0x00000b6c) = 0x00000b6c
+@(0x00000000 + 0x00001238):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x0000123c):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001240):	SW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001244):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001248):	SW	x10 [a0],	0x00000004 [4](x10 [a0])
+@(0x00000000 + 0x0000124c):	JAL	x0 [zero],	%pcrel(0x00001290 [kernel_LBB0_3]) = 0x00000044[ J ]
+kernel_LBB0_2:
+kernel_Lpcrel_hi2:
+@(0x00000000 + 0x00001250):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000b4c) + 1 = 0x00000001
+@(0x00000000 + 0x00001254):	ADDI	x11 [a1],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x00001250 [kernel_Lpcrel_hi2]) = 0x00000b4c) = 0x00000b4c
+@(0x00000000 + 0x00001258):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x0000125c):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001260):	LW	x12 [a2],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001264):	SW	x10 [a0],	0x00000000 [0](x12 [a2])
+@(0x00000000 + 0x00001268):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x0000126c):	LW	x12 [a2],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001270):	SW	x10 [a0],	0x00000004 [4](x12 [a2])
+@(0x00000000 + 0x00001274):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001278):	LW	x11 [a1],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x0000127c):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001280):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001284):	LW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001288):	SW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x0000128c):	JAL	x0 [zero],	%pcrel(0x00001290 [kernel_LBB0_3]) = 0x00000004[ J ]
+kernel_LBB0_3:
+@(0x00000000 + 0x00001290):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001294):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001298):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x0000129c):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+kernel_Lfunc_end0:
+remove_process:
+@(0x00000000 + 0x000012a0):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x000012a4):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x000012a8):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x000012ac):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x000012b0):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000012b4):	LW	x11 [a1],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000012b8):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x000012bc):	BNE	x10 [a0],	x11 [a1],	%pcrel(0x000012e8 [kernel_LBB1_2]) = 0x0000002c
+@(0x00000000 + 0x000012c0):	JAL	x0 [zero],	%pcrel(0x000012c4 [kernel_LBB1_1]) = 0x00000004[ J ]
+kernel_LBB1_1:
+kernel_Lpcrel_hi3:
+@(0x00000000 + 0x000012c4):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000ad8) + 1 = 0x00000001
+@(0x00000000 + 0x000012c8):	ADDI	x11 [a1],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x000012c4 [kernel_Lpcrel_hi3]) = 0x00000ad8) = 0x00000ad8
+@(0x00000000 + 0x000012cc):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x000012d0):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x000012d4):	LW	x11 [a1],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000012d8):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x000012dc):	LW	x11 [a1],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000012e0):	SW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x000012e4):	JAL	x0 [zero],	%pcrel(0x00001350 [kernel_LBB1_5]) = 0x0000006c[ J ]
+kernel_LBB1_2:
+@(0x00000000 + 0x000012e8):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+kernel_Lpcrel_hi4:
+@(0x00000000 + 0x000012ec):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000ab0) + 1 = 0x00000001
+@(0x00000000 + 0x000012f0):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001d9c [current_process], 0x000012ec [kernel_Lpcrel_hi4]) = 0x00000ab0) = 0x00000ab0
+@(0x00000000 + 0x000012f4):	LW	x11 [a1],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x000012f8):	BNE	x10 [a0],	x11 [a1],	%pcrel(0x00001318 [kernel_LBB1_4]) = 0x00000020
+@(0x00000000 + 0x000012fc):	JAL	x0 [zero],	%pcrel(0x00001300 [kernel_LBB1_3]) = 0x00000004[ J ]
+kernel_LBB1_3:
+kernel_Lpcrel_hi5:
+@(0x00000000 + 0x00001300):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000a9c) + 1 = 0x00000001
+@(0x00000000 + 0x00001304):	ADDI	x11 [a1],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x00001300 [kernel_Lpcrel_hi5]) = 0x00000a9c) = 0x00000a9c
+@(0x00000000 + 0x00001308):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x0000130c):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001310):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001314):	JAL	x0 [zero],	%pcrel(0x00001318 [kernel_LBB1_4]) = 0x00000004[ J ]
+kernel_LBB1_4:
+@(0x00000000 + 0x00001318):	LW	x11 [a1],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000131c):	LW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x00001320):	LW	x11 [a1],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001324):	SW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x00001328):	LW	x11 [a1],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000132c):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001330):	LW	x11 [a1],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x00001334):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001338):	LW	x11 [a1],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000133c):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00001340):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001344):	LW	x11 [a1],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001348):	SW	x10 [a0],	0x00000004 [4](x11 [a1])
+@(0x00000000 + 0x0000134c):	JAL	x0 [zero],	%pcrel(0x00001350 [kernel_LBB1_5]) = 0x00000004[ J ]
+kernel_LBB1_5:
+@(0x00000000 + 0x00001350):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001354):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001358):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x0000135c):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+kernel_Lfunc_end1:
+cpu_scheduler:
+@(0x00000000 + 0x00001360):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x00001364):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001368):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x0000136c):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+_PI_100:
+@(0x00000000 + 0x00001370):	AUIPC	x6 [t1],	%hi(%pcrel(0x000002a4 [quantum_expired]) = 0xffffef34) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001374):	JALR	x1 [ra],	%lo(%larel(0x000002a4 [quantum_expired], 0x00001370 [_PI_100]) = 0xffffef34) = 0x00000f34(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001378):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x000013a0 [kernel_LBB2_2]) = 0x00000028[ BEQZ ]
+@(0x00000000 + 0x0000137c):	JAL	x0 [zero],	%pcrel(0x00001380 [kernel_LBB2_1]) = 0x00000004[ J ]
+kernel_LBB2_1:
+kernel_Lpcrel_hi6:
+@(0x00000000 + 0x00001380):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000a1c) + 1 = 0x00000001
+@(0x00000000 + 0x00001384):	ADDI	x11 [a1],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x00001380 [kernel_Lpcrel_hi6]) = 0x00000a1c) = 0x00000a1c
+@(0x00000000 + 0x00001388):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x0000138c):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001390):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001394):	ADDI	x10 [a0],	x0 [zero],	0x00000100 [256][ LI ]
+@(0x00000000 + 0x00001398):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000139c):	JAL	x0 [zero],	%pcrel(0x000013ac [kernel_LBB2_3]) = 0x00000010[ J ]
+kernel_LBB2_2:
+@(0x00000000 + 0x000013a0):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x000013a4):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000013a8):	JAL	x0 [zero],	%pcrel(0x000013ac [kernel_LBB2_3]) = 0x00000004[ J ]
+kernel_LBB2_3:
+kernel_Lpcrel_hi7:
+@(0x00000000 + 0x000013ac):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x000009f0) + 1 = 0x00000001
+@(0x00000000 + 0x000013b0):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x000013ac [kernel_Lpcrel_hi7]) = 0x000009f0) = 0x000009f0
+@(0x00000000 + 0x000013b4):	LW	x13 [a3],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000013b8):	LW	x10 [a0],	0x00000010 [16](x13 [a3])
+@(0x00000000 + 0x000013bc):	LW	x11 [a1],	0x00000014 [20](x13 [a3])
+@(0x00000000 + 0x000013c0):	LW	x12 [a2],	0x00000008 [8](x13 [a3])
+@(0x00000000 + 0x000013c4):	LW	x13 [a3],	0x0000000c [12](x13 [a3])
+@(0x00000000 + 0x000013c8):	LW	x14 [a4],	0xfffffff4 [-12](x8 [s0])
+_PI_101:
+@(0x00000000 + 0x000013cc):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000280 [userspace_jump]) = 0xffffeeb4) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000013d0):	JALR	x1 [ra],	%lo(%larel(0x00000280 [userspace_jump], 0x000013cc [_PI_101]) = 0xffffeeb4) = 0x00000eb4(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000013d4):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x000013d8):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x000013dc):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x000013e0):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+kernel_Lfunc_end2:
+do_noop:
+@(0x00000000 + 0x000013e4):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x000013e8):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x000013ec):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x000013f0):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+kernel_Lpcrel_hi8:
+@(0x00000000 + 0x000013f4):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f20 [kernel_L.str]) = 0x00000b2c) + 1 = 0x00000001
+@(0x00000000 + 0x000013f8):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f20 [kernel_L.str], 0x000013f4 [kernel_Lpcrel_hi8]) = 0x00000b2c) = 0x00000b2c
+_PI_102:
+@(0x00000000 + 0x000013fc):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffecfc) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001400):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x000013fc [_PI_102]) = 0xffffecfc) = 0x00000cfc(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi9:
+@(0x00000000 + 0x00001404):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f2c [kernel_L.str.1]) = 0x00000b28) + 1 = 0x00000001
+@(0x00000000 + 0x00001408):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f2c [kernel_L.str.1], 0x00001404 [kernel_Lpcrel_hi9]) = 0x00000b28) = 0x00000b28
+_PI_103:
+@(0x00000000 + 0x0000140c):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffecec) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001410):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x0000140c [_PI_103]) = 0xffffecec) = 0x00000cec(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi10:
+@(0x00000000 + 0x00001414):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f3c [kernel_L.str.2]) = 0x00000b28) + 1 = 0x00000001
+@(0x00000000 + 0x00001418):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f3c [kernel_L.str.2], 0x00001414 [kernel_Lpcrel_hi10]) = 0x00000b28) = 0x00000b28
+_PI_104:
+@(0x00000000 + 0x0000141c):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffecdc) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001420):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x0000141c [_PI_104]) = 0xffffecdc) = 0x00000cdc(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi11:
+@(0x00000000 + 0x00001424):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000978) + 1 = 0x00000001
+@(0x00000000 + 0x00001428):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x00001424 [kernel_Lpcrel_hi11]) = 0x00000978) = 0x00000978
+@(0x00000000 + 0x0000142c):	LW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001430):	LW	x10 [a0],	0x00000010 [16](x11 [a1])
+@(0x00000000 + 0x00001434):	ADDI	x10 [a0],	x10 [a0],	0x00000004 [4]
+@(0x00000000 + 0x00001438):	SW	x10 [a0],	0x00000010 [16](x11 [a1])
+@(0x00000000 + 0x0000143c):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001440):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001444):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00001448):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+do_exit:
+kernel_Lfunc_end3:
+@(0x00000000 + 0x0000144c):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00001450):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00001454):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00001458):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x0000145c):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+kernel_Lpcrel_hi12:
+@(0x00000000 + 0x00001460):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f40 [kernel_L.str.3]) = 0x00000ae0) + 1 = 0x00000001
+@(0x00000000 + 0x00001464):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f40 [kernel_L.str.3], 0x00001460 [kernel_Lpcrel_hi12]) = 0x00000ae0) = 0x00000ae0
+_PI_105:
+@(0x00000000 + 0x00001468):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffec90) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x0000146c):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00001468 [_PI_105]) = 0xffffec90) = 0x00000c90(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi13:
+@(0x00000000 + 0x00001470):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x0000092c) + 1 = 0x00000001
+@(0x00000000 + 0x00001474):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x00001470 [kernel_Lpcrel_hi13]) = 0x0000092c) = 0x0000092c
+@(0x00000000 + 0x00001478):	SW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x0000147c):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001480):	LW	x10 [a0],	0x00000018 [24](x10 [a0])
+_PI_106:
+@(0x00000000 + 0x00001484):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000ec4 [print_dec]) = 0xfffffa40) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00001488):	JALR	x1 [ra],	%lo(%larel(0x00000ec4 [print_dec], 0x00001484 [_PI_106]) = 0xfffffa40) = 0x00000a40(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi14:
+@(0x00000000 + 0x0000148c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f54 [kernel_L.str.4]) = 0x00000ac8) + 1 = 0x00000001
+@(0x00000000 + 0x00001490):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f54 [kernel_L.str.4], 0x0000148c [kernel_Lpcrel_hi14]) = 0x00000ac8) = 0x00000ac8
+_PI_107:
+@(0x00000000 + 0x00001494):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffec64) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001498):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00001494 [_PI_107]) = 0xffffec64) = 0x00000c64(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x0000149c):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+_PI_108:
+@(0x00000000 + 0x000014a0):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000ec4 [print_dec]) = 0xfffffa24) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000014a4):	JALR	x1 [ra],	%lo(%larel(0x00000ec4 [print_dec], 0x000014a0 [_PI_108]) = 0xfffffa24) = 0x00000a24(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi15:
+@(0x00000000 + 0x000014a8):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f3c [kernel_L.str.2]) = 0x00000a94) + 1 = 0x00000001
+@(0x00000000 + 0x000014ac):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f3c [kernel_L.str.2], 0x000014a8 [kernel_Lpcrel_hi15]) = 0x00000a94) = 0x00000a94
+_PI_109:
+@(0x00000000 + 0x000014b0):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffec48) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000014b4):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x000014b0 [_PI_109]) = 0xffffec48) = 0x00000c48(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000014b8):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x000014bc):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000014c0):	LW	x10 [a0],	0x00000008 [8](x10 [a0])
+_PI_110:
+@(0x00000000 + 0x000014c4):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001c78 [mm_deallocate]) = 0x000007b4) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000014c8):	JALR	x1 [ra],	%lo(%larel(0x00001c78 [mm_deallocate], 0x000014c4 [_PI_110]) = 0x000007b4) = 0x000007b4(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000014cc):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x000014d0):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000014d4):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000014d8):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+_PI_111:
+@(0x00000000 + 0x000014dc):	AUIPC	x6 [t1],	%hi(%pcrel(0x000012a0 [remove_process]) = 0xfffffdc4) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000014e0):	JALR	x1 [ra],	%lo(%larel(0x000012a0 [remove_process], 0x000014dc [_PI_111]) = 0xfffffdc4) = 0x00000dc4(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000014e4):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+_PI_112:
+@(0x00000000 + 0x000014e8):	AUIPC	x6 [t1],	%hi(%pcrel(0x000009e4 [deallocate]) = 0xfffff4fc) = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000014ec):	JALR	x1 [ra],	%lo(%larel(0x000009e4 [deallocate], 0x000014e8 [_PI_112]) = 0xfffff4fc) = 0x000004fc(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000014f0):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x000014f4):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x000014f8):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x000014fc):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+do_run:
+kernel_Lfunc_end4:
+@(0x00000000 + 0x00001500):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00001504):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00001508):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x0000150c):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00001510):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+kernel_Lpcrel_hi16:
+@(0x00000000 + 0x00001514):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f64 [kernel_L.str.5]) = 0x00000a50) + 1 = 0x00000001
+@(0x00000000 + 0x00001518):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f64 [kernel_L.str.5], 0x00001514 [kernel_Lpcrel_hi16]) = 0x00000a50) = 0x00000a50
+_PI_113:
+@(0x00000000 + 0x0000151c):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffebdc) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001520):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x0000151c [_PI_113]) = 0xffffebdc) = 0x00000bdc(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001524):	EBREAK
+@(0x00000000 + 0x00001528):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+_PI_114:
+@(0x00000000 + 0x0000152c):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffebcc) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001530):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x0000152c [_PI_114]) = 0xffffebcc) = 0x00000bcc(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi17:
+@(0x00000000 + 0x00001534):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f3c [kernel_L.str.2]) = 0x00000a08) + 1 = 0x00000001
+@(0x00000000 + 0x00001538):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f3c [kernel_L.str.2], 0x00001534 [kernel_Lpcrel_hi17]) = 0x00000a08) = 0x00000a08
+_PI_115:
+@(0x00000000 + 0x0000153c):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffebbc) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001540):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x0000153c [_PI_115]) = 0xffffebbc) = 0x00000bbc(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi18:
+@(0x00000000 + 0x00001544):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000858) + 1 = 0x00000001
+@(0x00000000 + 0x00001548):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x00001544 [kernel_Lpcrel_hi18]) = 0x00000858) = 0x00000858
+@(0x00000000 + 0x0000154c):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001550):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00001574 [kernel_LBB5_2]) = 0x00000024[ BEQZ ]
+@(0x00000000 + 0x00001554):	JAL	x0 [zero],	%pcrel(0x00001558 [kernel_LBB5_1]) = 0x00000004[ J ]
+kernel_Lpcrel_hi19:
+kernel_LBB5_1:
+@(0x00000000 + 0x00001558):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000844) + 1 = 0x00000001
+@(0x00000000 + 0x0000155c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x00001558 [kernel_Lpcrel_hi19]) = 0x00000844) = 0x00000844
+@(0x00000000 + 0x00001560):	LW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001564):	LW	x10 [a0],	0x00000010 [16](x11 [a1])
+@(0x00000000 + 0x00001568):	ADDI	x10 [a0],	x10 [a0],	0x00000004 [4]
+@(0x00000000 + 0x0000156c):	SW	x10 [a0],	0x00000010 [16](x11 [a1])
+@(0x00000000 + 0x00001570):	JAL	x0 [zero],	%pcrel(0x00001574 [kernel_LBB5_2]) = 0x00000004[ J ]
+_PI_116:
+kernel_LBB5_2:
+@(0x00000000 + 0x00001574):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001bf8 [mm_allocate]) = 0x00000684) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00001578):	JALR	x1 [ra],	%lo(%larel(0x00001bf8 [mm_allocate], 0x00001574 [_PI_116]) = 0x00000684) = 0x00000684(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x0000157c):	SW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00001580):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x00001584):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00001598 [kernel_LBB5_4]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x00001588):	JAL	x0 [zero],	%pcrel(0x0000158c [kernel_LBB5_3]) = 0x00000004[ J ]
+kernel_LBB5_3:
+@(0x00000000 + 0x0000158c):	ADDI	x10 [a0],	x0 [zero],	0xfffffffd [-3][ LI ]
+@(0x00000000 + 0x00001590):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001594):	JAL	x0 [zero],	%pcrel(0x0000168c [kernel_LBB5_11]) = 0x000000f8[ J ]
+kernel_LBB5_4:
+@(0x00000000 + 0x00001598):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+@(0x00000000 + 0x0000159c):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000015a0):	LUI	x12 [a2],	0x00000010 [16]
+_PI_117:
+@(0x00000000 + 0x000015a4):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000aa4 [read_filename_to_buffer]) = 0xfffff500) = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000015a8):	JALR	x1 [ra],	%lo(%larel(0x00000aa4 [read_filename_to_buffer], 0x000015a4 [_PI_117]) = 0xfffff500) = 0x00000500(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000015ac):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000015b0):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000015b4):	BGE	x10 [a0],	x0 [zero],	%pcrel(0x000015f0 [kernel_LBB5_8]) = 0x0000003c[ BGEZ ]
+@(0x00000000 + 0x000015b8):	JAL	x0 [zero],	%pcrel(0x000015bc [kernel_LBB5_5]) = 0x00000004[ J ]
+kernel_LBB5_5:
+@(0x00000000 + 0x000015bc):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+_PI_118:
+@(0x00000000 + 0x000015c0):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001c78 [mm_deallocate]) = 0x000006b8) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000015c4):	JALR	x1 [ra],	%lo(%larel(0x00001c78 [mm_deallocate], 0x000015c0 [_PI_118]) = 0x000006b8) = 0x000006b8(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000015c8):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000015cc):	ADDI	x11 [a1],	x0 [zero],	0xfffffffe [-2][ LI ]
+@(0x00000000 + 0x000015d0):	BNE	x10 [a0],	x11 [a1],	%pcrel(0x000015e4 [kernel_LBB5_7]) = 0x00000014
+@(0x00000000 + 0x000015d4):	JAL	x0 [zero],	%pcrel(0x000015d8 [kernel_LBB5_6]) = 0x00000004[ J ]
+kernel_LBB5_6:
+@(0x00000000 + 0x000015d8):	ADDI	x10 [a0],	x0 [zero],	0xffffffff [-1][ LI ]
+@(0x00000000 + 0x000015dc):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000015e0):	JAL	x0 [zero],	%pcrel(0x0000168c [kernel_LBB5_11]) = 0x000000ac[ J ]
+kernel_LBB5_7:
+@(0x00000000 + 0x000015e4):	ADDI	x10 [a0],	x0 [zero],	0xfffffffc [-4][ LI ]
+@(0x00000000 + 0x000015e8):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000015ec):	JAL	x0 [zero],	%pcrel(0x0000168c [kernel_LBB5_11]) = 0x000000a0[ J ]
+kernel_LBB5_8:
+@(0x00000000 + 0x000015f0):	ADDI	x10 [a0],	x0 [zero],	0x00000058 [88][ LI ]
+_PI_119:
+@(0x00000000 + 0x000015f4):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000850 [allocate]) = 0xfffff25c) = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000015f8):	JALR	x1 [ra],	%lo(%larel(0x00000850 [allocate], 0x000015f4 [_PI_119]) = 0xfffff25c) = 0x0000025c(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000015fc):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00001600):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00001604):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00001624 [kernel_LBB5_10]) = 0x00000020[ BNEZ ]
+@(0x00000000 + 0x00001608):	JAL	x0 [zero],	%pcrel(0x0000160c [kernel_LBB5_9]) = 0x00000004[ J ]
+kernel_LBB5_9:
+@(0x00000000 + 0x0000160c):	LW	x10 [a0],	0xffffffec [-20](x8 [s0])
+_PI_120:
+@(0x00000000 + 0x00001610):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001c78 [mm_deallocate]) = 0x00000668) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00001614):	JALR	x1 [ra],	%lo(%larel(0x00001c78 [mm_deallocate], 0x00001610 [_PI_120]) = 0x00000668) = 0x00000668(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001618):	ADDI	x10 [a0],	x0 [zero],	0xfffffffe [-2][ LI ]
+@(0x00000000 + 0x0000161c):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001620):	JAL	x0 [zero],	%pcrel(0x0000168c [kernel_LBB5_11]) = 0x0000006c[ J ]
+kernel_LBB5_10:
+@(0x00000000 + 0x00001624):	LW	x11 [a1],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00001628):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x0000162c):	SW	x10 [a0],	0x00000010 [16](x11 [a1])
+@(0x00000000 + 0x00001630):	LW	x11 [a1],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00001634):	LUI	x10 [a0],	0x00000010 [16]
+@(0x00000000 + 0x00001638):	SW	x10 [a0],	0x00000014 [20](x11 [a1])
+kernel_Lpcrel_hi20:
+@(0x00000000 + 0x0000163c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001da0 [next_process_ID]) = 0x00000764) = 0x00000000
+@(0x00000000 + 0x00001640):	ADDI	x12 [a2],	x10 [a0],	%lo(%larel(0x00001da0 [next_process_ID], 0x0000163c [kernel_Lpcrel_hi20]) = 0x00000764) = 0x00000764
+@(0x00000000 + 0x00001644):	LW	x10 [a0],	0x00000000 [0](x12 [a2])
+@(0x00000000 + 0x00001648):	ADDI	x11 [a1],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x0000164c):	SW	x11 [a1],	0x00000000 [0](x12 [a2])
+@(0x00000000 + 0x00001650):	LW	x11 [a1],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00001654):	SW	x10 [a0],	0x00000018 [24](x11 [a1])
+@(0x00000000 + 0x00001658):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x0000165c):	ADDI	x10 [a0],	x10 [a0],	0x0000001c [28]
+@(0x00000000 + 0x00001660):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001664):	ADDI	x12 [a2],	x0 [zero],	0x0000003c [60][ LI ]
+_PI_121:
+@(0x00000000 + 0x00001668):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000ffc [string_copy]) = 0xfffff994) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x0000166c):	JALR	x1 [ra],	%lo(%larel(0x00000ffc [string_copy], 0x00001668 [_PI_121]) = 0xfffff994) = 0x00000994(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001670):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+_PI_122:
+@(0x00000000 + 0x00001674):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001204 [insert_process]) = 0xfffffb90) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00001678):	JALR	x1 [ra],	%lo(%larel(0x00001204 [insert_process], 0x00001674 [_PI_122]) = 0xfffffb90) = 0x00000b90(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x0000167c):	LW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x00001680):	LW	x10 [a0],	0x00000018 [24](x10 [a0])
+@(0x00000000 + 0x00001684):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001688):	JAL	x0 [zero],	%pcrel(0x0000168c [kernel_LBB5_11]) = 0x00000004[ J ]
+kernel_LBB5_11:
+@(0x00000000 + 0x0000168c):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001690):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x00001694):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00001698):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x0000169c):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+kernel_Lfunc_end5:
+do_print:
+@(0x00000000 + 0x000016a0):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x000016a4):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x000016a8):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x000016ac):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x000016b0):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000016b4):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+kernel_Lpcrel_hi21:
+@(0x00000000 + 0x000016b8):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001d9c [current_process]) = 0x000006e4) = 0x00000000
+@(0x00000000 + 0x000016bc):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001d9c [current_process], 0x000016b8 [kernel_Lpcrel_hi21]) = 0x000006e4) = 0x000006e4
+@(0x00000000 + 0x000016c0):	LW	x12 [a2],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x000016c4):	LW	x12 [a2],	0x00000008 [8](x12 [a2])
+@(0x00000000 + 0x000016c8):	ADD	x10 [a0],	x10 [a0],	x12 [a2]
+@(0x00000000 + 0x000016cc):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000016d0):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x000016d4):	LW	x11 [a1],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x000016d8):	LW	x11 [a1],	0x0000000c [12](x11 [a1])
+@(0x00000000 + 0x000016dc):	BLTU	x10 [a0],	x11 [a1],	%pcrel(0x000016f0 [kernel_LBB6_2]) = 0x00000014
+@(0x00000000 + 0x000016e0):	JAL	x0 [zero],	%pcrel(0x000016e4 [kernel_LBB6_1]) = 0x00000004[ J ]
+kernel_LBB6_1:
+@(0x00000000 + 0x000016e4):	ADDI	x10 [a0],	x0 [zero],	0xffffffff [-1][ LI ]
+@(0x00000000 + 0x000016e8):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000016ec):	JAL	x0 [zero],	%pcrel(0x00001720 [kernel_LBB6_3]) = 0x00000034[ J ]
+kernel_LBB6_2:
+@(0x00000000 + 0x000016f0):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+_PI_123:
+@(0x00000000 + 0x000016f4):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffea04) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000016f8):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x000016f4 [_PI_123]) = 0xffffea04) = 0x00000a04(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi22:
+@(0x00000000 + 0x000016fc):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x000006a0) = 0x00000000
+@(0x00000000 + 0x00001700):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x000016fc [kernel_Lpcrel_hi22]) = 0x000006a0) = 0x000006a0
+@(0x00000000 + 0x00001704):	LW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001708):	LW	x10 [a0],	0x00000010 [16](x11 [a1])
+@(0x00000000 + 0x0000170c):	ADDI	x10 [a0],	x10 [a0],	0x00000004 [4]
+@(0x00000000 + 0x00001710):	SW	x10 [a0],	0x00000010 [16](x11 [a1])
+@(0x00000000 + 0x00001714):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00001718):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000171c):	JAL	x0 [zero],	%pcrel(0x00001720 [kernel_LBB6_3]) = 0x00000004[ J ]
+kernel_LBB6_3:
+@(0x00000000 + 0x00001720):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001724):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001728):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x0000172c):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00001730):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+kernel_Lfunc_end6:
+do_syscall:
+@(0x00000000 + 0x00001734):	ADDI	x2 [sp],	x2 [sp],	0xffffffe0 [-32]
+@(0x00000000 + 0x00001738):	SW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x0000173c):	SW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x00001740):	ADDI	x8 [s0],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x00001744):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001748):	SW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+kernel_Lpcrel_hi23:
+@(0x00000000 + 0x0000174c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d74 [preserved_epc]) = 0x00000628) = 0x00000000
+@(0x00000000 + 0x00001750):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d74 [preserved_epc], 0x0000174c [kernel_Lpcrel_hi23]) = 0x00000628) = 0x00000628
+@(0x00000000 + 0x00001754):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+kernel_Lpcrel_hi24:
+@(0x00000000 + 0x00001758):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001d9c [current_process]) = 0x00000644) = 0x00000000
+@(0x00000000 + 0x0000175c):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001d9c [current_process], 0x00001758 [kernel_Lpcrel_hi24]) = 0x00000644) = 0x00000644
+@(0x00000000 + 0x00001760):	LW	x12 [a2],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001764):	SW	x10 [a0],	0x00000010 [16](x12 [a2])
+kernel_Lpcrel_hi25:
+@(0x00000000 + 0x00001768):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d78 [preserved_sp]) = 0x00000610) = 0x00000000
+@(0x00000000 + 0x0000176c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d78 [preserved_sp], 0x00001768 [kernel_Lpcrel_hi25]) = 0x00000610) = 0x00000610
+@(0x00000000 + 0x00001770):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001774):	LW	x11 [a1],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001778):	SW	x10 [a0],	0x00000014 [20](x11 [a1])
+@(0x00000000 + 0x0000177c):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00001780):	SB	x10 [a0],	0xffffffef [-17](x8 [s0])
+@(0x00000000 + 0x00001784):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00001788):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000178c):	LUI	x11 [a1],	0x000ca110 [827664]
+@(0x00000000 + 0x00001790):	BNE	x10 [a0],	x11 [a1],	%pcrel(0x000017a4 [kernel_LBB7_2]) = 0x00000014
+@(0x00000000 + 0x00001794):	JAL	x0 [zero],	%pcrel(0x00001798 [kernel_LBB7_1]) = 0x00000004[ J ]
+_PI_124:
+kernel_LBB7_1:
+@(0x00000000 + 0x00001798):	AUIPC	x6 [t1],	%hi(%pcrel(0x000013e4 [do_noop]) = 0xfffffc4c) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x0000179c):	JALR	x1 [ra],	%lo(%larel(0x000013e4 [do_noop], 0x00001798 [_PI_124]) = 0xfffffc4c) = 0x00000c4c(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000017a0):	JAL	x0 [zero],	%pcrel(0x00001870 [kernel_LBB7_14]) = 0x000000d0[ J ]
+kernel_LBB7_2:
+@(0x00000000 + 0x000017a4):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000017a8):	LUI	x11 [a1],	0x000ca110 [827664]
+@(0x00000000 + 0x000017ac):	ADDI	x11 [a1],	x11 [a1],	0x00000001 [1]
+@(0x00000000 + 0x000017b0):	BNE	x10 [a0],	x11 [a1],	%pcrel(0x000017f8 [kernel_LBB7_6]) = 0x00000048
+@(0x00000000 + 0x000017b4):	JAL	x0 [zero],	%pcrel(0x000017b8 [kernel_LBB7_3]) = 0x00000004[ J ]
+kernel_LBB7_3:
+@(0x00000000 + 0x000017b8):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+_PI_125:
+@(0x00000000 + 0x000017bc):	AUIPC	x6 [t1],	%hi(%pcrel(0x0000144c [do_exit]) = 0xfffffc90) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000017c0):	JALR	x1 [ra],	%lo(%larel(0x0000144c [do_exit], 0x000017bc [_PI_125]) = 0xfffffc90) = 0x00000c90(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi26:
+@(0x00000000 + 0x000017c4):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x000005d8) = 0x00000000
+@(0x00000000 + 0x000017c8):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x000017c4 [kernel_Lpcrel_hi26]) = 0x000005d8) = 0x000005d8
+@(0x00000000 + 0x000017cc):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000017d0):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x000017f4 [kernel_LBB7_5]) = 0x00000024[ BNEZ ]
+@(0x00000000 + 0x000017d4):	JAL	x0 [zero],	%pcrel(0x000017d8 [kernel_LBB7_4]) = 0x00000004[ J ]
+kernel_Lpcrel_hi27:
+kernel_LBB7_4:
+@(0x00000000 + 0x000017d8):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f74 [kernel_L.str.6]) = 0x0000079c) = 0x00000000
+@(0x00000000 + 0x000017dc):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f74 [kernel_L.str.6], 0x000017d8 [kernel_Lpcrel_hi27]) = 0x0000079c) = 0x0000079c
+_PI_126:
+@(0x00000000 + 0x000017e0):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffe918) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000017e4):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x000017e0 [_PI_126]) = 0xffffe918) = 0x00000918(x6 [t1])[ CALL <part B> ]
+_PI_127:
+@(0x00000000 + 0x000017e8):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000268 [halt_kernel]) = 0xffffea80) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000017ec):	JALR	x1 [ra],	%lo(%larel(0x00000268 [halt_kernel], 0x000017e8 [_PI_127]) = 0xffffea80) = 0x00000a80(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000017f0):	JAL	x0 [zero],	%pcrel(0x000017f4 [kernel_LBB7_5]) = 0x00000004[ J ]
+kernel_LBB7_5:
+@(0x00000000 + 0x000017f4):	JAL	x0 [zero],	%pcrel(0x0000186c [kernel_LBB7_13]) = 0x00000078[ J ]
+kernel_LBB7_6:
+@(0x00000000 + 0x000017f8):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000017fc):	LUI	x11 [a1],	0x000ca110 [827664]
+@(0x00000000 + 0x00001800):	ADDI	x11 [a1],	x11 [a1],	0x00000003 [3]
+@(0x00000000 + 0x00001804):	BNE	x10 [a0],	x11 [a1],	%pcrel(0x00001828 [kernel_LBB7_8]) = 0x00000024
+@(0x00000000 + 0x00001808):	JAL	x0 [zero],	%pcrel(0x0000180c [kernel_LBB7_7]) = 0x00000004[ J ]
+kernel_LBB7_7:
+@(0x00000000 + 0x0000180c):	ADDI	x10 [a0],	x0 [zero],	0x00000001 [1][ LI ]
+@(0x00000000 + 0x00001810):	SB	x10 [a0],	0xffffffef [-17](x8 [s0])
+@(0x00000000 + 0x00001814):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+_PI_128:
+@(0x00000000 + 0x00001818):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001500 [do_run]) = 0xfffffce8) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x0000181c):	JALR	x1 [ra],	%lo(%larel(0x00001500 [do_run], 0x00001818 [_PI_128]) = 0xfffffce8) = 0x00000ce8(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001820):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00001824):	JAL	x0 [zero],	%pcrel(0x00001868 [kernel_LBB7_12]) = 0x00000044[ J ]
+kernel_LBB7_8:
+@(0x00000000 + 0x00001828):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x0000182c):	LUI	x11 [a1],	0x000ca110 [827664]
+@(0x00000000 + 0x00001830):	ADDI	x11 [a1],	x11 [a1],	0x00000002 [2]
+@(0x00000000 + 0x00001834):	BNE	x10 [a0],	x11 [a1],	%pcrel(0x00001858 [kernel_LBB7_10]) = 0x00000024
+@(0x00000000 + 0x00001838):	JAL	x0 [zero],	%pcrel(0x0000183c [kernel_LBB7_9]) = 0x00000004[ J ]
+kernel_LBB7_9:
+@(0x00000000 + 0x0000183c):	ADDI	x10 [a0],	x0 [zero],	0x00000001 [1][ LI ]
+@(0x00000000 + 0x00001840):	SB	x10 [a0],	0xffffffef [-17](x8 [s0])
+@(0x00000000 + 0x00001844):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+_PI_129:
+@(0x00000000 + 0x00001848):	AUIPC	x6 [t1],	%hi(%pcrel(0x000016a0 [do_print]) = 0xfffffe58) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x0000184c):	JALR	x1 [ra],	%lo(%larel(0x000016a0 [do_print], 0x00001848 [_PI_129]) = 0xfffffe58) = 0x00000e58(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001850):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00001854):	JAL	x0 [zero],	%pcrel(0x00001864 [kernel_LBB7_11]) = 0x00000010[ J ]
+kernel_LBB7_10:
+@(0x00000000 + 0x00001858):	ADDI	x10 [a0],	x0 [zero],	0xffffffff [-1][ LI ]
+@(0x00000000 + 0x0000185c):	SW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x00001860):	JAL	x0 [zero],	%pcrel(0x00001864 [kernel_LBB7_11]) = 0x00000004[ J ]
+kernel_LBB7_11:
+@(0x00000000 + 0x00001864):	JAL	x0 [zero],	%pcrel(0x00001868 [kernel_LBB7_12]) = 0x00000004[ J ]
+kernel_LBB7_12:
+@(0x00000000 + 0x00001868):	JAL	x0 [zero],	%pcrel(0x0000186c [kernel_LBB7_13]) = 0x00000004[ J ]
+kernel_LBB7_13:
+@(0x00000000 + 0x0000186c):	JAL	x0 [zero],	%pcrel(0x00001870 [kernel_LBB7_14]) = 0x00000004[ J ]
+kernel_LBB7_14:
+@(0x00000000 + 0x00001870):	LBU	x10 [a0],	0xffffffef [-17](x8 [s0])
+@(0x00000000 + 0x00001874):	ANDI	x10 [a0],	x10 [a0],	0x00000001 [1]
+@(0x00000000 + 0x00001878):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x000018b0 [kernel_LBB7_16]) = 0x00000038[ BEQZ ]
+@(0x00000000 + 0x0000187c):	JAL	x0 [zero],	%pcrel(0x00001880 [kernel_LBB7_15]) = 0x00000004[ J ]
+kernel_Lpcrel_hi28:
+kernel_LBB7_15:
+@(0x00000000 + 0x00001880):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d9c [current_process]) = 0x0000051c) = 0x00000000
+@(0x00000000 + 0x00001884):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d9c [current_process], 0x00001880 [kernel_Lpcrel_hi28]) = 0x0000051c) = 0x0000051c
+@(0x00000000 + 0x00001888):	LW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x0000188c):	LW	x10 [a0],	0x00000008 [8](x11 [a1])
+@(0x00000000 + 0x00001890):	LW	x11 [a1],	0x00000014 [20](x11 [a1])
+@(0x00000000 + 0x00001894):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00001898):	ADDI	x10 [a0],	x10 [a0],	0xffffffdc [-36]
+@(0x00000000 + 0x0000189c):	SW	x10 [a0],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x000018a0):	LW	x10 [a0],	0xffffffe8 [-24](x8 [s0])
+@(0x00000000 + 0x000018a4):	LW	x11 [a1],	0xffffffe4 [-28](x8 [s0])
+@(0x00000000 + 0x000018a8):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x000018ac):	JAL	x0 [zero],	%pcrel(0x000018b0 [kernel_LBB7_16]) = 0x00000004[ J ]
+_PI_130:
+kernel_LBB7_16:
+@(0x00000000 + 0x000018b0):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001360 [cpu_scheduler]) = 0xfffffab0) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x000018b4):	JALR	x1 [ra],	%lo(%larel(0x00001360 [cpu_scheduler], 0x000018b0 [_PI_130]) = 0xfffffab0) = 0x00000ab0(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000018b8):	LW	x1 [ra],	0x0000001c [28](x2 [sp])
+@(0x00000000 + 0x000018bc):	LW	x8 [s0],	0x00000018 [24](x2 [sp])
+@(0x00000000 + 0x000018c0):	ADDI	x2 [sp],	x2 [sp],	0x00000020 [32]
+@(0x00000000 + 0x000018c4):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+kernel_Lfunc_end7:
+do_alarm:
+@(0x00000000 + 0x000018c8):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x000018cc):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x000018d0):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x000018d4):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x000018d8):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x000018dc):	SW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+kernel_Lpcrel_hi29:
+@(0x00000000 + 0x000018e0):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d74 [preserved_epc]) = 0x00000494) = 0x00000000
+@(0x00000000 + 0x000018e4):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d74 [preserved_epc], 0x000018e0 [kernel_Lpcrel_hi29]) = 0x00000494) = 0x00000494
+@(0x00000000 + 0x000018e8):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+kernel_Lpcrel_hi30:
+@(0x00000000 + 0x000018ec):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001d9c [current_process]) = 0x000004b0) = 0x00000000
+@(0x00000000 + 0x000018f0):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001d9c [current_process], 0x000018ec [kernel_Lpcrel_hi30]) = 0x000004b0) = 0x000004b0
+@(0x00000000 + 0x000018f4):	LW	x12 [a2],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x000018f8):	SW	x10 [a0],	0x00000010 [16](x12 [a2])
+kernel_Lpcrel_hi31:
+@(0x00000000 + 0x000018fc):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d78 [preserved_sp]) = 0x0000047c) = 0x00000000
+@(0x00000000 + 0x00001900):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d78 [preserved_sp], 0x000018fc [kernel_Lpcrel_hi31]) = 0x0000047c) = 0x0000047c
+@(0x00000000 + 0x00001904):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001908):	LW	x11 [a1],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x0000190c):	SW	x10 [a0],	0x00000014 [20](x11 [a1])
+_PI_131:
+@(0x00000000 + 0x00001910):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001360 [cpu_scheduler]) = 0xfffffa50) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00001914):	JALR	x1 [ra],	%lo(%larel(0x00001360 [cpu_scheduler], 0x00001910 [_PI_131]) = 0xfffffa50) = 0x00000a50(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001918):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x0000191c):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001920):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00001924):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+fs_init:
+kernel_Lfunc_end8:
+@(0x00000000 + 0x00001928):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x0000192c):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001930):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001934):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+kernel_Lpcrel_hi32:
+@(0x00000000 + 0x00001938):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001db0 [fs_init.fs_metadata_blocks]) = 0x00000478) = 0x00000000
+@(0x00000000 + 0x0000193c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001db0 [fs_init.fs_metadata_blocks], 0x00001938 [kernel_Lpcrel_hi32]) = 0x00000478) = 0x00000478
+@(0x00000000 + 0x00001940):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001944):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00001960 [kernel_LBB9_2]) = 0x0000001c[ BEQZ ]
+@(0x00000000 + 0x00001948):	JAL	x0 [zero],	%pcrel(0x0000194c [kernel_LBB9_1]) = 0x00000004[ J ]
+kernel_Lpcrel_hi33:
+kernel_LBB9_1:
+@(0x00000000 + 0x0000194c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001f98 [kernel_L.str.7]) = 0x0000064c) = 0x00000000
+@(0x00000000 + 0x00001950):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001f98 [kernel_L.str.7], 0x0000194c [kernel_Lpcrel_hi33]) = 0x0000064c) = 0x0000064c
+_PI_132:
+@(0x00000000 + 0x00001954):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffe7a4) = 0x000ffffe[ CALL <part A> ]
+@(0x00000000 + 0x00001958):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00001954 [_PI_132]) = 0xffffe7a4) = 0x000007a4(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x0000195c):	JAL	x0 [zero],	%pcrel(0x00001ab4 [kernel_LBB9_10]) = 0x00000158[ J ]
+_PI_133:
+kernel_LBB9_2:
+@(0x00000000 + 0x00001960):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001bf8 [mm_allocate]) = 0x00000298) = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00001964):	JALR	x1 [ra],	%lo(%larel(0x00001bf8 [mm_allocate], 0x00001960 [_PI_133]) = 0x00000298) = 0x00000298(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001968):	ADDI	x11 [a1],	x10 [a0],	0x00000000 [0][ MV ]
+kernel_Lpcrel_hi34:
+@(0x00000000 + 0x0000196c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001db0 [fs_init.fs_metadata_blocks]) = 0x00000444) = 0x00000000
+@(0x00000000 + 0x00001970):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001db0 [fs_init.fs_metadata_blocks], 0x0000196c [kernel_Lpcrel_hi34]) = 0x00000444) = 0x00000444
+@(0x00000000 + 0x00001974):	SW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001978):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x0000197c):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x000019a0 [kernel_LBB9_4]) = 0x00000024[ BNEZ ]
+@(0x00000000 + 0x00001980):	JAL	x0 [zero],	%pcrel(0x00001984 [kernel_LBB9_3]) = 0x00000004[ J ]
+kernel_Lpcrel_hi35:
+kernel_LBB9_3:
+@(0x00000000 + 0x00001984):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001fd0 [kernel_L.str.8]) = 0x0000064c) = 0x00000000
+@(0x00000000 + 0x00001988):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001fd0 [kernel_L.str.8], 0x00001984 [kernel_Lpcrel_hi35]) = 0x0000064c) = 0x0000064c
+_PI_134:
+@(0x00000000 + 0x0000198c):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffe76c) = 0x000ffffe[ CALL <part A> ]
+@(0x00000000 + 0x00001990):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x0000198c [_PI_134]) = 0xffffe76c) = 0x0000076c(x6 [t1])[ CALL <part B> ]
+_PI_135:
+@(0x00000000 + 0x00001994):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000268 [halt_kernel]) = 0xffffe8d4) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001998):	JALR	x1 [ra],	%lo(%larel(0x00000268 [halt_kernel], 0x00001994 [_PI_135]) = 0xffffe8d4) = 0x000008d4(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x0000199c):	JAL	x0 [zero],	%pcrel(0x000019a0 [kernel_LBB9_4]) = 0x00000004[ J ]
+kernel_Lpcrel_hi36:
+kernel_LBB9_4:
+@(0x00000000 + 0x000019a0):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001db0 [fs_init.fs_metadata_blocks]) = 0x00000410) = 0x00000000
+@(0x00000000 + 0x000019a4):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001db0 [fs_init.fs_metadata_blocks], 0x000019a0 [kernel_Lpcrel_hi36]) = 0x00000410) = 0x00000410
+@(0x00000000 + 0x000019a8):	LW	x11 [a1],	0x00000000 [0](x10 [a0])
+kernel_Lpcrel_hi37:
+@(0x00000000 + 0x000019ac):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001da4 [superblock]) = 0x000003f8) = 0x00000000
+@(0x00000000 + 0x000019b0):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001da4 [superblock], 0x000019ac [kernel_Lpcrel_hi37]) = 0x000003f8) = 0x000003f8
+@(0x00000000 + 0x000019b4):	SW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000019b8):	LW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000019bc):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+_PI_136:
+@(0x00000000 + 0x000019c0):	AUIPC	x6 [t1],	%hi(%pcrel(0x000004c4 [bd_read_block]) = 0xffffeb04) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000019c4):	JALR	x1 [ra],	%lo(%larel(0x000004c4 [bd_read_block], 0x000019c0 [_PI_136]) = 0xffffeb04) = 0x00000b04(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000019c8):	BGE	x10 [a0],	x0 [zero],	%pcrel(0x000019ec [kernel_LBB9_6]) = 0x00000024[ BGEZ ]
+@(0x00000000 + 0x000019cc):	JAL	x0 [zero],	%pcrel(0x000019d0 [kernel_LBB9_5]) = 0x00000004[ J ]
+kernel_Lpcrel_hi38:
+kernel_LBB9_5:
+@(0x00000000 + 0x000019d0):	AUIPC	x10 [a0],	%hi(%pcrel(0x00002008 [kernel_L.str.9]) = 0x00000638) = 0x00000000
+@(0x00000000 + 0x000019d4):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00002008 [kernel_L.str.9], 0x000019d0 [kernel_Lpcrel_hi38]) = 0x00000638) = 0x00000638
+_PI_137:
+@(0x00000000 + 0x000019d8):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffe720) = 0x000ffffe[ CALL <part A> ]
+@(0x00000000 + 0x000019dc):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x000019d8 [_PI_137]) = 0xffffe720) = 0x00000720(x6 [t1])[ CALL <part B> ]
+_PI_138:
+@(0x00000000 + 0x000019e0):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000268 [halt_kernel]) = 0xffffe888) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x000019e4):	JALR	x1 [ra],	%lo(%larel(0x00000268 [halt_kernel], 0x000019e0 [_PI_138]) = 0xffffe888) = 0x00000888(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x000019e8):	JAL	x0 [zero],	%pcrel(0x000019ec [kernel_LBB9_6]) = 0x00000004[ J ]
+kernel_Lpcrel_hi39:
+kernel_LBB9_6:
+@(0x00000000 + 0x000019ec):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001db0 [fs_init.fs_metadata_blocks]) = 0x000003c4) = 0x00000000
+@(0x00000000 + 0x000019f0):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001db0 [fs_init.fs_metadata_blocks], 0x000019ec [kernel_Lpcrel_hi39]) = 0x000003c4) = 0x000003c4
+@(0x00000000 + 0x000019f4):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x000019f8):	LUI	x11 [a1],	0x00000001 [1]
+@(0x00000000 + 0x000019fc):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+kernel_Lpcrel_hi40:
+@(0x00000000 + 0x00001a00):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001da8 [directory_inode]) = 0x000003a8) = 0x00000000
+@(0x00000000 + 0x00001a04):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001da8 [directory_inode], 0x00001a00 [kernel_Lpcrel_hi40]) = 0x000003a8) = 0x000003a8
+@(0x00000000 + 0x00001a08):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+kernel_Lpcrel_hi41:
+@(0x00000000 + 0x00001a0c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001da4 [superblock]) = 0x00000398) = 0x00000000
+@(0x00000000 + 0x00001a10):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001da4 [superblock], 0x00001a0c [kernel_Lpcrel_hi41]) = 0x00000398) = 0x00000398
+@(0x00000000 + 0x00001a14):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001a18):	LW	x10 [a0],	0x0000000c [12](x10 [a0])
+@(0x00000000 + 0x00001a1c):	LW	x11 [a1],	0x00000000 [0](x11 [a1])
+_PI_139:
+@(0x00000000 + 0x00001a20):	AUIPC	x6 [t1],	%hi(%pcrel(0x000004c4 [bd_read_block]) = 0xffffeaa4) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001a24):	JALR	x1 [ra],	%lo(%larel(0x000004c4 [bd_read_block], 0x00001a20 [_PI_139]) = 0xffffeaa4) = 0x00000aa4(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001a28):	BGE	x10 [a0],	x0 [zero],	%pcrel(0x00001a4c [kernel_LBB9_8]) = 0x00000024[ BGEZ ]
+@(0x00000000 + 0x00001a2c):	JAL	x0 [zero],	%pcrel(0x00001a30 [kernel_LBB9_7]) = 0x00000004[ J ]
+kernel_Lpcrel_hi42:
+kernel_LBB9_7:
+@(0x00000000 + 0x00001a30):	AUIPC	x10 [a0],	%hi(%pcrel(0x00002030 [kernel_L.str.10]) = 0x00000600) = 0x00000000
+@(0x00000000 + 0x00001a34):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00002030 [kernel_L.str.10], 0x00001a30 [kernel_Lpcrel_hi42]) = 0x00000600) = 0x00000600
+_PI_140:
+@(0x00000000 + 0x00001a38):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffe6c0) = 0x000ffffe[ CALL <part A> ]
+@(0x00000000 + 0x00001a3c):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00001a38 [_PI_140]) = 0xffffe6c0) = 0x000006c0(x6 [t1])[ CALL <part B> ]
+_PI_141:
+@(0x00000000 + 0x00001a40):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000268 [halt_kernel]) = 0xffffe828) + 1 = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001a44):	JALR	x1 [ra],	%lo(%larel(0x00000268 [halt_kernel], 0x00001a40 [_PI_141]) = 0xffffe828) = 0x00000828(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001a48):	JAL	x0 [zero],	%pcrel(0x00001a4c [kernel_LBB9_8]) = 0x00000004[ J ]
+kernel_Lpcrel_hi43:
+kernel_LBB9_8:
+@(0x00000000 + 0x00001a4c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001db0 [fs_init.fs_metadata_blocks]) = 0x00000364) = 0x00000000
+@(0x00000000 + 0x00001a50):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001db0 [fs_init.fs_metadata_blocks], 0x00001a4c [kernel_Lpcrel_hi43]) = 0x00000364) = 0x00000364
+@(0x00000000 + 0x00001a54):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001a58):	LUI	x11 [a1],	0x00000002 [2]
+@(0x00000000 + 0x00001a5c):	ADD	x11 [a1],	x10 [a0],	x11 [a1]
+kernel_Lpcrel_hi44:
+@(0x00000000 + 0x00001a60):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001dac [directory_entries]) = 0x0000034c) = 0x00000000
+@(0x00000000 + 0x00001a64):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001dac [directory_entries], 0x00001a60 [kernel_Lpcrel_hi44]) = 0x0000034c) = 0x0000034c
+@(0x00000000 + 0x00001a68):	SW	x11 [a1],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001a6c):	LUI	x11 [a1],	0x0000000e [14]
+@(0x00000000 + 0x00001a70):	SW	x11 [a1],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001a74):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+kernel_Lpcrel_hi45:
+@(0x00000000 + 0x00001a78):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001da8 [directory_inode]) = 0x00000330) = 0x00000000
+@(0x00000000 + 0x00001a7c):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001da8 [directory_inode], 0x00001a78 [kernel_Lpcrel_hi45]) = 0x00000330) = 0x00000330
+@(0x00000000 + 0x00001a80):	LW	x11 [a1],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001a84):	LW	x12 [a2],	0xfffffff4 [-12](x8 [s0])
+_PI_142:
+@(0x00000000 + 0x00001a88):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000bdc [read_inode_to_buffer]) = 0xfffff154) = 0x000fffff[ CALL <part A> ]
+@(0x00000000 + 0x00001a8c):	JALR	x1 [ra],	%lo(%larel(0x00000bdc [read_inode_to_buffer], 0x00001a88 [_PI_142]) = 0xfffff154) = 0x00000154(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001a90):	BGE	x10 [a0],	x0 [zero],	%pcrel(0x00001ab4 [kernel_LBB9_10]) = 0x00000024[ BGEZ ]
+@(0x00000000 + 0x00001a94):	JAL	x0 [zero],	%pcrel(0x00001a98 [kernel_LBB9_9]) = 0x00000004[ J ]
+kernel_Lpcrel_hi46:
+kernel_LBB9_9:
+@(0x00000000 + 0x00001a98):	AUIPC	x10 [a0],	%hi(%pcrel(0x0000205c [kernel_L.str.11]) = 0x000005c4) = 0x00000000
+@(0x00000000 + 0x00001a9c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x0000205c [kernel_L.str.11], 0x00001a98 [kernel_Lpcrel_hi46]) = 0x000005c4) = 0x000005c4
+_PI_143:
+@(0x00000000 + 0x00001aa0):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffe658) = 0x000ffffe[ CALL <part A> ]
+@(0x00000000 + 0x00001aa4):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00001aa0 [_PI_143]) = 0xffffe658) = 0x00000658(x6 [t1])[ CALL <part B> ]
+_PI_144:
+@(0x00000000 + 0x00001aa8):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000268 [halt_kernel]) = 0xffffe7c0) = 0x000ffffe[ CALL <part A> ]
+@(0x00000000 + 0x00001aac):	JALR	x1 [ra],	%lo(%larel(0x00000268 [halt_kernel], 0x00001aa8 [_PI_144]) = 0xffffe7c0) = 0x000007c0(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001ab0):	JAL	x0 [zero],	%pcrel(0x00001ab4 [kernel_LBB9_10]) = 0x00000004[ J ]
+kernel_LBB9_10:
+@(0x00000000 + 0x00001ab4):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001ab8):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001abc):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00001ac0):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+kernel_Lfunc_end9:
+run_init:
+@(0x00000000 + 0x00001ac4):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x00001ac8):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001acc):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001ad0):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+_PI_145:
+@(0x00000000 + 0x00001ad4):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001928 [fs_init]) = 0xfffffe54) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00001ad8):	JALR	x1 [ra],	%lo(%larel(0x00001928 [fs_init], 0x00001ad4 [_PI_145]) = 0xfffffe54) = 0x00000e54(x6 [t1])[ CALL <part B> ]
+kernel_Lpcrel_hi47:
+@(0x00000000 + 0x00001adc):	AUIPC	x10 [a0],	%hi(%pcrel(0x00002088 [kernel_L.str.12]) = 0x000005ac) = 0x00000000
+@(0x00000000 + 0x00001ae0):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00002088 [kernel_L.str.12], 0x00001adc [kernel_Lpcrel_hi47]) = 0x000005ac) = 0x000005ac
+_PI_146:
+@(0x00000000 + 0x00001ae4):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001500 [do_run]) = 0xfffffa1c) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00001ae8):	JALR	x1 [ra],	%lo(%larel(0x00001500 [do_run], 0x00001ae4 [_PI_146]) = 0xfffffa1c) = 0x00000a1c(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001aec):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001af0):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001af4):	BGE	x10 [a0],	x0 [zero],	%pcrel(0x00001b40 [kernel_LBB10_5]) = 0x0000004c[ BGEZ ]
+@(0x00000000 + 0x00001af8):	JAL	x0 [zero],	%pcrel(0x00001afc [kernel_LBB10_1]) = 0x00000004[ J ]
+kernel_LBB10_1:
+@(0x00000000 + 0x00001afc):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001b00):	ADDI	x11 [a1],	x0 [zero],	0xffffffff [-1][ LI ]
+@(0x00000000 + 0x00001b04):	BNE	x10 [a0],	x11 [a1],	%pcrel(0x00001b20 [kernel_LBB10_3]) = 0x0000001c
+@(0x00000000 + 0x00001b08):	JAL	x0 [zero],	%pcrel(0x00001b0c [kernel_LBB10_2]) = 0x00000004[ J ]
+kernel_LBB10_2:
+kernel_Lpcrel_hi48:
+@(0x00000000 + 0x00001b0c):	AUIPC	x10 [a0],	%hi(%pcrel(0x00002094 [kernel_L.str.13]) = 0x00000588) = 0x00000000
+@(0x00000000 + 0x00001b10):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00002094 [kernel_L.str.13], 0x00001b0c [kernel_Lpcrel_hi48]) = 0x00000588) = 0x00000588
+_PI_147:
+@(0x00000000 + 0x00001b14):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffe5e4) = 0x000ffffe[ CALL <part A> ]
+@(0x00000000 + 0x00001b18):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00001b14 [_PI_147]) = 0xffffe5e4) = 0x000005e4(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001b1c):	JAL	x0 [zero],	%pcrel(0x00001b34 [kernel_LBB10_4]) = 0x00000018[ J ]
+kernel_LBB10_3:
+kernel_Lpcrel_hi49:
+@(0x00000000 + 0x00001b20):	AUIPC	x10 [a0],	%hi(%pcrel(0x000020b4 [kernel_L.str.14]) = 0x00000594) = 0x00000000
+@(0x00000000 + 0x00001b24):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x000020b4 [kernel_L.str.14], 0x00001b20 [kernel_Lpcrel_hi49]) = 0x00000594) = 0x00000594
+_PI_148:
+@(0x00000000 + 0x00001b28):	AUIPC	x6 [t1],	%hi(%pcrel(0x000000f8 [print]) = 0xffffe5d0) = 0x000ffffe[ CALL <part A> ]
+@(0x00000000 + 0x00001b2c):	JALR	x1 [ra],	%lo(%larel(0x000000f8 [print], 0x00001b28 [_PI_148]) = 0xffffe5d0) = 0x000005d0(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001b30):	JAL	x0 [zero],	%pcrel(0x00001b34 [kernel_LBB10_4]) = 0x00000004[ J ]
+kernel_LBB10_4:
+_PI_149:
+@(0x00000000 + 0x00001b34):	AUIPC	x6 [t1],	%hi(%pcrel(0x00000268 [halt_kernel]) = 0xffffe734) = 0x000ffffe[ CALL <part A> ]
+@(0x00000000 + 0x00001b38):	JALR	x1 [ra],	%lo(%larel(0x00000268 [halt_kernel], 0x00001b34 [_PI_149]) = 0xffffe734) = 0x00000734(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001b3c):	JAL	x0 [zero],	%pcrel(0x00001b40 [kernel_LBB10_5]) = 0x00000004[ J ]
+kernel_LBB10_5:
+_PI_150:
+@(0x00000000 + 0x00001b40):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001360 [cpu_scheduler]) = 0xfffff820) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00001b44):	JALR	x1 [ra],	%lo(%larel(0x00001360 [cpu_scheduler], 0x00001b40 [_PI_150]) = 0xfffff820) = 0x00000820(x6 [t1])[ CALL <part B> ]
+@(0x00000000 + 0x00001b48):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001b4c):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001b50):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00001b54):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+mm_init:
+@(0x00000000 + 0x00001b58):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x00001b5c):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001b60):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001b64):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+mm_alloc_Lpcrel_hi0:
+@(0x00000000 + 0x00001b68):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001db4 [free_list_head]) = 0x0000024c) = 0x00000000
+@(0x00000000 + 0x00001b6c):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001db4 [free_list_head], 0x00001b68 [mm_alloc_Lpcrel_hi0]) = 0x0000024c) = 0x0000024c
+@(0x00000000 + 0x00001b70):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001b74):	BEQ	x10 [a0],	x0 [zero],	%pcrel(0x00001b80 [mm_alloc_LBB0_2]) = 0x0000000c[ BEQZ ]
+@(0x00000000 + 0x00001b78):	JAL	x0 [zero],	%pcrel(0x00001b7c [mm_alloc_LBB0_1]) = 0x00000004[ J ]
+mm_alloc_LBB0_1:
+@(0x00000000 + 0x00001b7c):	JAL	x0 [zero],	%pcrel(0x00001be8 [mm_alloc_LBB0_6]) = 0x0000006c[ J ]
+mm_alloc_LBB0_2:
+mm_alloc_Lpcrel_hi1:
+@(0x00000000 + 0x00001b80):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001d6c [kernel_limit]) = 0x000001ec) = 0x00000000
+@(0x00000000 + 0x00001b84):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001d6c [kernel_limit], 0x00001b80 [mm_alloc_Lpcrel_hi1]) = 0x000001ec) = 0x000001ec
+@(0x00000000 + 0x00001b88):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001b8c):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001b90):	JAL	x0 [zero],	%pcrel(0x00001b94 [mm_alloc_LBB0_3]) = 0x00000004[ J ]
+mm_alloc_LBB0_3:
+@(0x00000000 + 0x00001b94):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+mm_alloc_Lpcrel_hi2:
+@(0x00000000 + 0x00001b98):	AUIPC	x11 [a1],	%hi(%pcrel(0x00001d5c [RAM_limit]) = 0x000001c4) = 0x00000000
+@(0x00000000 + 0x00001b9c):	ADDI	x11 [a1],	x11 [a1],	%lo(%larel(0x00001d5c [RAM_limit], 0x00001b98 [mm_alloc_Lpcrel_hi2]) = 0x000001c4) = 0x000001c4
+@(0x00000000 + 0x00001ba0):	LW	x11 [a1],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001ba4):	BGEU	x10 [a0],	x11 [a1],	%pcrel(0x00001be8 [mm_alloc_LBB0_6]) = 0x00000044
+@(0x00000000 + 0x00001ba8):	JAL	x0 [zero],	%pcrel(0x00001bac [mm_alloc_LBB0_4]) = 0x00000004[ J ]
+mm_alloc_LBB0_4:
+@(0x00000000 + 0x00001bac):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001bb0):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+mm_alloc_Lpcrel_hi3:
+@(0x00000000 + 0x00001bb4):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001db4 [free_list_head]) = 0x00000200) = 0x00000000
+@(0x00000000 + 0x00001bb8):	ADDI	x11 [a1],	x10 [a0],	%lo(%larel(0x00001db4 [free_list_head], 0x00001bb4 [mm_alloc_Lpcrel_hi3]) = 0x00000200) = 0x00000200
+@(0x00000000 + 0x00001bbc):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001bc0):	LW	x12 [a2],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001bc4):	SW	x10 [a0],	0x00000000 [0](x12 [a2])
+@(0x00000000 + 0x00001bc8):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001bcc):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001bd0):	JAL	x0 [zero],	%pcrel(0x00001bd4 [mm_alloc_LBB0_5]) = 0x00000004[ J ]
+mm_alloc_LBB0_5:
+@(0x00000000 + 0x00001bd4):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001bd8):	LUI	x11 [a1],	0x00000010 [16]
+@(0x00000000 + 0x00001bdc):	ADD	x10 [a0],	x10 [a0],	x11 [a1]
+@(0x00000000 + 0x00001be0):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001be4):	JAL	x0 [zero],	%pcrel(0x00001b94 [mm_alloc_LBB0_3]) = 0xffffffb0[ J ]
+mm_alloc_LBB0_6:
+@(0x00000000 + 0x00001be8):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001bec):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001bf0):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00001bf4):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+mm_allocate:
+mm_alloc_Lfunc_end0:
+@(0x00000000 + 0x00001bf8):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x00001bfc):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001c00):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001c04):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+_PI_151:
+@(0x00000000 + 0x00001c08):	AUIPC	x6 [t1],	%hi(%pcrel(0x00001b58 [mm_init]) = 0xffffff50) + 1 = 0x00000000[ CALL <part A> ]
+@(0x00000000 + 0x00001c0c):	JALR	x1 [ra],	%lo(%larel(0x00001b58 [mm_init], 0x00001c08 [_PI_151]) = 0xffffff50) = 0x00000f50(x6 [t1])[ CALL <part B> ]
+mm_alloc_Lpcrel_hi4:
+@(0x00000000 + 0x00001c10):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001db4 [free_list_head]) = 0x000001a4) = 0x00000000
+@(0x00000000 + 0x00001c14):	ADDI	x10 [a0],	x10 [a0],	%lo(%larel(0x00001db4 [free_list_head], 0x00001c10 [mm_alloc_Lpcrel_hi4]) = 0x000001a4) = 0x000001a4
+@(0x00000000 + 0x00001c18):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001c1c):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00001c30 [mm_alloc_LBB1_2]) = 0x00000014[ BNEZ ]
+@(0x00000000 + 0x00001c20):	JAL	x0 [zero],	%pcrel(0x00001c24 [mm_alloc_LBB1_1]) = 0x00000004[ J ]
+mm_alloc_LBB1_1:
+@(0x00000000 + 0x00001c24):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00001c28):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001c2c):	JAL	x0 [zero],	%pcrel(0x00001c64 [mm_alloc_LBB1_3]) = 0x00000038[ J ]
+mm_alloc_LBB1_2:
+mm_alloc_Lpcrel_hi5:
+@(0x00000000 + 0x00001c30):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001db4 [free_list_head]) = 0x00000184) = 0x00000000
+@(0x00000000 + 0x00001c34):	ADDI	x11 [a1],	x10 [a0],	%lo(%larel(0x00001db4 [free_list_head], 0x00001c30 [mm_alloc_Lpcrel_hi5]) = 0x00000184) = 0x00000184
+@(0x00000000 + 0x00001c38):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001c3c):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001c40):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001c44):	LW	x10 [a0],	0x00000000 [0](x10 [a0])
+@(0x00000000 + 0x00001c48):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001c4c):	LW	x11 [a1],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001c50):	ADDI	x10 [a0],	x0 [zero],	0x00000000 [0][ LI ]
+@(0x00000000 + 0x00001c54):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001c58):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001c5c):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001c60):	JAL	x0 [zero],	%pcrel(0x00001c64 [mm_alloc_LBB1_3]) = 0x00000004[ J ]
+mm_alloc_LBB1_3:
+@(0x00000000 + 0x00001c64):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001c68):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001c6c):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001c70):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00001c74):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+mm_alloc_Lfunc_end1:
+mm_deallocate:
+@(0x00000000 + 0x00001c78):	ADDI	x2 [sp],	x2 [sp],	0xfffffff0 [-16]
+@(0x00000000 + 0x00001c7c):	SW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001c80):	SW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001c84):	ADDI	x8 [s0],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00001c88):	SW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001c8c):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001c90):	BNE	x10 [a0],	x0 [zero],	%pcrel(0x00001c9c [mm_alloc_LBB2_2]) = 0x0000000c[ BNEZ ]
+@(0x00000000 + 0x00001c94):	JAL	x0 [zero],	%pcrel(0x00001c98 [mm_alloc_LBB2_1]) = 0x00000004[ J ]
+mm_alloc_LBB2_1:
+@(0x00000000 + 0x00001c98):	JAL	x0 [zero],	%pcrel(0x00001cc4 [mm_alloc_LBB2_3]) = 0x0000002c[ J ]
+mm_alloc_LBB2_2:
+@(0x00000000 + 0x00001c9c):	LW	x10 [a0],	0xfffffff4 [-12](x8 [s0])
+@(0x00000000 + 0x00001ca0):	SW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+mm_alloc_Lpcrel_hi6:
+@(0x00000000 + 0x00001ca4):	AUIPC	x10 [a0],	%hi(%pcrel(0x00001db4 [free_list_head]) = 0x00000110) = 0x00000000
+@(0x00000000 + 0x00001ca8):	ADDI	x11 [a1],	x10 [a0],	%lo(%larel(0x00001db4 [free_list_head], 0x00001ca4 [mm_alloc_Lpcrel_hi6]) = 0x00000110) = 0x00000110
+@(0x00000000 + 0x00001cac):	LW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001cb0):	LW	x12 [a2],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001cb4):	SW	x10 [a0],	0x00000000 [0](x12 [a2])
+@(0x00000000 + 0x00001cb8):	LW	x10 [a0],	0xfffffff0 [-16](x8 [s0])
+@(0x00000000 + 0x00001cbc):	SW	x10 [a0],	0x00000000 [0](x11 [a1])
+@(0x00000000 + 0x00001cc0):	JAL	x0 [zero],	%pcrel(0x00001cc4 [mm_alloc_LBB2_3]) = 0x00000004[ J ]
+mm_alloc_LBB2_3:
+@(0x00000000 + 0x00001cc4):	LW	x1 [ra],	0x0000000c [12](x2 [sp])
+@(0x00000000 + 0x00001cc8):	LW	x8 [s0],	0x00000008 [8](x2 [sp])
+@(0x00000000 + 0x00001ccc):	ADDI	x2 [sp],	x2 [sp],	0x00000010 [16]
+@(0x00000000 + 0x00001cd0):	JALR	x0 [zero],	0x00000000 [0](x1 [ra])[ RET ]
+statics_start_marker:
+@(0x00001cd4 + 0x00000000): 0xdeadcafe
+trap_table:
+@(0x00001cd4 + 0x00000004): 0x00000000
+@(0x00001cd4 + 0x00000008): 0x00000000
+@(0x00001cd4 + 0x0000000c): 0x00000000
+@(0x00001cd4 + 0x00000010): 0x00000000
+@(0x00001cd4 + 0x00000014): 0x00000000
+@(0x00001cd4 + 0x00000018): 0x00000000
+@(0x00001cd4 + 0x0000001c): 0x00000000
+@(0x00001cd4 + 0x00000020): 0x00000000
+@(0x00001cd4 + 0x00000024): 0x00000000
+@(0x00001cd4 + 0x00000028): 0x00000000
+@(0x00001cd4 + 0x0000002c): 0x00000000
+@(0x00001cd4 + 0x00000030): 0x00000000
+@(0x00001cd4 + 0x00000034): 0x00000000
+device_table_base:
+@(0x00001cd4 + 0x00000038): 0x00001000
+none_device_code:
+@(0x00001cd4 + 0x0000003c): 0x00000000
+controller_device_code:
+@(0x00001cd4 + 0x00000040): 0x00000001
+ROM_device_code:
+@(0x00001cd4 + 0x00000044): 0x00000002
+RAM_device_code:
+@(0x00001cd4 + 0x00000048): 0x00000003
+console_device_code:
+@(0x00001cd4 + 0x0000004c): 0x00000004
+block_device_code:
+@(0x00001cd4 + 0x00000050): 0x00000005
+clock_device_code:
+@(0x00001cd4 + 0x00000054): 0x00000006
+random_device_code:
+@(0x00001cd4 + 0x00000058): 0x00000007
+kernel_normal_exit:
+@(0x00001cd4 + 0x0000005c): 0xffff0000
+kernel_error_RAM_not_found:
+@(0x00001cd4 + 0x00000060): 0xffff0001
+kernel_error_small_RAM:
+@(0x00001cd4 + 0x00000064): 0xffff0002
+kernel_error_console_not_found:
+@(0x00001cd4 + 0x00000068): 0xffff0003
+kernel_error_unmanaged_interrupt:
+@(0x00001cd4 + 0x0000006c): 0xffff0004
+console_width:
+@(0x00001cd4 + 0x00000070): 0x00000050
+console_height:
+@(0x00001cd4 + 0x00000074): 0x00000018
+min_RAM:
+@(0x00001cd4 + 0x00000078): 0x00040000
+kernel_size:
+@(0x00001cd4 + 0x0000007c): 0x00010000
+cursor_column:
+@(0x00001cd4 + 0x00000080): 0x00000000
+RAM_base:
+@(0x00001cd4 + 0x00000084): 0x00000000
+RAM_limit:
+@(0x00001cd4 + 0x00000088): 0x00000000
+console_base:
+@(0x00001cd4 + 0x0000008c): 0x00000000
+console_limit:
+@(0x00001cd4 + 0x00000090): 0x00000000
+kernel_base:
+@(0x00001cd4 + 0x00000094): 0x00000000
+kernel_limit:
+@(0x00001cd4 + 0x00000098): 0x00000000
+DMA_portal_ptr:
+@(0x00001cd4 + 0x0000009c): 0x00000000
+preserved_epc:
+@(0x00001cd4 + 0x000000a0): 0x00000000
+preserved_sp:
+@(0x00001cd4 + 0x000000a4): 0x00000000
+get_bd_portal.bd_portal:
+bd_driver_Lfunc_end3:
+@(0x00001cd4 + 0x000000a8): 0x00000000
+heap_alloc_Lfunc_end2:
+free_head:
+@(0x00001cd4 + 0x000000ac): 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+free_tail:
+@(0x00001cd4 + 0x000000b8): 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+heap_limit:
+@(0x00001cd4 + 0x000000c4): 0x00000000
+current_process:
+kernel_Lfunc_end10:
+@(0x00001cd4 + 0x000000c8): 0x00000000
+next_process_ID:
+@(0x00001cd4 + 0x000000cc): 0x00000000
+superblock:
+@(0x00001cd4 + 0x000000d0): 0x00000000
+directory_inode:
+@(0x00001cd4 + 0x000000d4): 0x00000000
+directory_entries:
+@(0x00001cd4 + 0x000000d8): 0x00000000
+fs_init.fs_metadata_blocks:
+@(0x00001cd4 + 0x000000dc): 0x00000000
+free_list_head:
+mm_alloc_Lfunc_end2:
+@(0x00001cd4 + 0x000000e0): 0x00000000
+space_char:
+@(0x00001db8 + 0x00000000): "   "
+cursor_char:
+@(0x00001db8 + 0x00000004): "_  "
+newline_char:
+@(0x00001db8 + 0x00000008): "\n  "
+banner_msg:
+@(0x00001db8 + 0x0000000c): "Fivish kernel v.2026-03-28\n"
+attribution_msg:
+@(0x00001db8 + 0x00000028): "COSC-275 : Systems-II\n "
+halting_msg:
+@(0x00001db8 + 0x00000040): "[kernel:] Halting...   "
+initializing_tt_msg:
+@(0x00001db8 + 0x00000058): "[kernel:] Initializing trap table...   "
+default_handler_msg:
+@(0x00001db8 + 0x00000080): "[kernel:] Default handler called.\n "
+done_msg:
+@(0x00001db8 + 0x000000a4): "done.\n "
+failed_msg:
+@(0x00001db8 + 0x000000ac): "failed!\n   "
+blank_line:
+@(0x00001db8 + 0x000000b8): "                                                                                   "
+heap_alloc_L.str:
+@(0x00001db8 + 0x0000010c): "[debug: ] allocate("
+heap_alloc_L.str.1:
+@(0x00001db8 + 0x00000120): ") -> 0x"
+heap_alloc_L.str.2:
+@(0x00001db8 + 0x00000128): "\n  "
+heap_alloc_L.str.3:
+@(0x00001db8 + 0x0000012c): "[debug: ] deallocate(0x"
+heap_alloc_L.str.4:
+@(0x00001db8 + 0x00000144): ") [size =  "
+heap_alloc_L.str.5:
+@(0x00001db8 + 0x00000150): "]\n "
+int_to_hex.hex_digits:
+utility_Lfunc_end6:
+@(0x00001db8 + 0x00000154): "0123456789abcdef   "
+kernel_L.str:
+@(0x00001db8 + 0x00000168): "[debug: ]  "
+kernel_L.str.1:
+@(0x00001db8 + 0x00000174): "NOOP requested "
+kernel_L.str.2:
+@(0x00001db8 + 0x00000184): "\n  "
+kernel_L.str.3:
+@(0x00001db8 + 0x00000188): "[kernel:] EXIT pid "
+kernel_L.str.4:
+@(0x00001db8 + 0x0000019c): " with status   "
+kernel_L.str.5:
+@(0x00001db8 + 0x000001ac): "[kernel:] RUN  "
+kernel_L.str.6:
+@(0x00001db8 + 0x000001bc): "[kernel:] All processes terminated\n"
+kernel_L.str.7:
+@(0x00001db8 + 0x000001e0): "[kernel:] WARNING: fs_init() unexpectedly re-called\n   "
+kernel_L.str.8:
+@(0x00001db8 + 0x00000218): "[kernel:] Failed allocation for file system metadata\n  "
+kernel_L.str.9:
+@(0x00001db8 + 0x00000250): "[kernel:] Failed to read superblock\n   "
+kernel_L.str.10:
+@(0x00001db8 + 0x00000278): "[kernel:] Failed to read directory inode\n  "
+kernel_L.str.11:
+@(0x00001db8 + 0x000002a4): "[kernel:] Failed to read directory file\n   "
+kernel_L.str.12:
+@(0x00001db8 + 0x000002d0): "init.vmx   "
+kernel_L.str.13:
+@(0x00001db8 + 0x000002dc): "[kernel:] No init.vmx found\n   "
+kernel_L.str.14:
+@(0x00001db8 + 0x000002fc): "[kernel:] Failed to run init\n  "
+statics_limit:
+@(0x00001db8 + 0x0000031c): "This is the end.   "

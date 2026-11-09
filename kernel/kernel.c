@@ -1,3 +1,6 @@
+
+
+
 /* =============================================================================================================================== */
 /* INCLUDES */
 
@@ -32,6 +35,13 @@
 #define SYSCALL_CREATE    0xca110008
 #define SYSCALL_DELETE    0xca110009
 #define SYSCALL_RENAME    0xca11000a
+#define GETLENGTH         0xca110004
+#define GETDIR            0xca110005
+#define READ              0xca110006
+#define WRITE             0xca110007
+#define CREATE            0xca110008
+#define DELETE            0xca110009
+#define RENAME             0xca11000a
 
 #define SYSCALL_INVALID_CODE -1
 
@@ -49,6 +59,8 @@
 #define SCHEDULER_QUANTUM 0x100
 
 #define INIT_FILENAME     "init.vmx"
+
+#define MAX_FILENAME_LENGTH   60
 /* =============================================================================================================================== */
 
 
@@ -303,7 +315,35 @@ word_t do_print (address_t msg) {
 } /* do_print () */
 /* =============================================================================================================================== */
 
+int getlength(char* filename) {
 
+  if (filename == NULL) {
+    // We need to grab the number of entries in '/'
+    return directory_inode->length / sizeof(directory_entry_s);
+  }
+  if (string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
+    return -2;
+  }
+
+  block_number_t inode_block = search_directory(filename);
+  if (inode_block == -1) return FS_NO_SUCH_FILE;
+  
+  /* Load the inode. */
+  inode_s* inode = allocate(BYTES_PER_BLOCK);
+  if (inode == NULL) return FS_OTHER_FAIL;
+  if (bd_read_block(inode_block, (address_t)inode) < 0) {
+    // ERROR
+    deallocate(inode);
+    return FS_OTHER_FAIL;
+  }
+  int length = inode->length;
+
+  deallocate(inode);
+  inode = NULL;
+  return length;
+
+}
+  
 
 /* =============================================================================================================================== */
 /**
@@ -343,6 +383,20 @@ void do_syscall (word_t code, word_t arg0) {
     
     has_return_value = true;
     result = do_print((address_t)arg0);
+    
+  } else if (code == GETLENGTH) {
+    
+  } else if (code == GETDIR) {
+    
+  } else if (code == READ) {
+
+  } else if (code == WRITE) {
+    
+  } else if (code == CREATE) {
+    
+  } else if (code == DELETE) {
+    
+  } else if (code == RENAME) {
     
   } else {
     
