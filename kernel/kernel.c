@@ -280,6 +280,8 @@ word_t do_run (char* filename) {
   process->epc        = 0;
   process->sp         = MM_BLOCK_SIZE;
   process->id         = next_process_ID++;
+  process->base       = base;
+  process->limit      = base + MM_BLOCK_SIZE;
   string_copy(process->executable, filename, sizeof(process->executable));
 
   insert_process(process);
@@ -328,7 +330,7 @@ int getlength(char* filename) {
   }
 
   block_number_t inode_block = search_directory(filename);
-  if (inode_block == -1) return FS_NO_SUCH_FILE;
+  if (inode_block == 0) return FS_NO_SUCH_FILE;
   
   /* Load the inode. */
   inode_s* inode = allocate(BYTES_PER_BLOCK);
@@ -424,6 +426,8 @@ void do_syscall (word_t code, word_t arg0) {
     result = do_print((address_t)arg0);
     
   } else if (code == GETLENGTH) {
+    has_return_value = true;
+    result = getlength((char*)arg0);
     
   } else if (code == GETDIR) {
     
