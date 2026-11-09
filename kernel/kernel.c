@@ -78,6 +78,8 @@ typedef struct process {
   word_t          id;
   filename_t      executable;
 } process_s;
+
+typedef char filename_t[60];
 /* =============================================================================================================================== */
 
 
@@ -343,7 +345,44 @@ int getlength(char* filename) {
   return length;
 
 }
+
+void getdir (filename_t* file_list_buffer) {
+  if (file_list_buffer == NULL) return;
+  int num_entries = directory_inode->length / sizeof(directory_entry_s);
+  for (int i = 0; i < num_entries; i++) {
+    string_copy(file_list_buffer[i], directory_entries[i].filename, sizeof(filename_t));
+  }
+}
+
+int read (char* filename, int offset, int length, void* buffer){
+  if (filename == NULL || string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
+    return FS_INVAL_NAME;
+  }
+
+  /* Lookup the filename to get the inode. */
+  block_number_t inode_block = search_directory(filename);
+  if (inode_block == 0) return FS_NO_SUCH_FILE;
   
+  if (buffer == NULL){
+    return FS_INVAL_BUFFER;
+  }
+
+
+  inode_s* inode = allocate(BYTES_PER_BLOCK);
+  if (inode == NULL) return FS_OTHER_FAIL;
+  if (bd_read_block(inode_block, (address_t)inode) < 0) {
+    deallocate(inode);
+    return FS_OTHER_FAIL;
+  }
+
+  int file_length = inode->length;
+  if (offset < 0 || length < 0 || offset + length > file_length) {
+    deallocate(inode);
+    return FS_INVAL_RANGE;
+  }
+
+  read_inode_to_buffer(buffer, inode, length);
+}
 
 /* =============================================================================================================================== */
 /**
