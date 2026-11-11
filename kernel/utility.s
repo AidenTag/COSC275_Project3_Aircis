@@ -420,11 +420,74 @@ utility_LBB6_19:
 utility_Lfunc_end6:
 	.size	string_compare, utility_Lfunc_end6-string_compare
                                         # -- End function
+	.globl	print_array                     # -- Begin function print_array
+	.p2align	2
+	.type	print_array,@function
+print_array:                            # @print_array
+# %bb.0:
+	addi	sp, sp, -32
+	sw	ra, 28(sp)                      # 4-byte Folded Spill
+	sw	s0, 24(sp)                      # 4-byte Folded Spill
+	addi	s0, sp, 32
+	sw	a0, -16(s0)
+	sw	a1, -20(s0)
+	lw	a0, -16(s0)
+	bnez	a0, utility_LBB7_2
+	j	utility_LBB7_1
+utility_LBB7_1:
+	li	a0, -1
+	sw	a0, -12(s0)
+	j	utility_LBB7_7
+utility_LBB7_2:
+	li	a0, 0
+	sw	a0, -24(s0)
+	j	utility_LBB7_3
+utility_LBB7_3:                                # =>This Inner Loop Header: Depth=1
+	lw	a0, -24(s0)
+	lw	a1, -20(s0)
+	bge	a0, a1, utility_LBB7_6
+	j	utility_LBB7_4
+utility_LBB7_4:                                #   in Loop: Header=BB7_3 Depth=1
+	lw	a0, -16(s0)
+	lw	a1, -24(s0)
+	slli	a1, a1, 2
+	add	a0, a0, a1
+	lw	a0, 0(a0)
+	call	print
+utility_Lpcrel_hi1:
+	auipc	a0, %pcrel_hi(utility_L.str)
+	addi	a0, a0, %pcrel_lo(utility_Lpcrel_hi1)
+	call	print
+	j	utility_LBB7_5
+utility_LBB7_5:                                #   in Loop: Header=BB7_3 Depth=1
+	lw	a0, -24(s0)
+	addi	a0, a0, 1
+	sw	a0, -24(s0)
+	j	utility_LBB7_3
+utility_LBB7_6:
+	li	a0, 0
+	sw	a0, -12(s0)
+	j	utility_LBB7_7
+utility_LBB7_7:
+	lw	a0, -12(s0)
+	lw	ra, 28(sp)                      # 4-byte Folded Reload
+	lw	s0, 24(sp)                      # 4-byte Folded Reload
+	addi	sp, sp, 32
+	ret
+utility_Lfunc_end7:
+	.size	print_array, utility_Lfunc_end7-print_array
+                                        # -- End function
 	.type	int_to_hex.hex_digits,@object   # @int_to_hex.hex_digits
 	.data
 int_to_hex.hex_digits:
 	.ascii	"0123456789abcdef"
 	.size	int_to_hex.hex_digits, 16
+
+	.type	utility_L.str,@object                  # @.str
+	.section	.rodata.str1.1,"aMS",@progbits,1
+utility_L.str:
+	.asciz	"\n"
+	.size	utility_L.str, 2
 
 	.ident	"clang version 19.1.7"
 	.section	".note.GNU-stack","",@progbits
