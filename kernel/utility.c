@@ -152,3 +152,16 @@ int string_compare (char* strA, char* strB, int maxlen) {
   
 } /* string_compare () */
 /* =============================================================================================================================== */
+
+int print_array (char** array, int length) {
+
+  if (array == NULL) return -1;
+
+  for (int i = 0; i < length; i++) {
+    print(array[i]);
+    print("\n");
+  }
+
+  return 0;
+
+} /* print_array () */

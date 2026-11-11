@@ -35,14 +35,6 @@
 #define SYSCALL_CREATE    0xca110008
 #define SYSCALL_DELETE    0xca110009
 #define SYSCALL_RENAME    0xca11000a
-#define GETLENGTH         0xca110004
-#define GETDIR            0xca110005
-#define READ              0xca110006
-#define WRITE             0xca110007
-#define CREATE            0xca110008
-#define DELETE            0xca110009
-#define RENAME             0xca11000a
-
 #define SYSCALL_INVALID_CODE -1
 
 #define RUN_ERROR_NO_FILE    -1
@@ -58,7 +50,7 @@
 
 #define SCHEDULER_QUANTUM 0x100
 
-#define INIT_FILENAME     "init.vmx"
+#define INIT_FILENAME     "syscall-test.vmx"
 
 #define MAX_FILENAME_LENGTH   60
 /* =============================================================================================================================== */
@@ -310,6 +302,7 @@ word_t do_print (address_t msg) {
   
   /* Make the printing happen. */
   print((char*)msg);
+  print("\n");
 
   /* Advance the process PC so that it resumes after the ecall. */
   current_process->epc += 4;
@@ -320,6 +313,12 @@ word_t do_print (address_t msg) {
 /* =============================================================================================================================== */
 
 int getlength(char* filename) {
+  address_t filename_addr = (address_t) filename + current_process->base;
+  if (filename_addr >= current_process->limit) {
+    return -1;
+  }
+
+  filename = (char*)filename_addr;
 
   if (filename == NULL) {
     // We need to grab the number of entries in '/'
@@ -344,6 +343,14 @@ int getlength(char* filename) {
 
   deallocate(inode);
   inode = NULL;
+
+
+  print("File: ");
+  print(filename);
+  print("\nLength: ");
+  print_dec(length);
+
+  current_process->epc += 4;
   return length;
 
 }
@@ -354,6 +361,8 @@ void getdir (filename_t* file_list_buffer) {
   for (int i = 0; i < num_entries; i++) {
     string_copy(file_list_buffer[i], directory_entries[i].filename, sizeof(filename_t));
   }
+  current_process->epc += 4;
+  print_array((char**) file_list_buffer, num_entries);
 }
 
 int read (char* filename, int offset, int length, void* buffer){
@@ -369,6 +378,33 @@ int read (char* filename, int offset, int length, void* buffer){
     return FS_INVAL_BUFFER;
   }
 
+  inode_s* inode = allocate(BYTES_PER_BLOCK);
+  if (inode == NULL) return FS_OTHER_FAIL;
+  if (bd_read_block(inode_block, (address_t)inode) < 0) {
+    deallocate(inode);
+    return FS_OTHER_FAIL;
+  }
+
+  int file_length = inode->length;
+  if (offset < 0 || length < 0 || offset + length > file_length) {
+    deallocate(inode);
+    return FS_INVAL_RANGE;
+  }
+
+  read_inode_to_buffer((address_t)buffer, inode, length);
+  current_process->epc += 4;
+  //return the amount of bytes read
+  return length;
+}
+
+int write (char* filename, int offset, int length, void* buffer){
+  if (filename == NULL || string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
+    return FS_INVAL_NAME;
+  }
+
+  /* Lookup the filename to get the inode. */
+  block_number_t inode_block = search_directory(filename);
+  if (inode_block == 0) return FS_NO_SUCH_FILE;
 
   inode_s* inode = allocate(BYTES_PER_BLOCK);
   if (inode == NULL) return FS_OTHER_FAIL;
@@ -383,7 +419,26 @@ int read (char* filename, int offset, int length, void* buffer){
     return FS_INVAL_RANGE;
   }
 
-  read_inode_to_buffer(buffer, inode, length);
+  if (buffer == NULL){
+    return FS_INVAL_BUFFER;
+  }
+  
+  if(length + offset > file_length){
+    return -5;
+  }
+
+  return 0;
+}
+
+int create (char* filename){
+  if (filename == NULL || string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
+    return FS_INVAL_NAME;
+  }
+
+  /* Lookup the filename to get the inode. */
+  block_number_t inode_block = search_directory(filename);
+  if (inode_block != 0) return -2;
+
 }
 
 /* =============================================================================================================================== */
@@ -392,8 +447,12 @@ int read (char* filename, int offset, int length, void* buffer){
  *
  * \param code The requested syscall type
  * \param arg0 An additional argument; whether it is relevant depends upon which syscall is requested.
+ * \param arg1 An additional argument; whether it is relevant depends upon which syscall is requested.
+ * \param arg2 An additional argument; whether it is relevant depends upon which syscall is requested.
+ * \param arg3 An additional argument; whether it is relevant depends upon which syscall is requested.
+ * \param arg4 An additional argument; whether it is relevant depends upon which syscall is requested.
  */
-void do_syscall (word_t code, word_t arg0) {
+void do_syscall (word_t code, word_t arg0, word_t arg1, word_t arg2, word_t arg3, word_t arg4) {
 
   /* Copy the preserved epc & sp into the process's info. */
   current_process->epc = preserved_epc;
@@ -425,21 +484,26 @@ void do_syscall (word_t code, word_t arg0) {
     has_return_value = true;
     result = do_print((address_t)arg0);
     
-  } else if (code == GETLENGTH) {
+  } else if (code == SYSCALL_GETLENGTH) {
+    
     has_return_value = true;
     result = getlength((char*)arg0);
     
-  } else if (code == GETDIR) {
-    
-  } else if (code == READ) {
+  } else if (code == SYSCALL_GETDIR) {
+    getdir((filename_t*)arg0);
+  
+  } else if (code == SYSCALL_READ) {
+    has_return_value = true;
+    result = read ((char*)arg0, (int)arg1, (int)arg2, (void*)arg3);
 
-  } else if (code == WRITE) {
+  } else if (code == SYSCALL_WRITE) {
+    result = write((char*)arg0, (int)arg1, (int)arg2, (void*)arg3);
     
-  } else if (code == CREATE) {
+  } else if (code == SYSCALL_CREATE) {
     
-  } else if (code == DELETE) {
+  } else if (code == SYSCALL_DELETE) {
     
-  } else if (code == RENAME) {
+  } else if (code == SYSCALL_RENAME) {
     
   } else {
     
