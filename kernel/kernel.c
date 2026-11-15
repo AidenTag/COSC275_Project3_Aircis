@@ -15,6 +15,7 @@
 #include "superblock.h"
 #include "types.h"
 #include "utility.h"
+#include "bitmap.h"
 /* =============================================================================================================================== */
 
 
@@ -366,6 +367,11 @@ void getdir (filename_t* file_list_buffer) {
 }
 
 int read (char* filename, int offset, int length, void* buffer){
+  /* 
+  Copy the whole file into a part of RAM, then read the requested range. 
+  - we need place in memory for the inode block, the whole file, and the buffer (given).
+  */
+  
   if (filename == NULL || string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
     return FS_INVAL_NAME;
   }
@@ -380,6 +386,7 @@ int read (char* filename, int offset, int length, void* buffer){
 
   inode_s* inode = allocate(BYTES_PER_BLOCK);
   if (inode == NULL) return FS_OTHER_FAIL;
+  
   if (bd_read_block(inode_block, (address_t)inode) < 0) {
     deallocate(inode);
     return FS_OTHER_FAIL;
@@ -391,7 +398,22 @@ int read (char* filename, int offset, int length, void* buffer){
     return FS_INVAL_RANGE;
   }
 
-  read_inode_to_buffer((address_t)buffer, inode, length);
+  // Grab a space in memory for the whole file, then read it into that space.
+  address_t file_buffer = allocate(file_length);
+  if (file_buffer == 0) {
+    deallocate(inode);
+    return FS_OTHER_FAIL;
+  }
+  read_inode_to_buffer(file_buffer, inode, file_length);
+
+  // Copy from offset to offset + length
+  DMA_portal_ptr->src = file_buffer + offset;
+  DMA_portal_ptr->dst = (address_t) buffer;
+  DMA_portal_ptr->length = length;
+
+  deallocate(file_buffer);
+  deallocate(inode);
+  
   current_process->epc += 4;
   //return the amount of bytes read
   return length;
@@ -414,7 +436,7 @@ int write (char* filename, int offset, int length, void* buffer){
   }
 
   int file_length = inode->length;
-  if (offset < 0 || length < 0 || offset + length > file_length) {
+  if (offset < 0 || length < 0) {
     deallocate(inode);
     return FS_INVAL_RANGE;
   }
@@ -423,8 +445,62 @@ int write (char* filename, int offset, int length, void* buffer){
     return FS_INVAL_BUFFER;
   }
   
+  // Handle whether we need to extend the file.
   if(length + offset > file_length){
-    return -5;
+    int num_old_blocks = (file_length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK;
+    int num_new_blocks = ((offset + length) - file_length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK;
+
+    file_length = offset + length;
+    inode->length = file_length;
+
+    // we gotta check whether there are enough blocks available according to the bitmap
+
+    block_number_t bitmap_block = superblock->bitmap_block;
+
+    bitmap_entry_t* bitmap = allocate(BYTES_PER_BLOCK);
+    if (bitmap == NULL) return FS_OTHER_FAIL;
+    
+    if (bd_read_block(bitmap_block, (address_t)bitmap) < 0) {
+      deallocate(bitmap);
+      return FS_OTHER_FAIL;
+    }
+
+    for (int i = 0; i < num_new_blocks; i++) {
+      int new_block = alloc_block(superblock, bitmap);
+      if (new_block == 0) {
+        deallocate(bitmap);
+        return FS_OTHER_FAIL;
+      } else {
+        inode->blocks[num_old_blocks + i] = new_block; // we don't have the minus 1 cuz we want this to be a new index in the array
+      }
+    }
+    deallocate(bitmap);
+
+
+    // try to allocate the needed blocks
+    
+
+    // grab blocks we need, add them to the inode blocks array (which we do basically by making a new array on the heap?)
+
+  }
+
+  // Now grab a spot in RAM for the whole file, then read it into that space.
+  address_t file_buffer = allocate(file_length);
+  if (file_buffer == 0) {
+    deallocate(inode);
+    return FS_OTHER_FAIL;
+  }
+  read_inode_to_buffer(file_buffer, inode, file_length);
+
+  // Overwrite offset to offset + length
+  DMA_portal_ptr->src = (address_t) buffer;
+  DMA_portal_ptr->dst = file_buffer + offset;
+  DMA_portal_ptr->length = length;
+
+  // Now write to all the blocks in inode->blocks
+  int num_blocks = (file_length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK; // need to round up
+  for (int i = 0; i < num_blocks; i++) {
+    bd_write_block(inode->blocks[i], file_buffer + i * BYTES_PER_BLOCK);
   }
 
   return 0;
