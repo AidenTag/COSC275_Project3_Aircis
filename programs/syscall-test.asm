@@ -20,7 +20,8 @@
 	li a0,   0xca110002 # PRINT
 	ecall
 
-	li a0 	0xcall0005 # GETDIR
+	li a0, 	0xcall0005 # GETDIR
+	
 
 	
 	li	a0,	0xca110001	# EXIT
