@@ -589,100 +589,14 @@ kernel_Lfunc_end8:
 	#	-- End function 
 read:
 	#	%bb.0: 
-	addi	sp, sp, -48 
-	sw	ra, 44(sp) # 4-byte Folded Spill 
-	sw	s0, 40(sp) # 4-byte Folded Spill 
-	addi	s0, sp, 48 
+	addi	sp, sp, -64 
+	sw	ra, 60(sp) # 4-byte Folded Spill 
+	sw	s0, 56(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 64 
 	sw	a0, -16(s0) 
 	sw	a1, -20(s0) 
 	sw	a2, -24(s0) 
 	sw	a3, -28(s0) 
-	lw	a0, -16(s0) 
-	beqz	a0, kernel_LBB9_2 
-	j	kernel_LBB9_1 
-kernel_LBB9_1:
-	lw	a0, -16(s0) 
-	li	a1, 61 
-	sw	a1, -44(s0) # 4-byte Folded Spill 
-	call	string_length 
-	lw	a1, -44(s0) # 4-byte Folded Reload 
-	blt	a0, a1, kernel_LBB9_3 
-	j	kernel_LBB9_2 
-kernel_LBB9_2:
-	li	a0, -1 
-	sw	a0, -12(s0) 
-	j	kernel_LBB9_16 
-kernel_LBB9_3:
-	lw	a0, -16(s0) 
-	call	search_directory 
-	sw	a0, -32(s0) 
-	lw	a0, -32(s0) 
-	bnez	a0, kernel_LBB9_5 
-	j	kernel_LBB9_4 
-kernel_LBB9_4:
-	li	a0, -2 
-	sw	a0, -12(s0) 
-	j	kernel_LBB9_16 
-kernel_LBB9_5:
-	lw	a0, -28(s0) 
-	bnez	a0, kernel_LBB9_7 
-	j	kernel_LBB9_6 
-kernel_LBB9_6:
-	li	a0, -4 
-	sw	a0, -12(s0) 
-	j	kernel_LBB9_16 
-kernel_LBB9_7:
-	lui	a0, 1 
-	call	allocate 
-	sw	a0, -36(s0) 
-	lw	a0, -36(s0) 
-	bnez	a0, kernel_LBB9_9 
-	j	kernel_LBB9_8 
-kernel_LBB9_8:
-	li	a0, -5 
-	sw	a0, -12(s0) 
-	j	kernel_LBB9_16 
-kernel_LBB9_9:
-	lw	a0, -32(s0) 
-	lw	a1, -36(s0) 
-	call	bd_read_block 
-	bgez	a0, kernel_LBB9_11 
-	j	kernel_LBB9_10 
-kernel_LBB9_10:
-	lw	a0, -36(s0) 
-	call	deallocate 
-	li	a0, -5 
-	sw	a0, -12(s0) 
-	j	kernel_LBB9_16 
-kernel_LBB9_11:
-	lw	a0, -36(s0) 
-	lw	a0, 0(a0) 
-	sw	a0, -40(s0) 
-	lw	a0, -20(s0) 
-	bltz	a0, kernel_LBB9_14 
-	j	kernel_LBB9_12 
-kernel_LBB9_12:
-	lw	a0, -24(s0) 
-	bltz	a0, kernel_LBB9_14 
-	j	kernel_LBB9_13 
-kernel_LBB9_13:
-	lw	a0, -20(s0) 
-	lw	a1, -24(s0) 
-	add	a1, a0, a1 
-	lw	a0, -40(s0) 
-	bge	a0, a1, kernel_LBB9_15 
-	j	kernel_LBB9_14 
-kernel_LBB9_14:
-	lw	a0, -36(s0) 
-	call	deallocate 
-	li	a0, -3 
-	sw	a0, -12(s0) 
-	j	kernel_LBB9_16 
-kernel_LBB9_15:
-	lw	a0, -28(s0) 
-	lw	a1, -36(s0) 
-	lw	a2, -24(s0) 
-	call	read_inode_to_buffer 
 kernel_Lpcrel_hi32:
 	auipc	a0, %hi(%pcrel(current_process))
 	addi	a0, a0, %lo(%larel(current_process,kernel_Lpcrel_hi32))
@@ -690,365 +604,1146 @@ kernel_Lpcrel_hi32:
 	lw	a0, 16(a1) 
 	addi	a0, a0, 4 
 	sw	a0, 16(a1) 
+	lw	a0, -16(s0) 
+	bnez	a0, kernel_LBB9_2 
+	j	kernel_LBB9_1 
+kernel_LBB9_1:
+	li	a0, -1 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_2:
+	lw	a0, -28(s0) 
+	bnez	a0, kernel_LBB9_4 
+	j	kernel_LBB9_3 
+kernel_LBB9_3:
+	li	a0, -4 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_4:
+	lw	a0, -16(s0) 
+kernel_Lpcrel_hi33:
+	auipc	a1, %hi(%pcrel(current_process))
+	addi	a1, a1, %lo(%larel(current_process,kernel_Lpcrel_hi33))
+	lw	a2, 0(a1) 
+	lw	a2, 8(a2) 
+	add	a0, a0, a2 
+	sw	a0, -32(s0) 
+	lw	a0, -32(s0) 
+	lw	a1, 0(a1) 
+	lw	a1, 12(a1) 
+	bltu	a0, a1, kernel_LBB9_6 
+	j	kernel_LBB9_5 
+kernel_LBB9_5:
+	li	a0, -1 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_6:
+	lw	a0, -32(s0) 
+	sw	a0, -16(s0) 
+	lw	a0, -28(s0) 
+kernel_Lpcrel_hi34:
+	auipc	a1, %hi(%pcrel(current_process))
+	addi	a1, a1, %lo(%larel(current_process,kernel_Lpcrel_hi34))
+	lw	a2, 0(a1) 
+	lw	a2, 8(a2) 
+	add	a0, a0, a2 
+	sw	a0, -36(s0) 
+	lw	a0, -36(s0) 
+	lw	a1, 0(a1) 
+	lw	a1, 12(a1) 
+	bltu	a0, a1, kernel_LBB9_8 
+	j	kernel_LBB9_7 
+kernel_LBB9_7:
+	li	a0, -4 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_8:
+	lw	a0, -36(s0) 
+	sw	a0, -28(s0) 
+	lw	a0, -16(s0) 
+	li	a1, 61 
+	sw	a1, -60(s0) # 4-byte Folded Spill 
+	call	string_length 
+	lw	a1, -60(s0) # 4-byte Folded Reload 
+	blt	a0, a1, kernel_LBB9_10 
+	j	kernel_LBB9_9 
+kernel_LBB9_9:
+	li	a0, -1 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_10:
+	lw	a0, -16(s0) 
+	call	search_directory 
+	sw	a0, -40(s0) 
+	lw	a0, -40(s0) 
+	bnez	a0, kernel_LBB9_12 
+	j	kernel_LBB9_11 
+kernel_LBB9_11:
+	li	a0, -2 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_12:
+	lui	a0, 1 
+	call	allocate 
+	sw	a0, -44(s0) 
+	lw	a0, -44(s0) 
+	bnez	a0, kernel_LBB9_14 
+	j	kernel_LBB9_13 
+kernel_LBB9_13:
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_14:
+	lw	a0, -40(s0) 
+	lw	a1, -44(s0) 
+	call	bd_read_block 
+	bgez	a0, kernel_LBB9_16 
+	j	kernel_LBB9_15 
+kernel_LBB9_15:
+	lw	a0, -44(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_16:
+	lw	a0, -44(s0) 
+	lw	a0, 0(a0) 
+	sw	a0, -48(s0) 
+	lw	a0, -20(s0) 
+	bltz	a0, kernel_LBB9_19 
+	j	kernel_LBB9_17 
+kernel_LBB9_17:
+	lw	a0, -24(s0) 
+	bltz	a0, kernel_LBB9_19 
+	j	kernel_LBB9_18 
+kernel_LBB9_18:
+	lw	a0, -20(s0) 
+	lw	a1, -24(s0) 
+	add	a1, a0, a1 
+	lw	a0, -48(s0) 
+	bge	a0, a1, kernel_LBB9_20 
+	j	kernel_LBB9_19 
+kernel_LBB9_19:
+	lw	a0, -44(s0) 
+	call	deallocate 
+	li	a0, -3 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_20:
+	lw	a0, -48(s0) 
+	lui	a1, 1 
+	addi	a1, a1, -1 
+	add	a0, a0, a1 
+	srai	a1, a0, 31 
+	srli	a1, a1, 20 
+	add	a0, a0, a1 
+	srai	a0, a0, 12 
+	sw	a0, -52(s0) 
+	lw	a0, -52(s0) 
+	slli	a0, a0, 12 
+	call	allocate 
+	sw	a0, -56(s0) 
+	lw	a0, -56(s0) 
+	bnez	a0, kernel_LBB9_22 
+	j	kernel_LBB9_21 
+kernel_LBB9_21:
+	lw	a0, -44(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_22:
+	lw	a0, -56(s0) 
+	lw	a1, -44(s0) 
+	lw	a2, -48(s0) 
+	call	read_inode_to_buffer 
+	bgez	a0, kernel_LBB9_24 
+	j	kernel_LBB9_23 
+kernel_LBB9_23:
+	lw	a0, -56(s0) 
+	call	deallocate 
+	lw	a0, -44(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB9_25 
+kernel_LBB9_24:
+	lw	a0, -56(s0) 
+	lw	a1, -20(s0) 
+	add	a0, a0, a1 
+kernel_Lpcrel_hi35:
+	auipc	a1, %hi(%pcrel(DMA_portal_ptr))
+	addi	a1, a1, %lo(%larel(DMA_portal_ptr,kernel_Lpcrel_hi35))
+	lw	a2, 0(a1) 
+	sw	a0, 0(a2) 
+	lw	a0, -28(s0) 
+	lw	a2, 0(a1) 
+	sw	a0, 4(a2) 
+	lw	a0, -24(s0) 
+	lw	a1, 0(a1) 
+	sw	a0, 8(a1) 
+	lw	a0, -56(s0) 
+	call	deallocate 
+	lw	a0, -44(s0) 
+	call	deallocate 
 	lw	a0, -24(s0) 
 	sw	a0, -12(s0) 
-	j	kernel_LBB9_16 
-kernel_LBB9_16:
+	j	kernel_LBB9_25 
+kernel_LBB9_25:
 	lw	a0, -12(s0) 
-	lw	ra, 44(sp) # 4-byte Folded Reload 
-	lw	s0, 40(sp) # 4-byte Folded Reload 
-	addi	sp, sp, 48 
+	lw	ra, 60(sp) # 4-byte Folded Reload 
+	lw	s0, 56(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 64 
 	ret	
 kernel_Lfunc_end9:
 	#	-- End function 
 write:
 	#	%bb.0: 
-	addi	sp, sp, -48 
-	sw	ra, 44(sp) # 4-byte Folded Spill 
-	sw	s0, 40(sp) # 4-byte Folded Spill 
-	addi	s0, sp, 48 
+	addi	sp, sp, -96 
+	sw	ra, 92(sp) # 4-byte Folded Spill 
+	sw	s0, 88(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 96 
 	sw	a0, -16(s0) 
 	sw	a1, -20(s0) 
 	sw	a2, -24(s0) 
 	sw	a3, -28(s0) 
+kernel_Lpcrel_hi36:
+	auipc	a0, %hi(%pcrel(current_process))
+	addi	a0, a0, %lo(%larel(current_process,kernel_Lpcrel_hi36))
+	lw	a1, 0(a0) 
+	lw	a0, 16(a1) 
+	addi	a0, a0, 4 
+	sw	a0, 16(a1) 
 	lw	a0, -16(s0) 
-	beqz	a0, kernel_LBB10_2 
+	bnez	a0, kernel_LBB10_2 
 	j	kernel_LBB10_1 
 kernel_LBB10_1:
-	lw	a0, -16(s0) 
-	li	a1, 61 
-	sw	a1, -44(s0) # 4-byte Folded Spill 
-	call	string_length 
-	lw	a1, -44(s0) # 4-byte Folded Reload 
-	blt	a0, a1, kernel_LBB10_3 
-	j	kernel_LBB10_2 
-kernel_LBB10_2:
 	li	a0, -1 
 	sw	a0, -12(s0) 
-	j	kernel_LBB10_16 
+	j	kernel_LBB10_47 
+kernel_LBB10_2:
+	lw	a0, -28(s0) 
+	bnez	a0, kernel_LBB10_4 
+	j	kernel_LBB10_3 
 kernel_LBB10_3:
+	li	a0, -4 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_4:
 	lw	a0, -16(s0) 
-	call	search_directory 
+kernel_Lpcrel_hi37:
+	auipc	a1, %hi(%pcrel(current_process))
+	addi	a1, a1, %lo(%larel(current_process,kernel_Lpcrel_hi37))
+	lw	a2, 0(a1) 
+	lw	a2, 8(a2) 
+	add	a0, a0, a2 
 	sw	a0, -32(s0) 
 	lw	a0, -32(s0) 
-	bnez	a0, kernel_LBB10_5 
-	j	kernel_LBB10_4 
-kernel_LBB10_4:
-	li	a0, -2 
-	sw	a0, -12(s0) 
-	j	kernel_LBB10_16 
+	lw	a1, 0(a1) 
+	lw	a1, 12(a1) 
+	bltu	a0, a1, kernel_LBB10_6 
+	j	kernel_LBB10_5 
 kernel_LBB10_5:
-	lui	a0, 1 
-	call	allocate 
+	li	a0, -1 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_6:
+	lw	a0, -32(s0) 
+	sw	a0, -16(s0) 
+	lw	a0, -28(s0) 
+kernel_Lpcrel_hi38:
+	auipc	a1, %hi(%pcrel(current_process))
+	addi	a1, a1, %lo(%larel(current_process,kernel_Lpcrel_hi38))
+	lw	a2, 0(a1) 
+	lw	a2, 8(a2) 
+	add	a0, a0, a2 
 	sw	a0, -36(s0) 
 	lw	a0, -36(s0) 
-	bnez	a0, kernel_LBB10_7 
-	j	kernel_LBB10_6 
-kernel_LBB10_6:
-	li	a0, -5 
-	sw	a0, -12(s0) 
-	j	kernel_LBB10_16 
+	lw	a1, 0(a1) 
+	lw	a1, 12(a1) 
+	bltu	a0, a1, kernel_LBB10_8 
+	j	kernel_LBB10_7 
 kernel_LBB10_7:
-	lw	a0, -32(s0) 
-	lw	a1, -36(s0) 
-	call	bd_read_block 
-	bgez	a0, kernel_LBB10_9 
-	j	kernel_LBB10_8 
+	li	a0, -4 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
 kernel_LBB10_8:
 	lw	a0, -36(s0) 
+	sw	a0, -28(s0) 
+	lw	a0, -16(s0) 
+	li	a1, 61 
+	sw	a1, -84(s0) # 4-byte Folded Spill 
+	call	string_length 
+	lw	a1, -84(s0) # 4-byte Folded Reload 
+	blt	a0, a1, kernel_LBB10_10 
+	j	kernel_LBB10_9 
+kernel_LBB10_9:
+	li	a0, -1 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_10:
+	lw	a0, -16(s0) 
+	call	search_directory 
+	sw	a0, -40(s0) 
+	lw	a0, -40(s0) 
+	bnez	a0, kernel_LBB10_12 
+	j	kernel_LBB10_11 
+kernel_LBB10_11:
+	li	a0, -2 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_12:
+	lui	a0, 1 
+	call	allocate 
+	sw	a0, -44(s0) 
+	lw	a0, -44(s0) 
+	bnez	a0, kernel_LBB10_14 
+	j	kernel_LBB10_13 
+kernel_LBB10_13:
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_14:
+	lw	a0, -40(s0) 
+	lw	a1, -44(s0) 
+	call	bd_read_block 
+	bgez	a0, kernel_LBB10_16 
+	j	kernel_LBB10_15 
+kernel_LBB10_15:
+	lw	a0, -44(s0) 
 	call	deallocate 
 	li	a0, -5 
 	sw	a0, -12(s0) 
-	j	kernel_LBB10_16 
-kernel_LBB10_9:
-	lw	a0, -36(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_16:
+	lw	a0, -44(s0) 
 	lw	a0, 0(a0) 
-	sw	a0, -40(s0) 
+	sw	a0, -48(s0) 
 	lw	a0, -20(s0) 
-	bltz	a0, kernel_LBB10_12 
-	j	kernel_LBB10_10 
-kernel_LBB10_10:
+	bltz	a0, kernel_LBB10_18 
+	j	kernel_LBB10_17 
+kernel_LBB10_17:
 	lw	a0, -24(s0) 
-	bltz	a0, kernel_LBB10_12 
-	j	kernel_LBB10_11 
-kernel_LBB10_11:
-	lw	a0, -20(s0) 
-	lw	a1, -24(s0) 
-	add	a1, a0, a1 
-	lw	a0, -40(s0) 
-	bge	a0, a1, kernel_LBB10_13 
-	j	kernel_LBB10_12 
-kernel_LBB10_12:
-	lw	a0, -36(s0) 
+	bgez	a0, kernel_LBB10_19 
+	j	kernel_LBB10_18 
+kernel_LBB10_18:
+	lw	a0, -44(s0) 
 	call	deallocate 
 	li	a0, -3 
 	sw	a0, -12(s0) 
-	j	kernel_LBB10_16 
-kernel_LBB10_13:
-	lw	a0, -28(s0) 
-	bnez	a0, kernel_LBB10_15 
-	j	kernel_LBB10_14 
-kernel_LBB10_14:
-	li	a0, -4 
+	j	kernel_LBB10_47 
+kernel_LBB10_19:
+	lw	a0, -48(s0) 
+	lui	a1, 1 
+	addi	a1, a1, -1 
+	add	a0, a0, a1 
+	srai	a1, a0, 31 
+	srli	a1, a1, 20 
+	add	a0, a0, a1 
+	srai	a0, a0, 12 
+	sw	a0, -52(s0) 
+	lw	a0, -52(s0) 
+	slli	a0, a0, 12 
+	call	allocate 
+	sw	a0, -56(s0) 
+	lw	a0, -56(s0) 
+	bnez	a0, kernel_LBB10_21 
+	j	kernel_LBB10_20 
+kernel_LBB10_20:
+	lw	a0, -44(s0) 
+	call	deallocate 
+	li	a0, -5 
 	sw	a0, -12(s0) 
-	j	kernel_LBB10_16 
-kernel_LBB10_15:
+	j	kernel_LBB10_47 
+kernel_LBB10_21:
+	lw	a0, -56(s0) 
+	lw	a1, -44(s0) 
+	lw	a2, -48(s0) 
+	call	read_inode_to_buffer 
+	bgez	a0, kernel_LBB10_23 
+	j	kernel_LBB10_22 
+kernel_LBB10_22:
+	lw	a0, -56(s0) 
+	call	deallocate 
+	lw	a0, -44(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_23:
+	lw	a0, -24(s0) 
+	lw	a1, -20(s0) 
+	add	a1, a0, a1 
+	lw	a0, -48(s0) 
+	bge	a0, a1, kernel_LBB10_38 
+	j	kernel_LBB10_24 
+kernel_LBB10_24:
+	lw	a0, -20(s0) 
+	lw	a1, -24(s0) 
+	add	a1, a0, a1 
+	lui	a0, 1 
+	addi	a2, a0, -1 
+	add	a1, a1, a2 
+	srai	a2, a1, 31 
+	srli	a2, a2, 20 
+	add	a1, a1, a2 
+	srai	a1, a1, 12 
+	lw	a2, -52(s0) 
+	sub	a1, a1, a2 
+	sw	a1, -60(s0) 
+	lw	a1, -20(s0) 
+	lw	a2, -24(s0) 
+	add	a1, a1, a2 
+	sw	a1, -48(s0) 
+	lw	a1, -48(s0) 
+	lw	a2, -44(s0) 
+	sw	a1, 0(a2) 
+kernel_Lpcrel_hi39:
+	auipc	a1, %hi(%pcrel(superblock))
+	addi	a1, a1, %lo(%larel(superblock,kernel_Lpcrel_hi39))
+	lw	a1, 0(a1) 
+	lw	a1, 8(a1) 
+	sw	a1, -64(s0) 
+	call	allocate 
+	sw	a0, -68(s0) 
+	lw	a0, -68(s0) 
+	bnez	a0, kernel_LBB10_26 
+	j	kernel_LBB10_25 
+kernel_LBB10_25:
+	lw	a0, -44(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_26:
+	lw	a0, -64(s0) 
+	lw	a1, -68(s0) 
+	call	bd_read_block 
+	bgez	a0, kernel_LBB10_28 
+	j	kernel_LBB10_27 
+kernel_LBB10_27:
+	lw	a0, -44(s0) 
+	call	deallocate 
+	lw	a0, -68(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_28:
 	li	a0, 0 
+	sw	a0, -72(s0) 
+	j	kernel_LBB10_29 
+kernel_LBB10_29:
+	lw	a0, -72(s0) 
+	lw	a1, -60(s0) 
+	bge	a0, a1, kernel_LBB10_35 
+	j	kernel_LBB10_30 
+kernel_LBB10_30:
+kernel_Lpcrel_hi40:
+	auipc	a0, %hi(%pcrel(superblock))
+	addi	a0, a0, %lo(%larel(superblock,kernel_Lpcrel_hi40))
+	lw	a0, 0(a0) 
+	lw	a1, -68(s0) 
+	call	alloc_block 
+	sw	a0, -76(s0) 
+	lw	a0, -76(s0) 
+	bnez	a0, kernel_LBB10_32 
+	j	kernel_LBB10_31 
+kernel_LBB10_31:
+	lw	a0, -44(s0) 
+	call	deallocate 
+	lw	a0, -68(s0) 
+	call	deallocate 
+	li	a0, -5 
 	sw	a0, -12(s0) 
-	j	kernel_LBB10_16 
-kernel_LBB10_16:
+	j	kernel_LBB10_47 
+kernel_LBB10_32:
+	lw	a0, -76(s0) 
+	lw	a1, -44(s0) 
+	lw	a2, -52(s0) 
+	lw	a3, -72(s0) 
+	add	a2, a2, a3 
+	slli	a2, a2, 2 
+	add	a1, a1, a2 
+	sw	a0, 32(a1) 
+	j	kernel_LBB10_33 
+kernel_LBB10_33:
+	j	kernel_LBB10_34 
+kernel_LBB10_34:
+	lw	a0, -72(s0) 
+	addi	a0, a0, 1 
+	sw	a0, -72(s0) 
+	j	kernel_LBB10_29 
+kernel_LBB10_35:
+	lw	a0, -64(s0) 
+	lw	a1, -68(s0) 
+	call	bd_write_block 
+	bgez	a0, kernel_LBB10_37 
+	j	kernel_LBB10_36 
+kernel_LBB10_36:
+	lw	a0, -44(s0) 
+	call	deallocate 
+	lw	a0, -68(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_37:
+	lw	a0, -68(s0) 
+	call	deallocate 
+	lw	a0, -48(s0) 
+	lui	a1, 1 
+	addi	a1, a1, -1 
+	add	a0, a0, a1 
+	srai	a1, a0, 31 
+	srli	a1, a1, 20 
+	add	a0, a0, a1 
+	srai	a0, a0, 12 
+	sw	a0, -52(s0) 
+	j	kernel_LBB10_38 
+kernel_LBB10_38:
+	lw	a0, -28(s0) 
+kernel_Lpcrel_hi41:
+	auipc	a1, %hi(%pcrel(DMA_portal_ptr))
+	addi	a1, a1, %lo(%larel(DMA_portal_ptr,kernel_Lpcrel_hi41))
+	lw	a2, 0(a1) 
+	sw	a0, 0(a2) 
+	lw	a0, -56(s0) 
+	lw	a2, -20(s0) 
+	add	a0, a0, a2 
+	lw	a2, 0(a1) 
+	sw	a0, 4(a2) 
+	lw	a0, -24(s0) 
+	lw	a1, 0(a1) 
+	sw	a0, 8(a1) 
+	li	a0, 0 
+	sw	a0, -80(s0) 
+	j	kernel_LBB10_39 
+kernel_LBB10_39:
+	lw	a0, -80(s0) 
+	lw	a1, -52(s0) 
+	bge	a0, a1, kernel_LBB10_44 
+	j	kernel_LBB10_40 
+kernel_LBB10_40:
+	lw	a0, -44(s0) 
+	lw	a2, -80(s0) 
+	slli	a1, a2, 2 
+	add	a0, a0, a1 
+	lw	a0, 32(a0) 
+	lw	a1, -56(s0) 
+	slli	a2, a2, 12 
+	add	a1, a1, a2 
+	call	bd_write_block 
+	bgez	a0, kernel_LBB10_42 
+	j	kernel_LBB10_41 
+kernel_LBB10_41:
+	lw	a0, -56(s0) 
+	call	deallocate 
+	lw	a0, -44(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_42:
+	j	kernel_LBB10_43 
+kernel_LBB10_43:
+	lw	a0, -80(s0) 
+	addi	a0, a0, 1 
+	sw	a0, -80(s0) 
+	j	kernel_LBB10_39 
+kernel_LBB10_44:
+	lw	a0, -40(s0) 
+	lw	a1, -44(s0) 
+	call	bd_write_block 
+	bgez	a0, kernel_LBB10_46 
+	j	kernel_LBB10_45 
+kernel_LBB10_45:
+	lw	a0, -44(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_46:
+	lw	a0, -56(s0) 
+	call	deallocate 
+	lw	a0, -44(s0) 
+	call	deallocate 
+	lw	a0, -24(s0) 
+	sw	a0, -12(s0) 
+	j	kernel_LBB10_47 
+kernel_LBB10_47:
 	lw	a0, -12(s0) 
-	lw	ra, 44(sp) # 4-byte Folded Reload 
-	lw	s0, 40(sp) # 4-byte Folded Reload 
-	addi	sp, sp, 48 
+	lw	ra, 92(sp) # 4-byte Folded Reload 
+	lw	s0, 88(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 96 
 	ret	
 kernel_Lfunc_end10:
 	#	-- End function 
 create:
 	#	%bb.0: 
-	addi	sp, sp, -32 
-	sw	ra, 28(sp) # 4-byte Folded Spill 
-	sw	s0, 24(sp) # 4-byte Folded Spill 
-	addi	s0, sp, 32 
+	addi	sp, sp, -64 
+	sw	ra, 60(sp) # 4-byte Folded Spill 
+	sw	s0, 56(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 64 
 	sw	a0, -16(s0) 
+kernel_Lpcrel_hi42:
+	auipc	a0, %hi(%pcrel(current_process))
+	addi	a0, a0, %lo(%larel(current_process,kernel_Lpcrel_hi42))
+	lw	a1, 0(a0) 
+	lw	a0, 16(a1) 
+	addi	a0, a0, 4 
+	sw	a0, 16(a1) 
 	lw	a0, -16(s0) 
-	beqz	a0, kernel_LBB11_2 
+	bnez	a0, kernel_LBB11_2 
 	j	kernel_LBB11_1 
 kernel_LBB11_1:
-	lw	a0, -16(s0) 
-	li	a1, 61 
-	sw	a1, -24(s0) # 4-byte Folded Spill 
-	call	string_length 
-	lw	a1, -24(s0) # 4-byte Folded Reload 
-	blt	a0, a1, kernel_LBB11_3 
-	j	kernel_LBB11_2 
-kernel_LBB11_2:
 	li	a0, -1 
 	sw	a0, -12(s0) 
-	j	kernel_LBB11_5 
-kernel_LBB11_3:
+	j	kernel_LBB11_23 
+kernel_LBB11_2:
 	lw	a0, -16(s0) 
-	call	search_directory 
+kernel_Lpcrel_hi43:
+	auipc	a1, %hi(%pcrel(current_process))
+	addi	a1, a1, %lo(%larel(current_process,kernel_Lpcrel_hi43))
+	lw	a2, 0(a1) 
+	lw	a2, 8(a2) 
+	add	a0, a0, a2 
 	sw	a0, -20(s0) 
 	lw	a0, -20(s0) 
-	beqz	a0, kernel_LBB11_5 
-	j	kernel_LBB11_4 
-kernel_LBB11_4:
-	li	a0, -2 
+	lw	a1, 0(a1) 
+	lw	a1, 12(a1) 
+	bltu	a0, a1, kernel_LBB11_4 
+	j	kernel_LBB11_3 
+kernel_LBB11_3:
+	li	a0, -1 
 	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_4:
+	lw	a0, -20(s0) 
+	sw	a0, -16(s0) 
+	lw	a0, -16(s0) 
+	li	a1, 61 
+	sw	a1, -48(s0) # 4-byte Folded Spill 
+	call	string_length 
+	lw	a1, -48(s0) # 4-byte Folded Reload 
+	blt	a0, a1, kernel_LBB11_6 
 	j	kernel_LBB11_5 
 kernel_LBB11_5:
+	li	a0, -1 
+	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_6:
+	lw	a0, -16(s0) 
+	call	search_directory 
+	sw	a0, -24(s0) 
+	lw	a0, -24(s0) 
+	beqz	a0, kernel_LBB11_8 
+	j	kernel_LBB11_7 
+kernel_LBB11_7:
+	li	a0, -2 
+	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_8:
+	lui	a0, 1 
+	call	allocate 
+	sw	a0, -28(s0) 
+	lw	a0, -28(s0) 
+	bnez	a0, kernel_LBB11_10 
+	j	kernel_LBB11_9 
+kernel_LBB11_9:
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_10:
+	lui	a0, 1 
+	call	allocate 
+	sw	a0, -32(s0) 
+	lw	a0, -32(s0) 
+	bnez	a0, kernel_LBB11_12 
+	j	kernel_LBB11_11 
+kernel_LBB11_11:
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_12:
+	lw	a1, -32(s0) 
+	li	a0, 0 
+	sw	a0, 0(a1) 
+	lw	a1, -32(s0) 
+	li	a0, 1 
+	sw	a0, 4(a1) 
+kernel_Lpcrel_hi44:
+	auipc	a0, %hi(%pcrel(superblock))
+	addi	a0, a0, %lo(%larel(superblock,kernel_Lpcrel_hi44))
+	lw	a0, 0(a0) 
+	lw	a0, 8(a0) 
+	sw	a0, -36(s0) 
+	lw	a0, -28(s0) 
+	bnez	a0, kernel_LBB11_14 
+	j	kernel_LBB11_13 
+kernel_LBB11_13:
+	lw	a0, -32(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_14:
+	lw	a0, -36(s0) 
+	lw	a1, -28(s0) 
+	call	bd_read_block 
+	bgez	a0, kernel_LBB11_16 
+	j	kernel_LBB11_15 
+kernel_LBB11_15:
+	lw	a0, -32(s0) 
+	call	deallocate 
+	lw	a0, -28(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_16:
+kernel_Lpcrel_hi45:
+	auipc	a0, %hi(%pcrel(superblock))
+	addi	a0, a0, %lo(%larel(superblock,kernel_Lpcrel_hi45))
+	lw	a0, 0(a0) 
+	lw	a1, -28(s0) 
+	call	alloc_block 
+	sw	a0, -24(s0) 
+	lw	a0, -24(s0) 
+	bnez	a0, kernel_LBB11_18 
+	j	kernel_LBB11_17 
+kernel_LBB11_17:
+	lw	a0, -32(s0) 
+	call	deallocate 
+	lw	a0, -28(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_18:
+kernel_Lpcrel_hi46:
+	auipc	a0, %hi(%pcrel(directory_inode))
+	addi	a0, a0, %lo(%larel(directory_inode,kernel_Lpcrel_hi46))
+	sw	a0, -52(s0) # 4-byte Folded Spill 
+	lw	a0, 0(a0) 
+	lw	a0, 0(a0) 
+	srli	a0, a0, 6 
+	sw	a0, -40(s0) 
+kernel_Lpcrel_hi47:
+	auipc	a0, %hi(%pcrel(directory_entries))
+	addi	a0, a0, %lo(%larel(directory_entries,kernel_Lpcrel_hi47))
+	lw	a0, 0(a0) 
+	lw	a1, -40(s0) 
+	slli	a1, a1, 6 
+	add	a0, a0, a1 
+	sw	a0, -44(s0) 
+	lw	a0, -24(s0) 
+	lw	a1, -44(s0) 
+	sw	a0, 0(a1) 
+	lw	a0, -44(s0) 
+	addi	a0, a0, 4 
+	lw	a1, -16(s0) 
+	li	a2, 60 
+	call	string_copy 
+	#	kill: def $x11 killed $x10 
+	lw	a0, -52(s0) # 4-byte Folded Reload 
+	lw	a1, 0(a0) 
+	lw	a0, 0(a1) 
+	addi	a0, a0, 64 
+	sw	a0, 0(a1) 
+	lw	a0, -24(s0) 
+	lw	a1, -32(s0) 
+	call	bd_write_block 
+	bgez	a0, kernel_LBB11_20 
+	j	kernel_LBB11_19 
+kernel_LBB11_19:
+	lw	a0, -32(s0) 
+	call	deallocate 
+	lw	a0, -28(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_20:
+	lw	a0, -36(s0) 
+	lw	a1, -28(s0) 
+	call	bd_write_block 
+	bgez	a0, kernel_LBB11_22 
+	j	kernel_LBB11_21 
+kernel_LBB11_21:
+	lw	a0, -32(s0) 
+	call	deallocate 
+	lw	a0, -28(s0) 
+	call	deallocate 
+	li	a0, -5 
+	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_22:
+	li	a0, 0 
+	sw	a0, -12(s0) 
+	j	kernel_LBB11_23 
+kernel_LBB11_23:
 	lw	a0, -12(s0) 
-	lw	ra, 28(sp) # 4-byte Folded Reload 
-	lw	s0, 24(sp) # 4-byte Folded Reload 
-	addi	sp, sp, 32 
+	lw	ra, 60(sp) # 4-byte Folded Reload 
+	lw	s0, 56(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 64 
 	ret	
 kernel_Lfunc_end11:
 	#	-- End function 
-do_syscall:
+delete:
 	#	%bb.0: 
 	addi	sp, sp, -32 
 	sw	ra, 28(sp) # 4-byte Folded Spill 
 	sw	s0, 24(sp) # 4-byte Folded Spill 
 	addi	s0, sp, 32 
-	sw	a0, -12(s0) 
-	sw	a1, -16(s0) 
-kernel_Lpcrel_hi33:
-	auipc	a0, %hi(%pcrel(preserved_epc))
-	addi	a0, a0, %lo(%larel(preserved_epc,kernel_Lpcrel_hi33))
-	lw	a0, 0(a0) 
-kernel_Lpcrel_hi34:
-	auipc	a1, %hi(%pcrel(current_process))
-	addi	a1, a1, %lo(%larel(current_process,kernel_Lpcrel_hi34))
-	lw	a2, 0(a1) 
-	sw	a0, 16(a2) 
-kernel_Lpcrel_hi35:
-	auipc	a0, %hi(%pcrel(preserved_sp))
-	addi	a0, a0, %lo(%larel(preserved_sp,kernel_Lpcrel_hi35))
-	lw	a0, 0(a0) 
-	lw	a1, 0(a1) 
-	sw	a0, 20(a1) 
-	li	a0, 0 
-	sb	a0, -17(s0) 
-	sw	a0, -24(s0) 
-	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	bne	a0, a1, kernel_LBB12_2 
+	sw	a0, -16(s0) 
+kernel_Lpcrel_hi48:
+	auipc	a0, %hi(%pcrel(current_process))
+	addi	a0, a0, %lo(%larel(current_process,kernel_Lpcrel_hi48))
+	lw	a1, 0(a0) 
+	lw	a0, 16(a1) 
+	addi	a0, a0, 4 
+	sw	a0, 16(a1) 
+	lw	a0, -16(s0) 
+	beqz	a0, kernel_LBB12_2 
 	j	kernel_LBB12_1 
 kernel_LBB12_1:
-	call	do_noop 
-	j	kernel_LBB12_35 
+	lw	a0, -16(s0) 
+	li	a1, 61 
+	sw	a1, -20(s0) # 4-byte Folded Spill 
+	call	string_length 
+	lw	a1, -20(s0) # 4-byte Folded Reload 
+	blt	a0, a1, kernel_LBB12_3 
+	j	kernel_LBB12_2 
 kernel_LBB12_2:
-	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	addi	a1, a1, 1 
-	bne	a0, a1, kernel_LBB12_6 
-	j	kernel_LBB12_3 
+	li	a0, -1 
+	sw	a0, -12(s0) 
+	j	kernel_LBB12_6 
 kernel_LBB12_3:
 	lw	a0, -16(s0) 
-	call	do_exit 
-kernel_Lpcrel_hi36:
-	auipc	a0, %hi(%pcrel(current_process))
-	addi	a0, a0, %lo(%larel(current_process,kernel_Lpcrel_hi36))
-	lw	a0, 0(a0) 
+	call	search_directory 
 	bnez	a0, kernel_LBB12_5 
 	j	kernel_LBB12_4 
 kernel_LBB12_4:
-kernel_Lpcrel_hi37:
-	auipc	a0, %hi(%pcrel(kernel_L.str.8))
-	addi	a0, a0, %lo(%larel(kernel_L.str.8,kernel_Lpcrel_hi37))
-	call	print 
-	call	halt_kernel 
-	j	kernel_LBB12_5 
+	li	a0, -2 
+	sw	a0, -12(s0) 
+	j	kernel_LBB12_6 
 kernel_LBB12_5:
-	j	kernel_LBB12_34 
+	li	a0, 0 
+	sw	a0, -12(s0) 
+	j	kernel_LBB12_6 
 kernel_LBB12_6:
 	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	addi	a1, a1, 3 
-	bne	a0, a1, kernel_LBB12_8 
-	j	kernel_LBB12_7 
-kernel_LBB12_7:
-	li	a0, 1 
-	sb	a0, -17(s0) 
-	lw	a0, -16(s0) 
-	call	do_run 
-	sw	a0, -24(s0) 
-	j	kernel_LBB12_33 
-kernel_LBB12_8:
-	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	addi	a1, a1, 2 
-	bne	a0, a1, kernel_LBB12_10 
-	j	kernel_LBB12_9 
-kernel_LBB12_9:
-	li	a0, 1 
-	sb	a0, -17(s0) 
-	lw	a0, -16(s0) 
-	call	do_print 
-	sw	a0, -24(s0) 
-	j	kernel_LBB12_32 
-kernel_LBB12_10:
-	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	addi	a1, a1, 4 
-	bne	a0, a1, kernel_LBB12_12 
-	j	kernel_LBB12_11 
-kernel_LBB12_11:
-	li	a0, 1 
-	sb	a0, -17(s0) 
-	lw	a0, -16(s0) 
-	call	getlength 
-	sw	a0, -24(s0) 
-	j	kernel_LBB12_31 
-kernel_LBB12_12:
-	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	addi	a1, a1, 5 
-	bne	a0, a1, kernel_LBB12_14 
-	j	kernel_LBB12_13 
-kernel_LBB12_13:
-	lw	a0, -16(s0) 
-	call	getdir 
-	j	kernel_LBB12_30 
-kernel_LBB12_14:
-	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	addi	a1, a1, 6 
-	bne	a0, a1, kernel_LBB12_16 
-	j	kernel_LBB12_15 
-kernel_LBB12_15:
-	li	a0, 1 
-	sb	a0, -17(s0) 
-	lw	a3, -16(s0) 
-	mv	a0, a3 
-	mv	a1, a3 
-	mv	a2, a3 
-	call	read 
-	sw	a0, -24(s0) 
-	j	kernel_LBB12_29 
-kernel_LBB12_16:
-	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	addi	a1, a1, 7 
-	bne	a0, a1, kernel_LBB12_18 
-	j	kernel_LBB12_17 
-kernel_LBB12_17:
-	j	kernel_LBB12_28 
-kernel_LBB12_18:
-	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	addi	a1, a1, 8 
-	bne	a0, a1, kernel_LBB12_20 
-	j	kernel_LBB12_19 
-kernel_LBB12_19:
-	j	kernel_LBB12_27 
-kernel_LBB12_20:
-	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	addi	a1, a1, 9 
-	bne	a0, a1, kernel_LBB12_22 
-	j	kernel_LBB12_21 
-kernel_LBB12_21:
-	j	kernel_LBB12_26 
-kernel_LBB12_22:
-	lw	a0, -12(s0) 
-	lui	a1, 827664 
-	addi	a1, a1, 10 
-	bne	a0, a1, kernel_LBB12_24 
-	j	kernel_LBB12_23 
-kernel_LBB12_23:
-	j	kernel_LBB12_25 
-kernel_LBB12_24:
-	li	a0, -1 
-	sw	a0, -24(s0) 
-	j	kernel_LBB12_25 
-kernel_LBB12_25:
-	j	kernel_LBB12_26 
-kernel_LBB12_26:
-	j	kernel_LBB12_27 
-kernel_LBB12_27:
-	j	kernel_LBB12_28 
-kernel_LBB12_28:
-	j	kernel_LBB12_29 
-kernel_LBB12_29:
-	j	kernel_LBB12_30 
-kernel_LBB12_30:
-	j	kernel_LBB12_31 
-kernel_LBB12_31:
-	j	kernel_LBB12_32 
-kernel_LBB12_32:
-	j	kernel_LBB12_33 
-kernel_LBB12_33:
-	j	kernel_LBB12_34 
-kernel_LBB12_34:
-	j	kernel_LBB12_35 
-kernel_LBB12_35:
-	lbu	a0, -17(s0) 
-	andi	a0, a0, 1 
-	beqz	a0, kernel_LBB12_37 
-	j	kernel_LBB12_36 
-kernel_LBB12_36:
-kernel_Lpcrel_hi38:
-	auipc	a0, %hi(%pcrel(current_process))
-	addi	a0, a0, %lo(%larel(current_process,kernel_Lpcrel_hi38))
-	lw	a1, 0(a0) 
-	lw	a0, 8(a1) 
-	lw	a1, 20(a1) 
-	add	a0, a0, a1 
-	addi	a0, a0, -36 
-	sw	a0, -28(s0) 
-	lw	a0, -24(s0) 
-	lw	a1, -28(s0) 
-	sw	a0, 0(a1) 
-	j	kernel_LBB12_37 
-kernel_LBB12_37:
-	call	cpu_scheduler 
 	lw	ra, 28(sp) # 4-byte Folded Reload 
 	lw	s0, 24(sp) # 4-byte Folded Reload 
 	addi	sp, sp, 32 
 	ret	
 kernel_Lfunc_end12:
+	#	-- End function 
+rename:
+	#	%bb.0: 
+	addi	sp, sp, -32 
+	sw	ra, 28(sp) # 4-byte Folded Spill 
+	sw	s0, 24(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 32 
+	sw	a0, -16(s0) 
+	sw	a1, -20(s0) 
+kernel_Lpcrel_hi49:
+	auipc	a0, %hi(%pcrel(current_process))
+	addi	a0, a0, %lo(%larel(current_process,kernel_Lpcrel_hi49))
+	lw	a1, 0(a0) 
+	lw	a0, 16(a1) 
+	addi	a0, a0, 4 
+	sw	a0, 16(a1) 
+	lw	a0, -20(s0) 
+	beqz	a0, kernel_LBB13_4 
+	j	kernel_LBB13_1 
+kernel_LBB13_1:
+	lw	a0, -20(s0) 
+	li	a1, 61 
+	call	string_length 
+	mv	a1, a0 
+	li	a0, 60 
+	blt	a0, a1, kernel_LBB13_4 
+	j	kernel_LBB13_2 
+kernel_LBB13_2:
+	lw	a0, -16(s0) 
+	beqz	a0, kernel_LBB13_4 
+	j	kernel_LBB13_3 
+kernel_LBB13_3:
+	lw	a0, -16(s0) 
+	li	a1, 61 
+	sw	a1, -24(s0) # 4-byte Folded Spill 
+	call	string_length 
+	lw	a1, -24(s0) # 4-byte Folded Reload 
+	blt	a0, a1, kernel_LBB13_5 
+	j	kernel_LBB13_4 
+kernel_LBB13_4:
+	li	a0, -1 
+	sw	a0, -12(s0) 
+	j	kernel_LBB13_10 
+kernel_LBB13_5:
+	lw	a0, -16(s0) 
+	call	search_directory 
+	bnez	a0, kernel_LBB13_7 
+	j	kernel_LBB13_6 
+kernel_LBB13_6:
+	li	a0, -2 
+	sw	a0, -12(s0) 
+	j	kernel_LBB13_10 
+kernel_LBB13_7:
+	lw	a0, -20(s0) 
+	call	search_directory 
+	beqz	a0, kernel_LBB13_9 
+	j	kernel_LBB13_8 
+kernel_LBB13_8:
+	li	a0, -3 
+	sw	a0, -12(s0) 
+	j	kernel_LBB13_10 
+kernel_LBB13_9:
+	li	a0, 0 
+	sw	a0, -12(s0) 
+	j	kernel_LBB13_10 
+kernel_LBB13_10:
+	lw	a0, -12(s0) 
+	lw	ra, 28(sp) # 4-byte Folded Reload 
+	lw	s0, 24(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 32 
+	ret	
+kernel_Lfunc_end13:
+	#	-- End function 
+do_syscall:
+	#	%bb.0: 
+	addi	sp, sp, -48 
+	sw	ra, 44(sp) # 4-byte Folded Spill 
+	sw	s0, 40(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 48 
+	sw	a0, -12(s0) 
+	sw	a1, -16(s0) 
+	sw	a2, -20(s0) 
+	sw	a3, -24(s0) 
+	sw	a4, -28(s0) 
+	sw	a5, -32(s0) 
+kernel_Lpcrel_hi50:
+	auipc	a0, %hi(%pcrel(preserved_epc))
+	addi	a0, a0, %lo(%larel(preserved_epc,kernel_Lpcrel_hi50))
+	lw	a0, 0(a0) 
+kernel_Lpcrel_hi51:
+	auipc	a1, %hi(%pcrel(current_process))
+	addi	a1, a1, %lo(%larel(current_process,kernel_Lpcrel_hi51))
+	lw	a2, 0(a1) 
+	sw	a0, 16(a2) 
+kernel_Lpcrel_hi52:
+	auipc	a0, %hi(%pcrel(preserved_sp))
+	addi	a0, a0, %lo(%larel(preserved_sp,kernel_Lpcrel_hi52))
+	lw	a0, 0(a0) 
+	lw	a1, 0(a1) 
+	sw	a0, 20(a1) 
+	li	a0, 0 
+	sb	a0, -33(s0) 
+	sw	a0, -40(s0) 
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	bne	a0, a1, kernel_LBB14_2 
+	j	kernel_LBB14_1 
+kernel_LBB14_1:
+	call	do_noop 
+	j	kernel_LBB14_35 
+kernel_LBB14_2:
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	addi	a1, a1, 1 
+	bne	a0, a1, kernel_LBB14_6 
+	j	kernel_LBB14_3 
+kernel_LBB14_3:
+	lw	a0, -16(s0) 
+	call	do_exit 
+kernel_Lpcrel_hi53:
+	auipc	a0, %hi(%pcrel(current_process))
+	addi	a0, a0, %lo(%larel(current_process,kernel_Lpcrel_hi53))
+	lw	a0, 0(a0) 
+	bnez	a0, kernel_LBB14_5 
+	j	kernel_LBB14_4 
+kernel_LBB14_4:
+kernel_Lpcrel_hi54:
+	auipc	a0, %hi(%pcrel(kernel_L.str.8))
+	addi	a0, a0, %lo(%larel(kernel_L.str.8,kernel_Lpcrel_hi54))
+	call	print 
+	call	halt_kernel 
+	j	kernel_LBB14_5 
+kernel_LBB14_5:
+	j	kernel_LBB14_34 
+kernel_LBB14_6:
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	addi	a1, a1, 3 
+	bne	a0, a1, kernel_LBB14_8 
+	j	kernel_LBB14_7 
+kernel_LBB14_7:
+	li	a0, 1 
+	sb	a0, -33(s0) 
+	lw	a0, -16(s0) 
+	call	do_run 
+	sw	a0, -40(s0) 
+	j	kernel_LBB14_33 
+kernel_LBB14_8:
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	addi	a1, a1, 2 
+	bne	a0, a1, kernel_LBB14_10 
+	j	kernel_LBB14_9 
+kernel_LBB14_9:
+	li	a0, 1 
+	sb	a0, -33(s0) 
+	lw	a0, -16(s0) 
+	call	do_print 
+	sw	a0, -40(s0) 
+	j	kernel_LBB14_32 
+kernel_LBB14_10:
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	addi	a1, a1, 4 
+	bne	a0, a1, kernel_LBB14_12 
+	j	kernel_LBB14_11 
+kernel_LBB14_11:
+	li	a0, 1 
+	sb	a0, -33(s0) 
+	lw	a0, -16(s0) 
+	call	getlength 
+	sw	a0, -40(s0) 
+	j	kernel_LBB14_31 
+kernel_LBB14_12:
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	addi	a1, a1, 5 
+	bne	a0, a1, kernel_LBB14_14 
+	j	kernel_LBB14_13 
+kernel_LBB14_13:
+	lw	a0, -16(s0) 
+	call	getdir 
+	j	kernel_LBB14_30 
+kernel_LBB14_14:
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	addi	a1, a1, 6 
+	bne	a0, a1, kernel_LBB14_16 
+	j	kernel_LBB14_15 
+kernel_LBB14_15:
+	li	a0, 1 
+	sb	a0, -33(s0) 
+	lw	a0, -16(s0) 
+	lw	a1, -20(s0) 
+	lw	a2, -24(s0) 
+	lw	a3, -28(s0) 
+	call	read 
+	sw	a0, -40(s0) 
+	j	kernel_LBB14_29 
+kernel_LBB14_16:
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	addi	a1, a1, 7 
+	bne	a0, a1, kernel_LBB14_18 
+	j	kernel_LBB14_17 
+kernel_LBB14_17:
+	li	a0, 1 
+	sb	a0, -33(s0) 
+	lw	a0, -16(s0) 
+	lw	a1, -20(s0) 
+	lw	a2, -24(s0) 
+	lw	a3, -28(s0) 
+	call	write 
+	sw	a0, -40(s0) 
+	j	kernel_LBB14_28 
+kernel_LBB14_18:
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	addi	a1, a1, 8 
+	bne	a0, a1, kernel_LBB14_20 
+	j	kernel_LBB14_19 
+kernel_LBB14_19:
+	li	a0, 1 
+	sb	a0, -33(s0) 
+	lw	a0, -16(s0) 
+	call	create 
+	sw	a0, -40(s0) 
+	j	kernel_LBB14_27 
+kernel_LBB14_20:
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	addi	a1, a1, 9 
+	bne	a0, a1, kernel_LBB14_22 
+	j	kernel_LBB14_21 
+kernel_LBB14_21:
+	li	a0, 1 
+	sb	a0, -33(s0) 
+	lw	a0, -16(s0) 
+	call	delete 
+	sw	a0, -40(s0) 
+	j	kernel_LBB14_26 
+kernel_LBB14_22:
+	lw	a0, -12(s0) 
+	lui	a1, 827664 
+	addi	a1, a1, 10 
+	bne	a0, a1, kernel_LBB14_24 
+	j	kernel_LBB14_23 
+kernel_LBB14_23:
+	li	a0, 1 
+	sb	a0, -33(s0) 
+	lw	a0, -16(s0) 
+	lw	a1, -20(s0) 
+	call	rename 
+	sw	a0, -40(s0) 
+	j	kernel_LBB14_25 
+kernel_LBB14_24:
+	li	a0, -1 
+	sw	a0, -40(s0) 
+	j	kernel_LBB14_25 
+kernel_LBB14_25:
+	j	kernel_LBB14_26 
+kernel_LBB14_26:
+	j	kernel_LBB14_27 
+kernel_LBB14_27:
+	j	kernel_LBB14_28 
+kernel_LBB14_28:
+	j	kernel_LBB14_29 
+kernel_LBB14_29:
+	j	kernel_LBB14_30 
+kernel_LBB14_30:
+	j	kernel_LBB14_31 
+kernel_LBB14_31:
+	j	kernel_LBB14_32 
+kernel_LBB14_32:
+	j	kernel_LBB14_33 
+kernel_LBB14_33:
+	j	kernel_LBB14_34 
+kernel_LBB14_34:
+	j	kernel_LBB14_35 
+kernel_LBB14_35:
+	lbu	a0, -33(s0) 
+	andi	a0, a0, 1 
+	beqz	a0, kernel_LBB14_37 
+	j	kernel_LBB14_36 
+kernel_LBB14_36:
+kernel_Lpcrel_hi55:
+	auipc	a0, %hi(%pcrel(current_process))
+	addi	a0, a0, %lo(%larel(current_process,kernel_Lpcrel_hi55))
+	lw	a1, 0(a0) 
+	lw	a0, 8(a1) 
+	lw	a1, 20(a1) 
+	add	a0, a0, a1 
+	addi	a0, a0, -36 
+	sw	a0, -44(s0) 
+	lw	a0, -40(s0) 
+	lw	a1, -44(s0) 
+	sw	a0, 0(a1) 
+	j	kernel_LBB14_37 
+kernel_LBB14_37:
+	call	cpu_scheduler 
+	lw	ra, 44(sp) # 4-byte Folded Reload 
+	lw	s0, 40(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 48 
+	ret	
+kernel_Lfunc_end14:
 	#	-- End function 
 do_alarm:
 	#	%bb.0: 
@@ -1058,18 +1753,18 @@ do_alarm:
 	addi	s0, sp, 16 
 	sw	a0, -12(s0) 
 	sw	a1, -16(s0) 
-kernel_Lpcrel_hi39:
+kernel_Lpcrel_hi56:
 	auipc	a0, %hi(%pcrel(preserved_epc))
-	addi	a0, a0, %lo(%larel(preserved_epc,kernel_Lpcrel_hi39))
+	addi	a0, a0, %lo(%larel(preserved_epc,kernel_Lpcrel_hi56))
 	lw	a0, 0(a0) 
-kernel_Lpcrel_hi40:
+kernel_Lpcrel_hi57:
 	auipc	a1, %hi(%pcrel(current_process))
-	addi	a1, a1, %lo(%larel(current_process,kernel_Lpcrel_hi40))
+	addi	a1, a1, %lo(%larel(current_process,kernel_Lpcrel_hi57))
 	lw	a2, 0(a1) 
 	sw	a0, 16(a2) 
-kernel_Lpcrel_hi41:
+kernel_Lpcrel_hi58:
 	auipc	a0, %hi(%pcrel(preserved_sp))
-	addi	a0, a0, %lo(%larel(preserved_sp,kernel_Lpcrel_hi41))
+	addi	a0, a0, %lo(%larel(preserved_sp,kernel_Lpcrel_hi58))
 	lw	a0, 0(a0) 
 	lw	a1, 0(a1) 
 	sw	a0, 20(a1) 
@@ -1078,7 +1773,7 @@ kernel_Lpcrel_hi41:
 	lw	s0, 8(sp) # 4-byte Folded Reload 
 	addi	sp, sp, 16 
 	ret	
-kernel_Lfunc_end13:
+kernel_Lfunc_end15:
 	#	-- End function 
 fs_init:
 	#	%bb.0: 
@@ -1086,118 +1781,118 @@ fs_init:
 	sw	ra, 12(sp) # 4-byte Folded Spill 
 	sw	s0, 8(sp) # 4-byte Folded Spill 
 	addi	s0, sp, 16 
-kernel_Lpcrel_hi42:
+kernel_Lpcrel_hi59:
 	auipc	a0, %hi(%pcrel(fs_init.fs_metadata_blocks))
-	addi	a0, a0, %lo(%larel(fs_init.fs_metadata_blocks,kernel_Lpcrel_hi42))
+	addi	a0, a0, %lo(%larel(fs_init.fs_metadata_blocks,kernel_Lpcrel_hi59))
 	lw	a0, 0(a0) 
-	beqz	a0, kernel_LBB14_2 
-	j	kernel_LBB14_1 
-kernel_LBB14_1:
-kernel_Lpcrel_hi43:
+	beqz	a0, kernel_LBB16_2 
+	j	kernel_LBB16_1 
+kernel_LBB16_1:
+kernel_Lpcrel_hi60:
 	auipc	a0, %hi(%pcrel(kernel_L.str.9))
-	addi	a0, a0, %lo(%larel(kernel_L.str.9,kernel_Lpcrel_hi43))
+	addi	a0, a0, %lo(%larel(kernel_L.str.9,kernel_Lpcrel_hi60))
 	call	print 
-	j	kernel_LBB14_10 
-kernel_LBB14_2:
+	j	kernel_LBB16_10 
+kernel_LBB16_2:
 	call	mm_allocate 
 	mv	a1, a0 
-kernel_Lpcrel_hi44:
+kernel_Lpcrel_hi61:
 	auipc	a0, %hi(%pcrel(fs_init.fs_metadata_blocks))
-	addi	a0, a0, %lo(%larel(fs_init.fs_metadata_blocks,kernel_Lpcrel_hi44))
+	addi	a0, a0, %lo(%larel(fs_init.fs_metadata_blocks,kernel_Lpcrel_hi61))
 	sw	a1, 0(a0) 
 	lw	a0, 0(a0) 
-	bnez	a0, kernel_LBB14_4 
-	j	kernel_LBB14_3 
-kernel_LBB14_3:
-kernel_Lpcrel_hi45:
+	bnez	a0, kernel_LBB16_4 
+	j	kernel_LBB16_3 
+kernel_LBB16_3:
+kernel_Lpcrel_hi62:
 	auipc	a0, %hi(%pcrel(kernel_L.str.10))
-	addi	a0, a0, %lo(%larel(kernel_L.str.10,kernel_Lpcrel_hi45))
+	addi	a0, a0, %lo(%larel(kernel_L.str.10,kernel_Lpcrel_hi62))
 	call	print 
 	call	halt_kernel 
-	j	kernel_LBB14_4 
-kernel_LBB14_4:
-kernel_Lpcrel_hi46:
+	j	kernel_LBB16_4 
+kernel_LBB16_4:
+kernel_Lpcrel_hi63:
 	auipc	a0, %hi(%pcrel(fs_init.fs_metadata_blocks))
-	addi	a0, a0, %lo(%larel(fs_init.fs_metadata_blocks,kernel_Lpcrel_hi46))
+	addi	a0, a0, %lo(%larel(fs_init.fs_metadata_blocks,kernel_Lpcrel_hi63))
 	lw	a1, 0(a0) 
-kernel_Lpcrel_hi47:
+kernel_Lpcrel_hi64:
 	auipc	a0, %hi(%pcrel(superblock))
-	addi	a0, a0, %lo(%larel(superblock,kernel_Lpcrel_hi47))
+	addi	a0, a0, %lo(%larel(superblock,kernel_Lpcrel_hi64))
 	sw	a1, 0(a0) 
 	lw	a1, 0(a0) 
 	li	a0, 0 
 	call	bd_read_block 
-	bgez	a0, kernel_LBB14_6 
-	j	kernel_LBB14_5 
-kernel_LBB14_5:
-kernel_Lpcrel_hi48:
+	bgez	a0, kernel_LBB16_6 
+	j	kernel_LBB16_5 
+kernel_LBB16_5:
+kernel_Lpcrel_hi65:
 	auipc	a0, %hi(%pcrel(kernel_L.str.11))
-	addi	a0, a0, %lo(%larel(kernel_L.str.11,kernel_Lpcrel_hi48))
+	addi	a0, a0, %lo(%larel(kernel_L.str.11,kernel_Lpcrel_hi65))
 	call	print 
 	call	halt_kernel 
-	j	kernel_LBB14_6 
-kernel_LBB14_6:
-kernel_Lpcrel_hi49:
+	j	kernel_LBB16_6 
+kernel_LBB16_6:
+kernel_Lpcrel_hi66:
 	auipc	a0, %hi(%pcrel(fs_init.fs_metadata_blocks))
-	addi	a0, a0, %lo(%larel(fs_init.fs_metadata_blocks,kernel_Lpcrel_hi49))
+	addi	a0, a0, %lo(%larel(fs_init.fs_metadata_blocks,kernel_Lpcrel_hi66))
 	lw	a0, 0(a0) 
 	lui	a1, 1 
 	add	a0, a0, a1 
-kernel_Lpcrel_hi50:
+kernel_Lpcrel_hi67:
 	auipc	a1, %hi(%pcrel(directory_inode))
-	addi	a1, a1, %lo(%larel(directory_inode,kernel_Lpcrel_hi50))
+	addi	a1, a1, %lo(%larel(directory_inode,kernel_Lpcrel_hi67))
 	sw	a0, 0(a1) 
-kernel_Lpcrel_hi51:
+kernel_Lpcrel_hi68:
 	auipc	a0, %hi(%pcrel(superblock))
-	addi	a0, a0, %lo(%larel(superblock,kernel_Lpcrel_hi51))
+	addi	a0, a0, %lo(%larel(superblock,kernel_Lpcrel_hi68))
 	lw	a0, 0(a0) 
 	lw	a0, 12(a0) 
 	lw	a1, 0(a1) 
 	call	bd_read_block 
-	bgez	a0, kernel_LBB14_8 
-	j	kernel_LBB14_7 
-kernel_LBB14_7:
-kernel_Lpcrel_hi52:
+	bgez	a0, kernel_LBB16_8 
+	j	kernel_LBB16_7 
+kernel_LBB16_7:
+kernel_Lpcrel_hi69:
 	auipc	a0, %hi(%pcrel(kernel_L.str.12))
-	addi	a0, a0, %lo(%larel(kernel_L.str.12,kernel_Lpcrel_hi52))
+	addi	a0, a0, %lo(%larel(kernel_L.str.12,kernel_Lpcrel_hi69))
 	call	print 
 	call	halt_kernel 
-	j	kernel_LBB14_8 
-kernel_LBB14_8:
-kernel_Lpcrel_hi53:
+	j	kernel_LBB16_8 
+kernel_LBB16_8:
+kernel_Lpcrel_hi70:
 	auipc	a0, %hi(%pcrel(fs_init.fs_metadata_blocks))
-	addi	a0, a0, %lo(%larel(fs_init.fs_metadata_blocks,kernel_Lpcrel_hi53))
+	addi	a0, a0, %lo(%larel(fs_init.fs_metadata_blocks,kernel_Lpcrel_hi70))
 	lw	a0, 0(a0) 
 	lui	a1, 2 
 	add	a1, a0, a1 
-kernel_Lpcrel_hi54:
+kernel_Lpcrel_hi71:
 	auipc	a0, %hi(%pcrel(directory_entries))
-	addi	a0, a0, %lo(%larel(directory_entries,kernel_Lpcrel_hi54))
+	addi	a0, a0, %lo(%larel(directory_entries,kernel_Lpcrel_hi71))
 	sw	a1, 0(a0) 
 	lui	a1, 14 
 	sw	a1, -12(s0) 
 	lw	a0, 0(a0) 
-kernel_Lpcrel_hi55:
+kernel_Lpcrel_hi72:
 	auipc	a1, %hi(%pcrel(directory_inode))
-	addi	a1, a1, %lo(%larel(directory_inode,kernel_Lpcrel_hi55))
+	addi	a1, a1, %lo(%larel(directory_inode,kernel_Lpcrel_hi72))
 	lw	a1, 0(a1) 
 	lw	a2, -12(s0) 
 	call	read_inode_to_buffer 
-	bgez	a0, kernel_LBB14_10 
-	j	kernel_LBB14_9 
-kernel_LBB14_9:
-kernel_Lpcrel_hi56:
+	bgez	a0, kernel_LBB16_10 
+	j	kernel_LBB16_9 
+kernel_LBB16_9:
+kernel_Lpcrel_hi73:
 	auipc	a0, %hi(%pcrel(kernel_L.str.13))
-	addi	a0, a0, %lo(%larel(kernel_L.str.13,kernel_Lpcrel_hi56))
+	addi	a0, a0, %lo(%larel(kernel_L.str.13,kernel_Lpcrel_hi73))
 	call	print 
 	call	halt_kernel 
-	j	kernel_LBB14_10 
-kernel_LBB14_10:
+	j	kernel_LBB16_10 
+kernel_LBB16_10:
 	lw	ra, 12(sp) # 4-byte Folded Reload 
 	lw	s0, 8(sp) # 4-byte Folded Reload 
 	addi	sp, sp, 16 
 	ret	
-kernel_Lfunc_end14:
+kernel_Lfunc_end16:
 	#	-- End function 
 run_init:
 	#	%bb.0: 
@@ -1206,41 +1901,41 @@ run_init:
 	sw	s0, 8(sp) # 4-byte Folded Spill 
 	addi	s0, sp, 16 
 	call	fs_init 
-kernel_Lpcrel_hi57:
+kernel_Lpcrel_hi74:
 	auipc	a0, %hi(%pcrel(kernel_L.str.14))
-	addi	a0, a0, %lo(%larel(kernel_L.str.14,kernel_Lpcrel_hi57))
+	addi	a0, a0, %lo(%larel(kernel_L.str.14,kernel_Lpcrel_hi74))
 	call	do_run 
 	sw	a0, -12(s0) 
 	lw	a0, -12(s0) 
-	bgez	a0, kernel_LBB15_5 
-	j	kernel_LBB15_1 
-kernel_LBB15_1:
+	bgez	a0, kernel_LBB17_5 
+	j	kernel_LBB17_1 
+kernel_LBB17_1:
 	lw	a0, -12(s0) 
 	li	a1, -1 
-	bne	a0, a1, kernel_LBB15_3 
-	j	kernel_LBB15_2 
-kernel_LBB15_2:
-kernel_Lpcrel_hi58:
+	bne	a0, a1, kernel_LBB17_3 
+	j	kernel_LBB17_2 
+kernel_LBB17_2:
+kernel_Lpcrel_hi75:
 	auipc	a0, %hi(%pcrel(kernel_L.str.15))
-	addi	a0, a0, %lo(%larel(kernel_L.str.15,kernel_Lpcrel_hi58))
+	addi	a0, a0, %lo(%larel(kernel_L.str.15,kernel_Lpcrel_hi75))
 	call	print 
-	j	kernel_LBB15_4 
-kernel_LBB15_3:
-kernel_Lpcrel_hi59:
+	j	kernel_LBB17_4 
+kernel_LBB17_3:
+kernel_Lpcrel_hi76:
 	auipc	a0, %hi(%pcrel(kernel_L.str.16))
-	addi	a0, a0, %lo(%larel(kernel_L.str.16,kernel_Lpcrel_hi59))
+	addi	a0, a0, %lo(%larel(kernel_L.str.16,kernel_Lpcrel_hi76))
 	call	print 
-	j	kernel_LBB15_4 
-kernel_LBB15_4:
+	j	kernel_LBB17_4 
+kernel_LBB17_4:
 	call	halt_kernel 
-	j	kernel_LBB15_5 
-kernel_LBB15_5:
+	j	kernel_LBB17_5 
+kernel_LBB17_5:
 	call	cpu_scheduler 
 	lw	ra, 12(sp) # 4-byte Folded Reload 
 	lw	s0, 8(sp) # 4-byte Folded Reload 
 	addi	sp, sp, 16 
 	ret	
-kernel_Lfunc_end15:
+kernel_Lfunc_end17:
 	#	-- End function 
 current_process:
 	.Numeric

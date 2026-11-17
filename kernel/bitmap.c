@@ -1,148 +1,70 @@
 // ==================================================================================================================================
 /**
- * Functions that manage the bitmap and block allocation.
- * 
+ * Kernel-side bitmap and block allocation.  A stripped-down version of fstool/bitmap.c: no C library (no assert), no
+ * block_device_s, and no ORDER() byte swapping, since the kernel runs on the target and the on-disk values are already in
+ * its native byte order.
+ *
+ * These functions only change the in-memory copy of the bitmap (and the superblock's mra_block).  The caller reads the bitmap
+ * block with bd_read_block() first and writes it back with bd_write_block() afterwards.
+ *
  * \file bitmap.c
  **/
 // ==================================================================================================================================
 
-
-
-// ==================================================================================================================================
-// INCLUDES
-
-#include <assert.h>
-#include <stdlib.h>
-#include <string.h>
 #include "bitmap.h"
-#include "block-device.h"
-#include "superblock.h"
-#include "utilities.h"
-// ==================================================================================================================================
 
-
-
-// ==================================================================================================================================
-// TYPES
-
-typedef uint8_t bitmap_entry_t;
-// ==================================================================================================================================
-
-
-
-// ==================================================================================================================================
-/**
- * Determine whether a block is free.
- * 
- * \param bitmap The bitmap of free/used blocks.
- * \param block  The block number to check.
- * \return `true` if the block is _free_; `false` otherwise.
- */
+/** Is this block free? */
 bool is_free (bitmap_entry_t* bitmap, block_number_t block) {
 
-  assert(bitmap != NULL);
-
-  int byte_offset = block / (sizeof(*bitmap) * BITS_PER_BYTE);
-  int bit_offset  = block % (sizeof(*bitmap) * BITS_PER_BYTE);
+  int byte_offset = block / BITS_PER_BYTE;
+  int bit_offset  = block % BITS_PER_BYTE;
 
   return (bitmap[byte_offset] & (1 << bit_offset)) == 0;
-    
+
 }
-// ==================================================================================================================================
 
-
-
-
-// ==================================================================================================================================
-/**
- * Mark the given block as _used_ in the bitmap.
- * 
- * \param bitmap The bitmap of free/used blocks.
- * \param block  The block number to mark as _free_.
- */
+/** Mark a block as used. */
 void mark_allocated (bitmap_entry_t* bitmap, block_number_t block) {
 
-  assert(bitmap != NULL);
-  assert(is_free(bitmap, block));
-  
-  int byte_offset = block / (sizeof(*bitmap) * BITS_PER_BYTE);
-  int bit_offset  = block % (sizeof(*bitmap) * BITS_PER_BYTE);
-  
+  int byte_offset = block / BITS_PER_BYTE;
+  int bit_offset  = block % BITS_PER_BYTE;
+
   bitmap[byte_offset] |= (1 << bit_offset);
 
 }
-// ==================================================================================================================================
 
-
-
-// ==================================================================================================================================
-/**
- * Mark the given block as _free_ in the bitmap.
- * 
- * \param bitmap The bitmap of free/used blocks.
- * \param block  The block number to mark as _free_.
- */
+/** Mark a block as free (for delete). */
 void mark_free (bitmap_entry_t* bitmap, block_number_t block) {
 
-  assert(bitmap != NULL);
-  assert(!is_free(bitmap, block));
+  int byte_offset = block / BITS_PER_BYTE;
+  int bit_offset  = block % BITS_PER_BYTE;
 
-  int byte_offset = block / (sizeof(*bitmap) * BITS_PER_BYTE);
-  int bit_offset  = block % (sizeof(*bitmap) * BITS_PER_BYTE);
+  bitmap[byte_offset] &= ~(1 << bit_offset);
 
-  bitmap[byte_offset] &= (~(1 << bit_offset));
-  
 }
-// ==================================================================================================================================
 
+/**
+ * Find a free block, mark it used, and return its number.  Searches linearly starting just after the most recently allocated
+ * block, wrapping around once.
+ *
+ * \return the allocated block number, or `0` if the device is full.  (Block 0 is the superblock, so it is never a valid result.)
+ */
+block_number_t alloc_block (superblock_s* sb, bitmap_entry_t* bitmap) {
 
-// ==================================================================================================================================
-block_number_t alloc_block (superblock_s* sb, bitmap_entry_t* bitmap)  {
+  block_number_t current_block = (sb->mra_block + 1) % sb->length;
 
-  // Search linearly, starting after the most recently allocated block until we wrap all the way around.
-  block_number_t current_block = (ORDER(sb->mra_block) + 1) % ORDER(sb->length);
-  bool found = false;
-  while (!found && current_block != ORDER(sb->mra_block)) {
-    
+  while (current_block != sb->mra_block) {
+
     if (is_free(bitmap, current_block)) {
-      found = true;
-    } else {
-      current_block = (current_block + 1) % ORDER(sb->length);
+      mark_allocated(bitmap, current_block);
+      sb->mra_block = current_block;
+      return current_block;
     }
 
-  }
-
-  // Was a free block found?
-  if (found) {
-
-    // Yes.  Mark it allocated and remember that it was the most recently allocated, then return it.
-    mark_allocated(bitmap, current_block);
-    sb->mra_block = ORDER(current_block);
-    return current_block;
-
-  } else {
-
-    // No, failure to allocate.
-    return 0;
+    current_block = (current_block + 1) % sb->length;
 
   }
-    
-} // alloc_block ()
-// ==================================================================================================================================
 
+  return 0;
 
-
-// ==================================================================================================================================
-void free_block (block_device_s* bd, block_number_t block) {
-
-  // Grab the superblock and the bitmap.
-  assert(bd != NULL);
-  assert(block > 0);
-  superblock_s*   sb     = bd_block_to_ptr(bd, SUPERBLOCK_BLOCK);
-  bitmap_entry_t* bitmap = bd_block_to_ptr(bd, ORDER(sb->bitmap_block));
-
-  // Mark the block as free.
-  mark_free(bitmap, block);
-
-} // free_block ()
-// ==================================================================================================================================
+}

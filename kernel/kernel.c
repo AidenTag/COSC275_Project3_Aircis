@@ -371,18 +371,36 @@ int read (char* filename, int offset, int length, void* buffer){
   Copy the whole file into a part of RAM, then read the requested range. 
   - we need place in memory for the inode block, the whole file, and the buffer (given).
   */
-  
-  if (filename == NULL || string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
+  current_process->epc += 4;
+
+  if (filename == NULL) {
+    return FS_INVAL_NAME;
+  }
+  if (buffer == NULL){
+    return FS_INVAL_BUFFER;
+  }
+
+  address_t filename_addr = (address_t) filename + current_process->base;
+  if (filename_addr >= current_process->limit) {
+    return FS_INVAL_NAME;
+  }
+
+  filename = (char*)filename_addr;
+
+  address_t buffer_addr = (address_t) buffer + current_process->base;
+  if (buffer_addr >= current_process->limit) {
+    return FS_INVAL_BUFFER;
+  }
+
+  buffer = (void*)buffer_addr;
+
+  if (string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
     return FS_INVAL_NAME;
   }
 
   /* Lookup the filename to get the inode. */
   block_number_t inode_block = search_directory(filename);
   if (inode_block == 0) return FS_NO_SUCH_FILE;
-  
-  if (buffer == NULL){
-    return FS_INVAL_BUFFER;
-  }
 
   inode_s* inode = allocate(BYTES_PER_BLOCK);
   if (inode == NULL) return FS_OTHER_FAIL;
@@ -398,29 +416,57 @@ int read (char* filename, int offset, int length, void* buffer){
     return FS_INVAL_RANGE;
   }
 
+  int num_blocks = (file_length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK;
+
   // Grab a space in memory for the whole file, then read it into that space.
-  address_t file_buffer = allocate(file_length);
+  address_t file_buffer = (address_t) allocate(num_blocks * BYTES_PER_BLOCK);
   if (file_buffer == 0) {
     deallocate(inode);
     return FS_OTHER_FAIL;
   }
-  read_inode_to_buffer(file_buffer, inode, file_length);
+  if (read_inode_to_buffer(file_buffer, inode, file_length) < 0) {
+    deallocate((void*) file_buffer);
+    deallocate(inode);
+    return FS_OTHER_FAIL;
+  }
 
   // Copy from offset to offset + length
   DMA_portal_ptr->src = file_buffer + offset;
   DMA_portal_ptr->dst = (address_t) buffer;
   DMA_portal_ptr->length = length;
 
-  deallocate(file_buffer);
+  deallocate((void*)file_buffer);
   deallocate(inode);
-  
-  current_process->epc += 4;
+
   //return the amount of bytes read
   return length;
 }
 
 int write (char* filename, int offset, int length, void* buffer){
-  if (filename == NULL || string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
+  current_process->epc += 4;
+
+  if (filename == NULL) {
+    return FS_INVAL_NAME;
+  }
+  if (buffer == NULL){
+    return FS_INVAL_BUFFER;
+  }
+
+  address_t filename_addr = (address_t) filename + current_process->base;
+  if (filename_addr >= current_process->limit) {
+    return FS_INVAL_NAME;
+  }
+
+  filename = (char*)filename_addr;
+
+  address_t buffer_addr = (address_t) buffer + current_process->base;
+  if (buffer_addr >= current_process->limit) {
+    return FS_INVAL_BUFFER;
+  }
+  
+  buffer = (void*)buffer_addr;
+
+  if (string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
     return FS_INVAL_NAME;
   }
 
@@ -441,14 +487,26 @@ int write (char* filename, int offset, int length, void* buffer){
     return FS_INVAL_RANGE;
   }
 
-  if (buffer == NULL){
-    return FS_INVAL_BUFFER;
+  int num_blocks = (file_length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK; //need to round up
+
+
+
+  // Now grab a spot in RAM for the whole file, then read it into that space.
+  address_t file_buffer = (address_t) allocate(num_blocks * BYTES_PER_BLOCK);
+  if (file_buffer == 0) {
+    deallocate(inode);
+    return FS_OTHER_FAIL;
+  }
+  
+  if (read_inode_to_buffer(file_buffer, inode, file_length) < 0) {
+    deallocate((void*)file_buffer);
+    deallocate(inode);
+    return FS_OTHER_FAIL;
   }
   
   // Handle whether we need to extend the file.
   if(length + offset > file_length){
-    int num_old_blocks = (file_length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK;
-    int num_new_blocks = ((offset + length) - file_length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK;
+    int num_new_blocks = (offset + length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK - num_blocks;
 
     file_length = offset + length;
     inode->length = file_length;
@@ -458,39 +516,37 @@ int write (char* filename, int offset, int length, void* buffer){
     block_number_t bitmap_block = superblock->bitmap_block;
 
     bitmap_entry_t* bitmap = allocate(BYTES_PER_BLOCK);
-    if (bitmap == NULL) return FS_OTHER_FAIL;
+    if (bitmap == NULL) {
+      deallocate(inode);
+      return FS_OTHER_FAIL;
+    }
     
     if (bd_read_block(bitmap_block, (address_t)bitmap) < 0) {
+      deallocate(inode);
       deallocate(bitmap);
       return FS_OTHER_FAIL;
     }
 
+    // try to allocate the needed blocks, add them to inode blocks
     for (int i = 0; i < num_new_blocks; i++) {
       int new_block = alloc_block(superblock, bitmap);
       if (new_block == 0) {
+        deallocate(inode);
         deallocate(bitmap);
         return FS_OTHER_FAIL;
       } else {
-        inode->blocks[num_old_blocks + i] = new_block; // we don't have the minus 1 cuz we want this to be a new index in the array
+        inode->blocks[num_blocks + i] = new_block; // we don't have the minus 1 cuz we want this to be a new index in the array
       }
     }
+    // update the bitmap block on block device
+    if (bd_write_block(bitmap_block, (address_t)bitmap) < 0) {
+      deallocate(inode);
+      deallocate(bitmap);
+      return FS_OTHER_FAIL;
+    }
     deallocate(bitmap);
-
-
-    // try to allocate the needed blocks
-    
-
-    // grab blocks we need, add them to the inode blocks array (which we do basically by making a new array on the heap?)
-
+    num_blocks = (file_length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK;
   }
-
-  // Now grab a spot in RAM for the whole file, then read it into that space.
-  address_t file_buffer = allocate(file_length);
-  if (file_buffer == 0) {
-    deallocate(inode);
-    return FS_OTHER_FAIL;
-  }
-  read_inode_to_buffer(file_buffer, inode, file_length);
 
   // Overwrite offset to offset + length
   DMA_portal_ptr->src = (address_t) buffer;
@@ -498,23 +554,185 @@ int write (char* filename, int offset, int length, void* buffer){
   DMA_portal_ptr->length = length;
 
   // Now write to all the blocks in inode->blocks
-  int num_blocks = (file_length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK; // need to round up
   for (int i = 0; i < num_blocks; i++) {
-    bd_write_block(inode->blocks[i], file_buffer + i * BYTES_PER_BLOCK);
+    if (bd_write_block(inode->blocks[i], file_buffer + i * BYTES_PER_BLOCK) < 0) {
+      deallocate((void*)file_buffer);
+      deallocate(inode);
+      return FS_OTHER_FAIL;
+    }
+  }
+  // update the inode block on block device
+  if (bd_write_block(inode_block, (address_t)inode) < 0) {
+    deallocate(inode);
+    return FS_OTHER_FAIL;
+  }
+
+  deallocate((void*)file_buffer);
+  deallocate(inode);
+
+  return length;
+}
+
+int create (char* filename){
+  current_process->epc += 4;
+
+  if(filename == NULL) {
+    return FS_INVAL_NAME;
+  }
+
+  address_t filename_addr = (address_t) filename + current_process->base;
+  if (filename_addr >= current_process->limit) {
+    return FS_INVAL_NAME;
+  }
+  filename = (char*)filename_addr;
+
+  if (string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
+    return FS_INVAL_NAME;
+  }
+
+  block_number_t inode_block = search_directory(filename);
+  if (inode_block != 0) return FS_NO_SUCH_FILE; /*file already exists, -2*/
+
+  bitmap_entry_t* bitmap = allocate(BYTES_PER_BLOCK);
+  if (bitmap == NULL) return FS_OTHER_FAIL;
+  
+  inode_s* inode = allocate(BYTES_PER_BLOCK);
+  
+  if (inode == NULL) return FS_OTHER_FAIL;
+  
+  inode->length = 0;
+  inode->link_count = 1;/* 
+  inode->creation_time = get_time();
+  inode->modified_time = get_time();
+  inode->accessed_time = get_time(); */
+  
+
+  block_number_t bitmap_block = superblock->bitmap_block;
+
+
+  if (bitmap == NULL) {
+    deallocate(inode);
+    return FS_OTHER_FAIL;
+  }
+    
+  if (bd_read_block(bitmap_block, (address_t)bitmap) < 0) {
+    deallocate(inode);
+    deallocate(bitmap);
+    return FS_OTHER_FAIL;
+  }
+
+  // try to allocate the needed blocks, add them to inode blocks
+  inode_block = alloc_block(superblock, bitmap);
+  if (inode_block == 0) {
+    deallocate(inode);
+    deallocate(bitmap);
+    return FS_OTHER_FAIL;
+  }
+
+  // We make a small assumption that the blocks that hold the directory entries have enough space
+
+  int num_entries = directory_inode->length / sizeof(directory_entry_s);
+  directory_entry_s* entry = &directory_entries[num_entries];
+  entry->inode_block = inode_block;
+  string_copy(entry->filename, filename, MAX_FILENAME_LENGTH);
+
+
+  directory_inode->length += sizeof(directory_entry_s);
+
+  // update the inode block on block device
+  if (bd_write_block(inode_block, (address_t)inode) < 0) {
+    deallocate(inode);
+    deallocate(bitmap);
+    return FS_OTHER_FAIL;
+  }
+  // update the bitmap block on block device
+  if (bd_write_block(bitmap_block, (address_t)bitmap) < 0) {
+    deallocate(inode);
+    deallocate(bitmap);
+    return FS_OTHER_FAIL;
   }
 
   return 0;
 }
 
-int create (char* filename){
+int delete (char* filename){
+  current_process->epc += 4;
   if (filename == NULL || string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
     return FS_INVAL_NAME;
   }
+  block_number_t inode_block_to_delete = search_directory(filename);
+  if (inode_block_to_delete == 0) return FS_NO_SUCH_FILE;
 
-  /* Lookup the filename to get the inode. */
-  block_number_t inode_block = search_directory(filename);
-  if (inode_block != 0) return -2;
+  inode_s* inode_to_delete = allocate(BYTES_PER_BLOCK);
+  if (inode_to_delete == NULL) return FS_OTHER_FAIL;
 
+  if (bd_read_block(inode_block_to_delete, (address_t)inode_to_delete) < 0) {
+    deallocate(inode_to_delete);
+    return FS_OTHER_FAIL;
+  }
+
+  bitmap_entry_t* bitmap = allocate(BYTES_PER_BLOCK);
+  if (bitmap == NULL) return FS_OTHER_FAIL;
+
+  block_number_t bitmap_block = superblock->bitmap_block;
+
+  if (bitmap == NULL) {
+    deallocate(inode_to_delete);
+    return FS_OTHER_FAIL;
+    
+  }
+    
+  if (bd_read_block(bitmap_block, (address_t)bitmap) < 0) {
+    deallocate(inode_to_delete);
+    deallocate(bitmap);
+    return FS_OTHER_FAIL;
+  }
+
+  // Free the blocks
+  int num_blocks = (inode_to_delete->length + BYTES_PER_BLOCK - 1) / BYTES_PER_BLOCK;
+  for (int i = 0; i < num_blocks; i++) {
+    mark_free(bitmap, inode_to_delete->blocks[i]);
+  }
+
+  
+  if (find_and_delete_dir_entry(filename) != 0) {
+    return FS_OTHER_FAIL;
+  }
+  
+
+  // Free the inode block
+  mark_free(bitmap, inode_block_to_delete);
+
+  return 0;
+
+}
+
+int find_and_delete_dir_entry(char* filename){
+  // Delete the directory entry and adjust length
+  int num_entries = directory_inode->length / sizeof(directory_entry_s);
+  
+  for (int i = 0; i < num_entries; i++) {
+    if (string_compare(directory_entries[i].filename, filename, MAX_FILENAME_LEN) == 0) {
+      // Grab the last entry and move it to the current position
+      directory_entries[i] = directory_entries[num_entries - 1];
+      directory_inode->length -= sizeof(directory_entry_s);
+      return 0;
+    }
+  } 
+  return -1;
+}
+
+int rename (char* oldname, char* newname){
+  current_process->epc += 4;
+  if ((newname == NULL || string_length(newname, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH)||(oldname == NULL || string_length(oldname, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH)) {
+    return FS_INVAL_NAME;
+  }
+
+  if (search_directory(oldname)== 0) return FS_NO_SUCH_FILE;
+
+  if (search_directory(newname)!= 0) return -3;
+
+  return 0;
 }
 
 /* =============================================================================================================================== */
@@ -573,18 +791,22 @@ void do_syscall (word_t code, word_t arg0, word_t arg1, word_t arg2, word_t arg3
     result = read ((char*)arg0, (int)arg1, (int)arg2, (void*)arg3);
 
   } else if (code == SYSCALL_WRITE) {
+    has_return_value = true;
     result = write((char*)arg0, (int)arg1, (int)arg2, (void*)arg3);
     
   } else if (code == SYSCALL_CREATE) {
+    has_return_value = true;
+    result = create((char*)arg0);
     
   } else if (code == SYSCALL_DELETE) {
+    has_return_value = true;
+    result = delete((char*)arg0);
     
   } else if (code == SYSCALL_RENAME) {
-    
+    has_return_value = true;
+    result = rename((char*)arg0, (char*)arg1);
   } else {
-    
     result = SYSCALL_INVALID_CODE;
-    
   }
 
   /* If there is a return value, copy it into the current process's preserved a0 register space on its stack. */
