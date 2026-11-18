@@ -144,3 +144,96 @@ int string_compare (char* str_A, char* str_B) {
   
 } /* string_compare () */
 /* =============================================================================================================================== */
+
+
+
+/* =============================================================================================================================== */
+/* HEAP ALLOCATION (user-space copy of kernel/heap_alloc.c, minus the debug printing) */
+
+#include <stddef.h>
+
+#define ADDR_SIZE (sizeof(address_t))
+#define ALIGN_UP(addr) (addr % ADDR_SIZE == 0 ? addr : (addr + ADDR_SIZE) & ~(ADDR_SIZE - 1))
+
+#define HEADER_TO_BLOCK(p) ((void*)((address_t)p + sizeof(header_s)))
+#define BLOCK_TO_HEADER(p) ((header_s*)((address_t)p - sizeof(header_s)))
+
+typedef struct header {
+
+  word_t         size;
+  struct header* next;
+  struct header* prev;
+
+} header_s;
+
+/* A pair of sentinels to the free list, making the coding easier. */
+header_s free_head = { .next = NULL, .prev = NULL, .size = 0 };
+header_s free_tail = { .next = NULL, .prev = NULL, .size = 0 };
+
+/* The current limit of the heap. */
+address_t heap_limit = (address_t)NULL;
+
+/* The end of the statics (a label in stub_end.asm), at which the heap begins. */
+extern address_t statics_limit;
+
+/* Initialize the heap.  If it is already initialized, do nothing. */
+static void heap_init () {
+
+  if (heap_limit != (address_t)NULL) return;
+
+  heap_limit     = (address_t)&statics_limit;
+  free_head.next = &free_tail;
+  free_tail.prev = &free_head;
+
+} /* heap_init () */
+
+
+
+void* allocate (int size) {
+
+  heap_init();
+
+  /* Blocks must always be allocated in word/address-sized chunks. */
+  size = ALIGN_UP(size);
+
+  /* Search the free list for a block of sufficient size. */
+  header_s* current = free_head.next;
+  while (current != &free_tail) {
+
+    if (current->size >= size) {
+      current->prev->next = current->next;
+      current->next->prev = current->prev;
+      current->next       = NULL;
+      current->prev       = NULL;
+      break;
+    }
+    current = current->next;
+
+  }
+
+  /* If we did not find a free block to use, make a new one at the end of the heap. */
+  if (current == &free_tail) {
+    current        = (header_s*)heap_limit;
+    current->size  = size;
+    heap_limit    += sizeof(header_s) + size;
+  }
+
+  return HEADER_TO_BLOCK(current);
+
+} /* allocate () */
+
+
+
+void deallocate (void* ptr) {
+
+  if (ptr == NULL) return;
+
+  /* Insert the block at the front of the free list. */
+  header_s* header     = BLOCK_TO_HEADER(ptr);
+  header->next         = free_head.next;
+  header->prev         = &free_head;
+  free_head.next->prev = header;
+  free_head.next       = header;
+
+} /* deallocate () */
+/* =============================================================================================================================== */

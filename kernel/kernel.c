@@ -51,7 +51,7 @@
 
 #define SCHEDULER_QUANTUM 0x100
 
-#define INIT_FILENAME     "syscall-test.vmx"
+#define INIT_FILENAME     "create-test.vmx"
 
 #define MAX_FILENAME_LENGTH   60
 /* =============================================================================================================================== */
@@ -325,7 +325,7 @@ int getlength(char* filename) {
     // We need to grab the number of entries in '/'
     return directory_inode->length / sizeof(directory_entry_s);
   }
-  if (string_length(filename, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH) {
+  if (string_length(filename, MAX_FILENAME_LENGTH + 1) > MAX_FILENAME_LENGTH) {
     return -2;
   }
 
@@ -652,7 +652,34 @@ int create (char* filename){
     return FS_OTHER_FAIL;
   }
 
+  print("finished create!\n");
+  if (search_directory(filename) == 0) {
+    print("create failed");
+    deallocate(inode);
+    deallocate(bitmap);
+    return FS_OTHER_FAIL;
+  }
+
+  deallocate(inode);
+  deallocate(bitmap);
   return 0;
+}
+
+int find_and_delete_dir_entry(char* filename){
+  // Delete the directory entry and adjust length
+  int num_entries = directory_inode->length / sizeof(directory_entry_s);
+  
+  for (int i = 0; i < num_entries; i++) {
+    if (string_compare(directory_entries[i].filename, filename, MAX_FILENAME_LEN) == 0) {
+      // Grab the last entry and move it to the current position
+      // (Copy field-by-field: a whole-struct assignment makes the compiler emit a call to memcpy, which we don't have.)
+      directory_entries[i].inode_block = directory_entries[num_entries - 1].inode_block;
+      string_copy(directory_entries[i].filename, directory_entries[num_entries - 1].filename, MAX_FILENAME_LEN);
+      directory_inode->length -= sizeof(directory_entry_s);
+      return 0;
+    }
+  } 
+  return -1;
 }
 
 int delete (char* filename){
@@ -707,21 +734,6 @@ int delete (char* filename){
 
 }
 
-int find_and_delete_dir_entry(char* filename){
-  // Delete the directory entry and adjust length
-  int num_entries = directory_inode->length / sizeof(directory_entry_s);
-  
-  for (int i = 0; i < num_entries; i++) {
-    if (string_compare(directory_entries[i].filename, filename, MAX_FILENAME_LEN) == 0) {
-      // Grab the last entry and move it to the current position
-      directory_entries[i] = directory_entries[num_entries - 1];
-      directory_inode->length -= sizeof(directory_entry_s);
-      return 0;
-    }
-  } 
-  return -1;
-}
-
 int rename (char* oldname, char* newname){
   current_process->epc += 4;
   if ((newname == NULL || string_length(newname, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH)||(oldname == NULL || string_length(oldname, MAX_FILENAME_LEN + 1) > MAX_FILENAME_LENGTH)) {
@@ -732,6 +744,16 @@ int rename (char* oldname, char* newname){
 
   if (search_directory(newname)!= 0) return -3;
 
+  int num_entries = directory_inode->length / sizeof(directory_entry_s);
+
+  for (int i = 0; i < num_entries; i += 1) {
+    directory_entry_s* current = &directory_entries[i];
+
+    // If this is a match, return the current entry.
+    if (current->inode_block != 0 && string_compare(current->filename, oldname, MAX_FILENAME_LEN) == 0) {
+      string_copy(current->filename, newname, MAX_FILENAME_LENGTH);
+    }
+  }
   return 0;
 }
 

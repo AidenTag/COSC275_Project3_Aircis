@@ -77,6 +77,22 @@ int string_length (char* str);
  * \return 0 if the strings are equal, -1 if str_A is lexicographically first, and 1 if str_B is first.
  */
 int string_compare (char* str_A, char* str_B);
+
+/**
+ * Allocate a block of heap memory that is at least as large as the requested size.  The heap begins at `statics_limit` (defined
+ * in stub_end.asm) and grows upward.
+ *
+ * \param size The number of bytes to allocate (at a minimum).
+ * \return a pointer to a block that is at least `size` bytes in length; `NULL` if the allocation failed.
+ */
+void* allocate (int size);
+
+/**
+ * Free an allocated block of memory, reclaiming it for later re-use.
+ *
+ * \param ptr A pointer to a block of memory previously allocated by `allocate()`.  If `ptr == NULL`, do nothing.
+ */
+void deallocate (void* ptr);
 /* =============================================================================================================================== */
 
 

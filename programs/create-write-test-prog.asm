@@ -1,0 +1,689 @@
+
+
+# ===== BEGIN stub.asm =====
+
+# stub.asm
+#
+# Assembly to initialize a stack and then call main() to begin regular processing.
+
+	.Code
+	
+__start:
+
+	## Assume that sp is set to where the base of the stack should be.  Set the frame pointer to match.
+	mv	fp,	sp
+
+	## Perform the call.
+	call	main
+
+	## Request an EXIT.
+	mv	a1,	a0			# Copy the return value from main() to the EXIT arg.
+	li	a0,	0xca110001		# Set the system call request to EXIT.
+	ecall
+
+
+
+
+# =====  END  stub.asm =====
+
+
+
+# ===== BEGIN create-write-test.asm =====
+
+# create-write-test.asm
+#
+# Test CREATE and WRITE: create a file, fill a heap buffer with a message, write it to the file, then check the file's length.
+# Build with stub.asm, utility.c (allocate), syscall.asm (print), and stub_end.asm.
+
+	.Code
+
+main:
+	addi	sp,	sp,	-16
+	sw	ra,	12(sp)
+	sw	s0,	8(sp)			# s0 = buffer
+	sw	s1,	4(sp)			# s1 = message length
+
+	## CREATE the file.  Should return 0.
+	li	a0,	0xca110008		# CREATE
+	la	a1,	filename
+	ecall
+	la	t0,	create_ok
+	beqz	a0,	print_create
+	la	t0,	create_fail
+print_create:
+	mv	a0,	t0
+	call	print
+
+	## Allocate a buffer and copy the message into it.
+	li	a0,	64
+	call	allocate
+	mv	s0,	a0
+
+	la	t0,	message
+	mv	t1,	s0
+	li	s1,	0
+copy:
+	lbu	t2,	0(t0)
+	sb	t2,	0(t1)
+	beqz	t2,	copy_done
+	addi	t0,	t0,	1
+	addi	t1,	t1,	1
+	addi	s1,	s1,	1
+	j	copy
+copy_done:
+
+	## WRITE the buffer to the file.  Should return the number of bytes written.
+	li	a0,	0xca110007		# WRITE
+	la	a1,	filename		# filename
+	li	a2,	0			# offset
+	mv	a3,	s1			# length
+	mv	a4,	s0			# buffer
+	ecall
+	la	t0,	write_ok
+	beq	a0,	s1,	print_write
+	la	t0,	write_fail
+print_write:
+	mv	a0,	t0
+	call	print
+
+	## GETLENGTH should now match the message length.
+	li	a0,	0xca110004		# GETLENGTH
+	la	a1,	filename
+	ecall
+	la	t0,	length_ok
+	beq	a0,	s1,	print_length
+	la	t0,	length_fail
+print_length:
+	mv	a0,	t0
+	call	print
+
+	li	a0,	0
+	lw	ra,	12(sp)
+	lw	s0,	8(sp)
+	lw	s1,	4(sp)
+	addi	sp,	sp,	16
+	ret
+
+	.Text
+
+filename:	.asciz	"file"
+message:	.asciz	"Hello from create-write-test!"
+
+create_ok:	.asciz	"CREATE: ok\n"
+create_fail:	.asciz	"CREATE: failed\n"
+write_ok:	.asciz	"WRITE: ok\n"
+write_fail:	.asciz	"WRITE: failed\n"
+length_ok:	.asciz	"GETLENGTH: matches\n"
+length_fail:	.asciz	"GETLENGTH: wrong length\n"
+
+
+# =====  END  create-write-test.asm =====
+
+
+
+# ===== BEGIN ./utility.asm =====
+
+	.Code
+int_to_hex:
+	#	%bb.0: 
+	addi	sp, sp, -32 
+	sw	ra, 28(sp) # 4-byte Folded Spill 
+	sw	s0, 24(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 32 
+	sw	a0, -12(s0) 
+	sw	a1, -16(s0) 
+	li	a0, 28 
+	sw	a0, -20(s0) 
+	j	utility_LBB0_1 
+utility_LBB0_1:
+	lw	a0, -20(s0) 
+	bltz	a0, utility_LBB0_4 
+	j	utility_LBB0_2 
+utility_LBB0_2:
+	lw	a0, -12(s0) 
+	lw	a1, -20(s0) 
+	srl	a0, a0, a1 
+	andi	a0, a0, 15 
+	sw	a0, -24(s0) 
+	lw	a1, -24(s0) 
+utility_Lpcrel_hi0:
+	auipc	a0, %hi(%pcrel(int_to_hex.hex_digits))
+	addi	a0, a0, %lo(%larel(int_to_hex.hex_digits,utility_Lpcrel_hi0))
+	add	a0, a0, a1 
+	lbu	a0, 0(a0) 
+	lw	a1, -16(s0) 
+	addi	a2, a1, 1 
+	sw	a2, -16(s0) 
+	sb	a0, 0(a1) 
+	j	utility_LBB0_3 
+utility_LBB0_3:
+	lw	a0, -20(s0) 
+	addi	a0, a0, -4 
+	sw	a0, -20(s0) 
+	j	utility_LBB0_1 
+utility_LBB0_4:
+	lw	a1, -16(s0) 
+	li	a0, 0 
+	sb	a0, 0(a1) 
+	lw	ra, 28(sp) # 4-byte Folded Reload 
+	lw	s0, 24(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 32 
+	ret	
+utility_Lfunc_end0:
+	#	-- End function 
+int_to_dec:
+	#	%bb.0: 
+	addi	sp, sp, -48 
+	sw	ra, 44(sp) # 4-byte Folded Spill 
+	sw	s0, 40(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 48 
+	sw	a0, -12(s0) 
+	sw	a1, -16(s0) 
+	lw	a0, -12(s0) 
+	bnez	a0, utility_LBB1_2 
+	j	utility_LBB1_1 
+utility_LBB1_1:
+	lw	a1, -16(s0) 
+	li	a0, 48 
+	sb	a0, 0(a1) 
+	lw	a1, -16(s0) 
+	li	a0, 0 
+	sb	a0, 1(a1) 
+	j	utility_LBB1_9 
+utility_LBB1_2:
+	li	a0, 0 
+	sw	a0, -32(s0) 
+	j	utility_LBB1_3 
+utility_LBB1_3:
+	lw	a0, -12(s0) 
+	beqz	a0, utility_LBB1_5 
+	j	utility_LBB1_4 
+utility_LBB1_4:
+	lw	a0, -12(s0) 
+	lui	a1, 838861 
+	addi	a1, a1, -819 
+	mulhu	a2, a0, a1 
+	srli	a2, a2, 3 
+	li	a3, 10 
+	mul	a2, a2, a3 
+	sub	a0, a0, a2 
+	sw	a0, -36(s0) 
+	lw	a0, -12(s0) 
+	mulhu	a0, a0, a1 
+	srli	a0, a0, 3 
+	sw	a0, -12(s0) 
+	lw	a0, -36(s0) 
+	addi	a0, a0, 48 
+	lw	a2, -32(s0) 
+	addi	a1, a2, 1 
+	sw	a1, -32(s0) 
+	addi	a1, s0, -28 
+	add	a1, a1, a2 
+	sb	a0, 0(a1) 
+	j	utility_LBB1_3 
+utility_LBB1_5:
+	lw	a0, -32(s0) 
+	addi	a0, a0, -1 
+	sw	a0, -32(s0) 
+	j	utility_LBB1_6 
+utility_LBB1_6:
+	lw	a0, -32(s0) 
+	bltz	a0, utility_LBB1_8 
+	j	utility_LBB1_7 
+utility_LBB1_7:
+	lw	a1, -32(s0) 
+	addi	a0, a1, -1 
+	sw	a0, -32(s0) 
+	addi	a0, s0, -28 
+	add	a0, a0, a1 
+	lbu	a0, 0(a0) 
+	lw	a1, -16(s0) 
+	addi	a2, a1, 1 
+	sw	a2, -16(s0) 
+	sb	a0, 0(a1) 
+	j	utility_LBB1_6 
+utility_LBB1_8:
+	lw	a1, -16(s0) 
+	li	a0, 0 
+	sb	a0, 0(a1) 
+	j	utility_LBB1_9 
+utility_LBB1_9:
+	lw	ra, 44(sp) # 4-byte Folded Reload 
+	lw	s0, 40(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 48 
+	ret	
+utility_Lfunc_end1:
+	#	-- End function 
+print_dec:
+	#	%bb.0: 
+	addi	sp, sp, -32 
+	sw	ra, 28(sp) # 4-byte Folded Spill 
+	sw	s0, 24(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 32 
+	sw	a0, -12(s0) 
+	lw	a0, -12(s0) 
+	addi	a1, s0, -28 
+	sw	a1, -32(s0) # 4-byte Folded Spill 
+	call	int_to_dec 
+	lw	a0, -32(s0) # 4-byte Folded Reload 
+	call	print 
+	lw	ra, 28(sp) # 4-byte Folded Reload 
+	lw	s0, 24(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 32 
+	ret	
+utility_Lfunc_end2:
+	#	-- End function 
+print_hex:
+	#	%bb.0: 
+	addi	sp, sp, -32 
+	sw	ra, 28(sp) # 4-byte Folded Spill 
+	sw	s0, 24(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 32 
+	sw	a0, -12(s0) 
+	lw	a0, -12(s0) 
+	addi	a1, s0, -28 
+	sw	a1, -32(s0) # 4-byte Folded Spill 
+	call	int_to_hex 
+	lw	a0, -32(s0) # 4-byte Folded Reload 
+	call	print 
+	lw	ra, 28(sp) # 4-byte Folded Reload 
+	lw	s0, 24(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 32 
+	ret	
+utility_Lfunc_end3:
+	#	-- End function 
+string_length:
+	#	%bb.0: 
+	addi	sp, sp, -32 
+	sw	ra, 28(sp) # 4-byte Folded Spill 
+	sw	s0, 24(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 32 
+	sw	a0, -16(s0) 
+	lw	a0, -16(s0) 
+	bnez	a0, utility_LBB4_2 
+	j	utility_LBB4_1 
+utility_LBB4_1:
+	li	a0, 0 
+	sw	a0, -12(s0) 
+	j	utility_LBB4_6 
+utility_LBB4_2:
+	li	a0, 0 
+	sw	a0, -20(s0) 
+	j	utility_LBB4_3 
+utility_LBB4_3:
+	lw	a0, -16(s0) 
+	lbu	a0, 0(a0) 
+	beqz	a0, utility_LBB4_5 
+	j	utility_LBB4_4 
+utility_LBB4_4:
+	lw	a0, -20(s0) 
+	addi	a0, a0, 1 
+	sw	a0, -20(s0) 
+	lw	a0, -16(s0) 
+	addi	a0, a0, 1 
+	sw	a0, -16(s0) 
+	j	utility_LBB4_3 
+utility_LBB4_5:
+	lw	a0, -20(s0) 
+	sw	a0, -12(s0) 
+	j	utility_LBB4_6 
+utility_LBB4_6:
+	lw	a0, -12(s0) 
+	lw	ra, 28(sp) # 4-byte Folded Reload 
+	lw	s0, 24(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 32 
+	ret	
+utility_Lfunc_end4:
+	#	-- End function 
+string_compare:
+	#	%bb.0: 
+	addi	sp, sp, -32 
+	sw	ra, 28(sp) # 4-byte Folded Spill 
+	sw	s0, 24(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 32 
+	sw	a0, -16(s0) 
+	sw	a1, -20(s0) 
+	lw	a0, -16(s0) 
+	bnez	a0, utility_LBB5_3 
+	j	utility_LBB5_1 
+utility_LBB5_1:
+	lw	a0, -20(s0) 
+	bnez	a0, utility_LBB5_3 
+	j	utility_LBB5_2 
+utility_LBB5_2:
+	li	a0, 0 
+	sw	a0, -12(s0) 
+	j	utility_LBB5_16 
+utility_LBB5_3:
+	lw	a0, -16(s0) 
+	bnez	a0, utility_LBB5_5 
+	j	utility_LBB5_4 
+utility_LBB5_4:
+	li	a0, 1 
+	sw	a0, -12(s0) 
+	j	utility_LBB5_16 
+utility_LBB5_5:
+	lw	a0, -20(s0) 
+	bnez	a0, utility_LBB5_7 
+	j	utility_LBB5_6 
+utility_LBB5_6:
+	li	a0, -1 
+	sw	a0, -12(s0) 
+	j	utility_LBB5_16 
+utility_LBB5_7:
+	j	utility_LBB5_8 
+utility_LBB5_8:
+	lw	a0, -16(s0) 
+	lbu	a0, 0(a0) 
+	lw	a1, -20(s0) 
+	lbu	a1, 0(a1) 
+	bne	a0, a1, utility_LBB5_12 
+	j	utility_LBB5_9 
+utility_LBB5_9:
+	lw	a0, -16(s0) 
+	lbu	a0, 0(a0) 
+	bnez	a0, utility_LBB5_11 
+	j	utility_LBB5_10 
+utility_LBB5_10:
+	li	a0, 0 
+	sw	a0, -12(s0) 
+	j	utility_LBB5_16 
+utility_LBB5_11:
+	lw	a0, -16(s0) 
+	addi	a0, a0, 1 
+	sw	a0, -16(s0) 
+	lw	a0, -20(s0) 
+	addi	a0, a0, 1 
+	sw	a0, -20(s0) 
+	j	utility_LBB5_15 
+utility_LBB5_12:
+	lw	a0, -16(s0) 
+	lbu	a0, 0(a0) 
+	lw	a1, -20(s0) 
+	lbu	a1, 0(a1) 
+	bge	a0, a1, utility_LBB5_14 
+	j	utility_LBB5_13 
+utility_LBB5_13:
+	li	a0, -1 
+	sw	a0, -12(s0) 
+	j	utility_LBB5_16 
+utility_LBB5_14:
+	li	a0, 1 
+	sw	a0, -12(s0) 
+	j	utility_LBB5_16 
+utility_LBB5_15:
+	j	utility_LBB5_8 
+utility_LBB5_16:
+	lw	a0, -12(s0) 
+	lw	ra, 28(sp) # 4-byte Folded Reload 
+	lw	s0, 24(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 32 
+	ret	
+utility_Lfunc_end5:
+	#	-- End function 
+allocate:
+	#	%bb.0: 
+	addi	sp, sp, -32 
+	sw	ra, 28(sp) # 4-byte Folded Spill 
+	sw	s0, 24(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 32 
+	sw	a0, -12(s0) 
+	call	heap_init 
+	lbu	a0, -12(s0) 
+	andi	a0, a0, 3 
+	bnez	a0, utility_LBB6_2 
+	j	utility_LBB6_1 
+utility_LBB6_1:
+	lw	a0, -12(s0) 
+	sw	a0, -20(s0) # 4-byte Folded Spill 
+	j	utility_LBB6_3 
+utility_LBB6_2:
+	lw	a0, -12(s0) 
+	addi	a0, a0, 4 
+	andi	a0, a0, -4 
+	sw	a0, -20(s0) # 4-byte Folded Spill 
+	j	utility_LBB6_3 
+utility_LBB6_3:
+	lw	a0, -20(s0) # 4-byte Folded Reload 
+	sw	a0, -12(s0) 
+utility_Lpcrel_hi1:
+	auipc	a0, %hi(%pcrel(free_head))
+	addi	a0, a0, %lo(%larel(free_head,utility_Lpcrel_hi1))
+	lw	a0, 4(a0) 
+	sw	a0, -16(s0) 
+	j	utility_LBB6_4 
+utility_LBB6_4:
+	lw	a0, -16(s0) 
+utility_Lpcrel_hi2:
+	auipc	a1, %hi(%pcrel(free_tail))
+	addi	a1, a1, %lo(%larel(free_tail,utility_Lpcrel_hi2))
+	beq	a0, a1, utility_LBB6_8 
+	j	utility_LBB6_5 
+utility_LBB6_5:
+	lw	a0, -16(s0) 
+	lw	a0, 0(a0) 
+	lw	a1, -12(s0) 
+	bltu	a0, a1, utility_LBB6_7 
+	j	utility_LBB6_6 
+utility_LBB6_6:
+	lw	a1, -16(s0) 
+	lw	a0, 4(a1) 
+	lw	a1, 8(a1) 
+	sw	a0, 4(a1) 
+	lw	a1, -16(s0) 
+	lw	a0, 8(a1) 
+	lw	a1, 4(a1) 
+	sw	a0, 8(a1) 
+	lw	a1, -16(s0) 
+	li	a0, 0 
+	sw	a0, 4(a1) 
+	lw	a1, -16(s0) 
+	sw	a0, 8(a1) 
+	j	utility_LBB6_8 
+utility_LBB6_7:
+	lw	a0, -16(s0) 
+	lw	a0, 4(a0) 
+	sw	a0, -16(s0) 
+	j	utility_LBB6_4 
+utility_LBB6_8:
+	lw	a0, -16(s0) 
+utility_Lpcrel_hi3:
+	auipc	a1, %hi(%pcrel(free_tail))
+	addi	a1, a1, %lo(%larel(free_tail,utility_Lpcrel_hi3))
+	bne	a0, a1, utility_LBB6_10 
+	j	utility_LBB6_9 
+utility_LBB6_9:
+utility_Lpcrel_hi4:
+	auipc	a0, %hi(%pcrel(heap_limit))
+	addi	a1, a0, %lo(%larel(heap_limit,utility_Lpcrel_hi4))
+	lw	a0, 0(a1) 
+	sw	a0, -16(s0) 
+	lw	a0, -12(s0) 
+	lw	a2, -16(s0) 
+	sw	a0, 0(a2) 
+	lw	a0, -12(s0) 
+	lw	a2, 0(a1) 
+	add	a0, a0, a2 
+	addi	a0, a0, 12 
+	sw	a0, 0(a1) 
+	j	utility_LBB6_10 
+utility_LBB6_10:
+	lw	a0, -16(s0) 
+	addi	a0, a0, 12 
+	lw	ra, 28(sp) # 4-byte Folded Reload 
+	lw	s0, 24(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 32 
+	ret	
+utility_Lfunc_end6:
+	#	-- End function 
+deallocate:
+	#	%bb.0: 
+	addi	sp, sp, -16 
+	sw	ra, 12(sp) # 4-byte Folded Spill 
+	sw	s0, 8(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 16 
+	sw	a0, -12(s0) 
+	lw	a0, -12(s0) 
+	bnez	a0, utility_LBB7_2 
+	j	utility_LBB7_1 
+utility_LBB7_1:
+	j	utility_LBB7_3 
+utility_LBB7_2:
+	lw	a0, -12(s0) 
+	addi	a0, a0, -12 
+	sw	a0, -16(s0) 
+utility_Lpcrel_hi5:
+	auipc	a0, %hi(%pcrel(free_head))
+	addi	a1, a0, %lo(%larel(free_head,utility_Lpcrel_hi5))
+	lw	a0, 4(a1) 
+	lw	a2, -16(s0) 
+	sw	a0, 4(a2) 
+	lw	a0, -16(s0) 
+	sw	a1, 8(a0) 
+	lw	a0, -16(s0) 
+	lw	a2, 4(a1) 
+	sw	a0, 8(a2) 
+	lw	a0, -16(s0) 
+	sw	a0, 4(a1) 
+	j	utility_LBB7_3 
+utility_LBB7_3:
+	lw	ra, 12(sp) # 4-byte Folded Reload 
+	lw	s0, 8(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 16 
+	ret	
+utility_Lfunc_end7:
+	#	-- End function 
+heap_init:
+	#	%bb.0: 
+	addi	sp, sp, -16 
+	sw	ra, 12(sp) # 4-byte Folded Spill 
+	sw	s0, 8(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 16 
+utility_Lpcrel_hi6:
+	auipc	a0, %hi(%pcrel(heap_limit))
+	addi	a0, a0, %lo(%larel(heap_limit,utility_Lpcrel_hi6))
+	lw	a0, 0(a0) 
+	beqz	a0, utility_LBB8_2 
+	j	utility_LBB8_1 
+utility_LBB8_1:
+	j	utility_LBB8_3 
+utility_LBB8_2:
+utility_Lpcrel_hi7:
+	auipc	a0, %hi(%pcrel(heap_limit))
+	addi	a1, a0, %lo(%larel(heap_limit,utility_Lpcrel_hi7))
+utility_Lpcrel_hi8:
+	auipc	a0, %hi(%pcrel(statics_limit))
+	addi	a0, a0, %lo(%larel(statics_limit,utility_Lpcrel_hi8))
+	sw	a0, 0(a1) 
+utility_Lpcrel_hi9:
+	auipc	a0, %hi(%pcrel(free_head))
+	addi	a0, a0, %lo(%larel(free_head,utility_Lpcrel_hi9))
+utility_Lpcrel_hi10:
+	auipc	a1, %hi(%pcrel(free_tail))
+	addi	a1, a1, %lo(%larel(free_tail,utility_Lpcrel_hi10))
+	sw	a1, 4(a0) 
+	sw	a0, 8(a1) 
+	j	utility_LBB8_3 
+utility_LBB8_3:
+	lw	ra, 12(sp) # 4-byte Folded Reload 
+	lw	s0, 8(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 16 
+	ret	
+utility_Lfunc_end8:
+	#	-- End function 
+	.Numeric
+int_to_hex.hex_digits:
+	.Text
+	.ascii	"0123456789abcdef"
+free_head:
+	.Numeric
+	.byte 0 0 0 0 0 0 0 0 0 0 0 0 
+free_tail:
+	.byte 0 0 0 0 0 0 0 0 0 0 0 0 
+heap_limit:
+	.word	0                               # 0x0
+
+
+# =====  END  ./utility.asm =====
+
+
+
+# ===== BEGIN syscall.asm =====
+
+# ===================================================================================================================================
+# syscall.asm
+#
+# Small assembly functions to set up and perform system calls.  These allow regular user-level code to perform system calls as
+# though they were regular function calls.
+# ===================================================================================================================================
+
+
+
+# ===================================================================================================================================
+	.Code
+
+	## noop()
+noop:
+	lw	a0,	SYSCALL_NOOP_CODE	# Load the exit syscall code into a0 (arg[0])
+	ecall
+	ret
+
+	## exit()
+	##   Arguments:
+	##     a0:  The exit status of the terminating process.
+exit:
+	mv	a1,	a0			# Move the exit status into a1 (arg[1])
+	lw	a0,	SYSCALL_EXIT_CODE	# Load the exit syscall code into a0 (arg[0])
+	ecall
+	ebreak					# If we reach here, something is terribly wrong.
+
+	## print()
+	##   Arguments:
+	##     a0:  The null-terminated string (char array) to print to the console.
+print:
+	mv	a1,	a0			# Move the string pointer into a1 (arg[1])
+	lw	a0,	SYSCALL_PRINT_CODE	# Load the print syscall code into a0 (arg[0])
+	ecall
+	ret
+
+	## run()
+	##   Arguments:
+	##     a0:  The ROM number to load into the new process
+	##   Returns:
+	##     a0:  0 = success, 1 = invalid ROM number, 2 = insufficient RAM, 3 = other error
+run:
+	mv	a1,	a0			# Move the ROM number into a1 (arg[1])
+	lw	a0,	SYSCALL_RUN_CODE	# Load the run syscall code into a0 (arg[0])
+	ecall
+	ret					# The return value of the syscall is the return value of this wrapper function.
+
+# ===================================================================================================================================
+	
+
+
+# ===================================================================================================================================
+	.Numeric
+
+## The system call codes.
+SYSCALL_NOOP_CODE:	0xca110000
+SYSCALL_EXIT_CODE:	0xca110001
+SYSCALL_PRINT_CODE:	0xca110002
+SYSCALL_RUN_CODE:	0xca110003
+# ===================================================================================================================================
+
+
+# =====  END  syscall.asm =====
+
+
+
+# ===== BEGIN stub_end.asm =====
+
+	.Text
+
+statics_limit:
+	.ascii	"This is the end."
+	
+
+
+# =====  END  stub_end.asm =====
+

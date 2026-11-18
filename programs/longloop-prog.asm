@@ -395,10 +395,187 @@ utility_LBB5_16:
 	ret	
 utility_Lfunc_end5:
 	#	-- End function 
+allocate:
+	#	%bb.0: 
+	addi	sp, sp, -32 
+	sw	ra, 28(sp) # 4-byte Folded Spill 
+	sw	s0, 24(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 32 
+	sw	a0, -12(s0) 
+	call	heap_init 
+	lbu	a0, -12(s0) 
+	andi	a0, a0, 3 
+	bnez	a0, utility_LBB6_2 
+	j	utility_LBB6_1 
+utility_LBB6_1:
+	lw	a0, -12(s0) 
+	sw	a0, -20(s0) # 4-byte Folded Spill 
+	j	utility_LBB6_3 
+utility_LBB6_2:
+	lw	a0, -12(s0) 
+	addi	a0, a0, 4 
+	andi	a0, a0, -4 
+	sw	a0, -20(s0) # 4-byte Folded Spill 
+	j	utility_LBB6_3 
+utility_LBB6_3:
+	lw	a0, -20(s0) # 4-byte Folded Reload 
+	sw	a0, -12(s0) 
+utility_Lpcrel_hi1:
+	auipc	a0, %hi(%pcrel(free_head))
+	addi	a0, a0, %lo(%larel(free_head,utility_Lpcrel_hi1))
+	lw	a0, 4(a0) 
+	sw	a0, -16(s0) 
+	j	utility_LBB6_4 
+utility_LBB6_4:
+	lw	a0, -16(s0) 
+utility_Lpcrel_hi2:
+	auipc	a1, %hi(%pcrel(free_tail))
+	addi	a1, a1, %lo(%larel(free_tail,utility_Lpcrel_hi2))
+	beq	a0, a1, utility_LBB6_8 
+	j	utility_LBB6_5 
+utility_LBB6_5:
+	lw	a0, -16(s0) 
+	lw	a0, 0(a0) 
+	lw	a1, -12(s0) 
+	bltu	a0, a1, utility_LBB6_7 
+	j	utility_LBB6_6 
+utility_LBB6_6:
+	lw	a1, -16(s0) 
+	lw	a0, 4(a1) 
+	lw	a1, 8(a1) 
+	sw	a0, 4(a1) 
+	lw	a1, -16(s0) 
+	lw	a0, 8(a1) 
+	lw	a1, 4(a1) 
+	sw	a0, 8(a1) 
+	lw	a1, -16(s0) 
+	li	a0, 0 
+	sw	a0, 4(a1) 
+	lw	a1, -16(s0) 
+	sw	a0, 8(a1) 
+	j	utility_LBB6_8 
+utility_LBB6_7:
+	lw	a0, -16(s0) 
+	lw	a0, 4(a0) 
+	sw	a0, -16(s0) 
+	j	utility_LBB6_4 
+utility_LBB6_8:
+	lw	a0, -16(s0) 
+utility_Lpcrel_hi3:
+	auipc	a1, %hi(%pcrel(free_tail))
+	addi	a1, a1, %lo(%larel(free_tail,utility_Lpcrel_hi3))
+	bne	a0, a1, utility_LBB6_10 
+	j	utility_LBB6_9 
+utility_LBB6_9:
+utility_Lpcrel_hi4:
+	auipc	a0, %hi(%pcrel(heap_limit))
+	addi	a1, a0, %lo(%larel(heap_limit,utility_Lpcrel_hi4))
+	lw	a0, 0(a1) 
+	sw	a0, -16(s0) 
+	lw	a0, -12(s0) 
+	lw	a2, -16(s0) 
+	sw	a0, 0(a2) 
+	lw	a0, -12(s0) 
+	lw	a2, 0(a1) 
+	add	a0, a0, a2 
+	addi	a0, a0, 12 
+	sw	a0, 0(a1) 
+	j	utility_LBB6_10 
+utility_LBB6_10:
+	lw	a0, -16(s0) 
+	addi	a0, a0, 12 
+	lw	ra, 28(sp) # 4-byte Folded Reload 
+	lw	s0, 24(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 32 
+	ret	
+utility_Lfunc_end6:
+	#	-- End function 
+deallocate:
+	#	%bb.0: 
+	addi	sp, sp, -16 
+	sw	ra, 12(sp) # 4-byte Folded Spill 
+	sw	s0, 8(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 16 
+	sw	a0, -12(s0) 
+	lw	a0, -12(s0) 
+	bnez	a0, utility_LBB7_2 
+	j	utility_LBB7_1 
+utility_LBB7_1:
+	j	utility_LBB7_3 
+utility_LBB7_2:
+	lw	a0, -12(s0) 
+	addi	a0, a0, -12 
+	sw	a0, -16(s0) 
+utility_Lpcrel_hi5:
+	auipc	a0, %hi(%pcrel(free_head))
+	addi	a1, a0, %lo(%larel(free_head,utility_Lpcrel_hi5))
+	lw	a0, 4(a1) 
+	lw	a2, -16(s0) 
+	sw	a0, 4(a2) 
+	lw	a0, -16(s0) 
+	sw	a1, 8(a0) 
+	lw	a0, -16(s0) 
+	lw	a2, 4(a1) 
+	sw	a0, 8(a2) 
+	lw	a0, -16(s0) 
+	sw	a0, 4(a1) 
+	j	utility_LBB7_3 
+utility_LBB7_3:
+	lw	ra, 12(sp) # 4-byte Folded Reload 
+	lw	s0, 8(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 16 
+	ret	
+utility_Lfunc_end7:
+	#	-- End function 
+heap_init:
+	#	%bb.0: 
+	addi	sp, sp, -16 
+	sw	ra, 12(sp) # 4-byte Folded Spill 
+	sw	s0, 8(sp) # 4-byte Folded Spill 
+	addi	s0, sp, 16 
+utility_Lpcrel_hi6:
+	auipc	a0, %hi(%pcrel(heap_limit))
+	addi	a0, a0, %lo(%larel(heap_limit,utility_Lpcrel_hi6))
+	lw	a0, 0(a0) 
+	beqz	a0, utility_LBB8_2 
+	j	utility_LBB8_1 
+utility_LBB8_1:
+	j	utility_LBB8_3 
+utility_LBB8_2:
+utility_Lpcrel_hi7:
+	auipc	a0, %hi(%pcrel(heap_limit))
+	addi	a1, a0, %lo(%larel(heap_limit,utility_Lpcrel_hi7))
+utility_Lpcrel_hi8:
+	auipc	a0, %hi(%pcrel(statics_limit))
+	addi	a0, a0, %lo(%larel(statics_limit,utility_Lpcrel_hi8))
+	sw	a0, 0(a1) 
+utility_Lpcrel_hi9:
+	auipc	a0, %hi(%pcrel(free_head))
+	addi	a0, a0, %lo(%larel(free_head,utility_Lpcrel_hi9))
+utility_Lpcrel_hi10:
+	auipc	a1, %hi(%pcrel(free_tail))
+	addi	a1, a1, %lo(%larel(free_tail,utility_Lpcrel_hi10))
+	sw	a1, 4(a0) 
+	sw	a0, 8(a1) 
+	j	utility_LBB8_3 
+utility_LBB8_3:
+	lw	ra, 12(sp) # 4-byte Folded Reload 
+	lw	s0, 8(sp) # 4-byte Folded Reload 
+	addi	sp, sp, 16 
+	ret	
+utility_Lfunc_end8:
+	#	-- End function 
 	.Numeric
 int_to_hex.hex_digits:
 	.Text
 	.ascii	"0123456789abcdef"
+free_head:
+	.Numeric
+	.byte 0 0 0 0 0 0 0 0 0 0 0 0 
+free_tail:
+	.byte 0 0 0 0 0 0 0 0 0 0 0 0 
+heap_limit:
+	.word	0                               # 0x0
 
 
 # =====  END  ./utility.asm =====
