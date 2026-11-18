@@ -51,7 +51,7 @@
 
 #define SCHEDULER_QUANTUM 0x100
 
-#define INIT_FILENAME     "create-test.vmx"
+#define INIT_FILENAME     "init.vmx"
 
 #define MAX_FILENAME_LENGTH   60
 /* =============================================================================================================================== */
@@ -239,7 +239,8 @@ void do_exit (word_t status) {
 word_t do_run (char* filename) {
 
   print("[kernel:] RUN ");
-  __asm__ volatile ("ebreak");
+  //meow commented this out
+  //__asm__ volatile ("ebreak");
   print(filename);
   print("\n");
 
